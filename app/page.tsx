@@ -60,9 +60,16 @@ export default function Home() {
                 key={prompt.id}
                 className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
               >
-                <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50 mb-2">
-                  {prompt.title}
-                </h3>
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+                    {prompt.title}
+                  </h3>
+                  {prompt.username && (
+                    <span className="text-xs text-zinc-500 dark:text-zinc-500">
+                      @{prompt.username}
+                    </span>
+                  )}
+                </div>
                 {prompt.explanation && (
                   <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
                     {prompt.explanation}

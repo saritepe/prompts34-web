@@ -7,6 +7,7 @@ import Link from 'next/link';
 export default function SignUpPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
@@ -18,7 +19,7 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      await signUp(email, password);
+      await signUp(email, password, username);
       // If signup is successful, show email confirmation message
       setEmailSent(true);
     } catch (err) {
@@ -75,6 +76,21 @@ export default function SignUpPage() {
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="space-y-4">
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                Kullanıcı Adı
+              </label>
+              <input
+                id="username"
+                type="text"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md shadow-sm bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50"
+                placeholder="kullaniciadi"
+              />
+            </div>
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 E-posta

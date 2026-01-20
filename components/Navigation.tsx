@@ -38,7 +38,7 @@ export default function Navigation() {
                 >
                   <div className="w-8 h-8 rounded-full bg-zinc-900 dark:bg-zinc-50 flex items-center justify-center">
                     <span className="text-sm font-medium text-white dark:text-zinc-900">
-                      {user.email[0].toUpperCase()}
+                      {(user.username?.[0] || user.email?.[0] || 'U').toUpperCase()}
                     </span>
                   </div>
                   <svg
@@ -56,9 +56,16 @@ export default function Navigation() {
                 {showDropdown && (
                   <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 py-1 z-50">
                     <div className="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800">
-                      <p className="text-sm text-zinc-900 dark:text-zinc-50 font-medium truncate">
-                        {user.email}
-                      </p>
+                      {user.username && (
+                        <p className="text-sm text-zinc-900 dark:text-zinc-50 font-medium truncate">
+                          {user.username}
+                        </p>
+                      )}
+                      {user.email && (
+                        <p className={`${user.username ? 'text-xs' : 'text-sm'} text-zinc-500 dark:text-zinc-500 ${user.username ? '' : 'font-medium'} truncate`}>
+                          {user.email}
+                        </p>
+                      )}
                     </div>
 
                     <Link

@@ -150,9 +150,16 @@ export default function MyPromptsPage() {
                 className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-                    {prompt.title}
-                  </h3>
+                  <div className="flex flex-col">
+                    <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+                      {prompt.title}
+                    </h3>
+                    {(prompt.username || user?.username) && (
+                      <span className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
+                        @{prompt.username || user?.username}
+                      </span>
+                    )}
+                  </div>
                   <span className={`px-2 py-1 text-xs rounded ${
                     prompt.is_public
                       ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'

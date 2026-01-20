@@ -1,6 +1,7 @@
 export interface PromptResponse {
   id: string;
   user_id: string;
+  username?: string; // Optional for backwards compatibility
   title: string;
   content: string;
   tags: string[];

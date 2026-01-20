@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { PromptCreate, PromptUpdate } from '@/types/prompt';
+import { PromptCreate, PromptUpdate, PromptResponse } from '@/types/prompt';
+
+type PromptFormData = Partial<PromptResponse>;
 
 interface PromptFormProps {
-  initialData?: PromptUpdate & { title?: string; content?: string };
-  onSubmit: (data: PromptCreate | PromptUpdate) => Promise<void>;
+  initialData?: PromptFormData;
+  onSubmit: ((data: PromptCreate) => Promise<void>) | ((data: PromptUpdate) => Promise<void>);
   onCancel?: () => void;
   submitLabel?: string;
 }
@@ -38,16 +40,28 @@ export default function PromptForm({
         .map(tag => tag.trim())
         .filter(tag => tag.length > 0);
 
-      const data: PromptCreate | PromptUpdate = {
-        title: formData.title || undefined,
-        content: formData.content || undefined,
-        tags: tags.length > 0 ? tags : undefined,
-        explanation: formData.explanation || null,
-        suggested_model: formData.suggested_model || null,
-        is_public: formData.is_public,
-      };
-
-      await onSubmit(data);
+      // If we have initialData, we're updating, otherwise creating
+      if (initialData) {
+        const updateData: PromptUpdate = {
+          title: formData.title || null,
+          content: formData.content || null,
+          tags: tags.length > 0 ? tags : null,
+          explanation: formData.explanation || null,
+          suggested_model: formData.suggested_model || null,
+          is_public: formData.is_public,
+        };
+        await (onSubmit as (data: PromptUpdate) => Promise<void>)(updateData);
+      } else {
+        const createData: PromptCreate = {
+          title: formData.title,
+          content: formData.content,
+          tags: tags,
+          explanation: formData.explanation || null,
+          suggested_model: formData.suggested_model || null,
+          is_public: formData.is_public,
+        };
+        await (onSubmit as (data: PromptCreate) => Promise<void>)(createData);
+      }
 
       // Reset form if this was a create operation
       if (!initialData) {

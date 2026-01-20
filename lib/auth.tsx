@@ -37,39 +37,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string) => {
-    const response = await fetch(`${API_URL}/auth/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch(`${API_URL}/auth/signup`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || 'Kayıt başarısız');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Kayıt başarısız');
+      }
+
+      // Don't auto-login after signup - user needs to verify email first
+    } catch (error) {
+      if (error instanceof Error && error.message !== 'Kayıt başarısız') {
+        throw new Error('Bir hata oluştu, lütfen tekrar deneyin');
+      }
+      throw error;
     }
-
-    // Don't auto-login after signup - user needs to verify email first
   };
 
   const signIn = async (email: string, password: string) => {
-    const response = await fetch(`${API_URL}/auth/signin`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch(`${API_URL}/auth/signin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || 'Giriş başarısız');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Giriş başarısız');
+      }
+
+      const data = await response.json();
+      const newToken = data.access_token || data.token;
+
+      setToken(newToken);
+      setUser({ email });
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('user', JSON.stringify({ email }));
+    } catch (error) {
+      if (error instanceof Error && error.message !== 'Giriş başarısız') {
+        throw new Error('Bir hata oluştu, lütfen tekrar deneyin');
+      }
+      throw error;
     }
-
-    const data = await response.json();
-    const newToken = data.access_token || data.token;
-
-    setToken(newToken);
-    setUser({ email });
-    localStorage.setItem('token', newToken);
-    localStorage.setItem('user', JSON.stringify({ email }));
   };
 
   const signOut = () => {

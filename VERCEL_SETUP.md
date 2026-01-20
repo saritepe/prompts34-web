@@ -33,9 +33,7 @@ Add these environment variables in the Vercel dashboard:
 | Variable Name | Value | Description |
 |--------------|-------|-------------|
 | `NEXT_PUBLIC_API_URL` | `https://api.prompts34.com` | Your backend API URL |
-| `NEXT_PUBLIC_APP_URL` | `https://your-app.vercel.app` | Your app URL (update after deployment) |
-
-**Note**: After first deployment, update `NEXT_PUBLIC_APP_URL` with your actual Vercel domain.
+| `NEXT_PUBLIC_APP_URL` | `https://prompts34.com` | Your app URL (custom domain) |
 
 ### How to Add Environment Variables:
 
@@ -52,15 +50,17 @@ Add these environment variables in the Vercel dashboard:
 2. Wait for the build to complete
 3. Your app will be live at `https://your-project.vercel.app`
 
-## Step 5: Custom Domain (Optional)
+## Step 5: Custom Domain Setup
 
-If you want to use `prompts34.com`:
+To use `prompts34.com` as your domain:
 
-1. Go to **Settings → Domains**
+1. Go to **Settings → Domains** in your Vercel project
 2. Add your domain: `prompts34.com`
-3. Follow Vercel's DNS configuration instructions
-4. Update `NEXT_PUBLIC_APP_URL` environment variable to `https://prompts34.com`
-5. Redeploy the application
+3. Configure DNS records as instructed by Vercel:
+   - Add an A record pointing to Vercel's IP: `76.76.21.21`
+   - Or add a CNAME record pointing to `cname.vercel-dns.com`
+4. Wait for DNS propagation (can take up to 48 hours, usually faster)
+5. Vercel will automatically issue SSL certificate
 
 ## Step 6: Backend CORS Configuration
 
@@ -73,9 +73,9 @@ from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "https://your-project.vercel.app",
-        "https://prompts34.com",  # if using custom domain
+        "http://localhost:3000",           # Local development
+        "https://prompts34.com",            # Production domain
+        "https://*.vercel.app",             # Preview deployments
     ],
     allow_credentials=True,
     allow_methods=["*"],

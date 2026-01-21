@@ -74,7 +74,7 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6" method="post">
           <div className="space-y-4">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
@@ -82,7 +82,9 @@ export default function SignUpPage() {
               </label>
               <input
                 id="username"
+                name="username"
                 type="text"
+                autoComplete="username"
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -97,7 +99,9 @@ export default function SignUpPage() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -112,7 +116,9 @@ export default function SignUpPage() {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
+                autoComplete="new-password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

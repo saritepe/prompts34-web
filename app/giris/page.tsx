@@ -43,7 +43,7 @@ export default function SignInPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6" method="post">
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
@@ -51,7 +51,9 @@ export default function SignInPage() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +68,9 @@ export default function SignInPage() {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
+                autoComplete="current-password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

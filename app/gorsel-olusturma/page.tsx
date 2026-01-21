@@ -2,17 +2,29 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
+import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Görsel Oluşturma Promptları | Prompts34',
+  title: 'Görsel Oluşturma Promptları',
   description: 'Yapay zeka ile görsel oluşturmak için promptlar. DALL-E, Midjourney, Stable Diffusion ve diğer AI araçları ile yaratıcı görseller üretin.',
   keywords: ['görsel oluşturma', 'ai görsel', 'dall-e', 'midjourney', 'stable diffusion', 'yapay zeka sanat'],
   openGraph: {
     title: 'Görsel Oluşturma Promptları | Prompts34',
     description: 'Yapay zeka ile görsel oluşturmak için promptlar',
     type: 'website',
+    url: 'https://prompts34.com/gorsel-olusturma',
+    siteName: 'Prompts34',
+    locale: 'tr_TR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Görsel Oluşturma Promptları | Prompts34',
+    description: 'Yapay zeka ile görsel oluşturmak için promptlar',
+  },
+  alternates: {
+    canonical: 'https://prompts34.com/gorsel-olusturma',
   },
 };
 
@@ -29,6 +41,17 @@ export default async function GorselOlusturmaPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+      <BreadcrumbStructuredData
+        items={[
+          { name: 'Ana Sayfa', url: 'https://prompts34.com' },
+          { name: 'Görsel Oluşturma', url: 'https://prompts34.com/gorsel-olusturma' },
+        ]}
+      />
+      <CollectionPageStructuredData
+        name="Görsel Oluşturma Promptları"
+        description="Yapay zeka ile görsel oluşturmak için promptlar"
+        url="https://prompts34.com/gorsel-olusturma"
+      />
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

@@ -2,17 +2,29 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
+import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Mülakat Hazırlığı Promptları | Prompts34',
+  title: 'Mülakat Hazırlığı Promptları',
   description: 'İş görüşmelerine hazırlanmak için yapay zeka promptları. ChatGPT ile mülakat soruları, cevapları ve hazırlık stratejileri geliştirin.',
   keywords: ['mülakat hazırlığı', 'iş görüşmesi', 'interview hazırlık', 'ai mülakat', 'chatgpt mülakat'],
   openGraph: {
     title: 'Mülakat Hazırlığı Promptları | Prompts34',
     description: 'İş görüşmelerine hazırlanmak için yapay zeka promptları',
     type: 'website',
+    url: 'https://prompts34.com/mulakat-hazirligi',
+    siteName: 'Prompts34',
+    locale: 'tr_TR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mülakat Hazırlığı Promptları | Prompts34',
+    description: 'İş görüşmelerine hazırlanmak için yapay zeka promptları',
+  },
+  alternates: {
+    canonical: 'https://prompts34.com/mulakat-hazirligi',
   },
 };
 
@@ -29,6 +41,17 @@ export default async function MulakatHazirligiPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+      <BreadcrumbStructuredData
+        items={[
+          { name: 'Ana Sayfa', url: 'https://prompts34.com' },
+          { name: 'Mülakat Hazırlığı', url: 'https://prompts34.com/mulakat-hazirligi' },
+        ]}
+      />
+      <CollectionPageStructuredData
+        name="Mülakat Hazırlığı Promptları"
+        description="İş görüşmelerine hazırlanmak için yapay zeka promptları"
+        url="https://prompts34.com/mulakat-hazirligi"
+      />
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

@@ -2,17 +2,29 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
+import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'CV Hazırlama Promptları | Prompts34',
+  title: 'CV Hazırlama Promptları',
   description: 'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları. ChatGPT, Claude ve diğer AI araçları ile etkili CV oluşturun.',
   keywords: ['cv hazırlama', 'özgeçmiş', 'cv promptları', 'ai cv', 'chatgpt cv', 'yapay zeka cv'],
   openGraph: {
     title: 'CV Hazırlama Promptları | Prompts34',
     description: 'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları',
     type: 'website',
+    url: 'https://prompts34.com/cv-hazirlama',
+    siteName: 'Prompts34',
+    locale: 'tr_TR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CV Hazırlama Promptları | Prompts34',
+    description: 'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları',
+  },
+  alternates: {
+    canonical: 'https://prompts34.com/cv-hazirlama',
   },
 };
 
@@ -29,6 +41,17 @@ export default async function CVHazirlamaPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+      <BreadcrumbStructuredData
+        items={[
+          { name: 'Ana Sayfa', url: 'https://prompts34.com' },
+          { name: 'CV Hazırlama', url: 'https://prompts34.com/cv-hazirlama' },
+        ]}
+      />
+      <CollectionPageStructuredData
+        name="CV Hazırlama Promptları"
+        description="Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları"
+        url="https://prompts34.com/cv-hazirlama"
+      />
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

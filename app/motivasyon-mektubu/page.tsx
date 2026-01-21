@@ -2,17 +2,29 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
+import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Motivasyon Mektubu Promptları | Prompts34',
+  title: 'Motivasyon Mektubu Promptları',
   description: 'Etkili motivasyon mektubu yazmak için yapay zeka promptları. ChatGPT ve AI araçları ile profesyonel başvuru mektupları oluşturun.',
   keywords: ['motivasyon mektubu', 'başvuru mektubu', 'cover letter', 'ai mektup', 'chatgpt motivasyon mektubu'],
   openGraph: {
     title: 'Motivasyon Mektubu Promptları | Prompts34',
     description: 'Etkili motivasyon mektubu yazmak için yapay zeka promptları',
     type: 'website',
+    url: 'https://prompts34.com/motivasyon-mektubu',
+    siteName: 'Prompts34',
+    locale: 'tr_TR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Motivasyon Mektubu Promptları | Prompts34',
+    description: 'Etkili motivasyon mektubu yazmak için yapay zeka promptları',
+  },
+  alternates: {
+    canonical: 'https://prompts34.com/motivasyon-mektubu',
   },
 };
 
@@ -29,6 +41,17 @@ export default async function MotivasyonMektubuPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+      <BreadcrumbStructuredData
+        items={[
+          { name: 'Ana Sayfa', url: 'https://prompts34.com' },
+          { name: 'Motivasyon Mektubu', url: 'https://prompts34.com/motivasyon-mektubu' },
+        ]}
+      />
+      <CollectionPageStructuredData
+        name="Motivasyon Mektubu Promptları"
+        description="Etkili motivasyon mektubu yazmak için yapay zeka promptları"
+        url="https://prompts34.com/motivasyon-mektubu"
+      />
       <Navigation />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

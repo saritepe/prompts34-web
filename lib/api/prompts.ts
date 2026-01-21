@@ -14,6 +14,19 @@ export async function getPublicPrompts(): Promise<PromptResponse[]> {
   return response.json();
 }
 
+export async function getPromptsByTags(tags: string[]): Promise<PromptResponse[]> {
+  const tagsParam = tags.join(',');
+  const response = await fetch(`${API_URL}/prompts/public?tags=${encodeURIComponent(tagsParam)}`, {
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch prompts by tags');
+  }
+
+  return response.json();
+}
+
 export async function getMyPrompts(token: string): Promise<PromptResponse[]> {
   const response = await fetch(`${API_URL}/prompts/my`, {
     headers: {

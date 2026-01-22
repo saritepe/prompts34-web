@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/my-prompts', '/auth/'],
+      disallow: ['/my-prompts', '/auth/', '/giris', '/kayit'],
     },
     sitemap: 'https://prompts34.com/sitemap.xml',
   };

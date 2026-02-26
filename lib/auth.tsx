@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface User {
   email: string;
@@ -20,16 +20,68 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://0.0.0.0:8000';
+const SESSION_DURATION_MS = 60 * 60 * 1000; // 1 hour
+const SESSION_EXPIRES_KEY = 'session_expires_at';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [sessionExpiresAt, setSessionExpiresAt] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Manual login only - don't restore session from localStorage
-    setLoading(false);
+  const clearSession = useCallback(() => {
+    setUser(null);
+    setToken(null);
+    setSessionExpiresAt(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem(SESSION_EXPIRES_KEY);
   }, []);
+
+  useEffect(() => {
+    try {
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+      const storedExpiry = localStorage.getItem(SESSION_EXPIRES_KEY);
+
+      if (!storedToken || !storedUser || !storedExpiry) {
+        clearSession();
+        setLoading(false);
+        return;
+      }
+
+      const expiry = Number(storedExpiry);
+      if (!Number.isFinite(expiry) || Date.now() >= expiry) {
+        clearSession();
+        setLoading(false);
+        return;
+      }
+
+      setToken(storedToken);
+      setUser(JSON.parse(storedUser));
+      setSessionExpiresAt(expiry);
+    } catch {
+      clearSession();
+    }
+
+    setLoading(false);
+  }, [clearSession]);
+
+  useEffect(() => {
+    if (!token || !sessionExpiresAt) return;
+
+    const msRemaining = sessionExpiresAt - Date.now();
+    if (msRemaining <= 0) {
+      clearSession();
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      clearSession();
+    }, msRemaining);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [token, sessionExpiresAt, clearSession]);
 
   const signUp = async (email: string, password: string, username: string) => {
     try {
@@ -46,8 +98,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Don't auto-login after signup - user needs to verify email first
     } catch (error) {
-      if (error instanceof Error && error.message !== 'Kayıt başarısız') {
-        throw new Error('Bir hata oluştu, lütfen tekrar deneyin');
+      if (error instanceof TypeError) {
+        throw new Error('Sunucuya bağlanılamadı, lütfen daha sonra tekrar deneyin');
       }
       throw error;
     }
@@ -81,32 +133,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       const userData = await meResponse.json();
+      const currentUser = userData?.user ?? userData;
 
       setToken(newToken);
       setUser({
-        email: userData.email,
-        username: userData.username,
-        id: userData.id
+        email: currentUser.email,
+        username: currentUser.user_metadata?.username || currentUser.username || currentUser.email,
+        id: currentUser.id
       });
+      const expiresAt = Date.now() + SESSION_DURATION_MS;
+      setSessionExpiresAt(expiresAt);
       localStorage.setItem('token', newToken);
       localStorage.setItem('user', JSON.stringify({
-        email: userData.email,
-        username: userData.username,
-        id: userData.id
+        email: currentUser.email,
+        username: currentUser.user_metadata?.username || currentUser.username || currentUser.email,
+        id: currentUser.id
       }));
+      localStorage.setItem(SESSION_EXPIRES_KEY, String(expiresAt));
     } catch (error) {
-      if (error instanceof Error && error.message !== 'Giriş başarısız') {
-        throw new Error('Bir hata oluştu, lütfen tekrar deneyin');
+      if (error instanceof TypeError) {
+        throw new Error('Sunucuya bağlanılamadı, lütfen daha sonra tekrar deneyin');
       }
       throw error;
     }
   };
 
   const signOut = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    clearSession();
   };
 
   return (

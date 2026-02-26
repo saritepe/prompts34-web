@@ -2,101 +2,27 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="mt-auto border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mb-3">
-              Prompts34
-            </h3>
+            <h3 className="mb-2 text-sm font-semibold text-zinc-900 dark:text-zinc-50">Prompts34</h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Yapay zeka promptlarını keşfedin ve paylaşın.
+              Türkçe yapay zeka prompt kütüphanesi. Keşfet, kopyala, düzenle ve paylaş.
             </p>
           </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mb-3">
-              Popüler Kategoriler
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/cv-hazirlama"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
-                >
-                  CV Hazırlama
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/motivasyon-mektubu"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
-                >
-                  Motivasyon Mektubu
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/mulakat-hazirligi"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
-                >
-                  Mülakat Hazırlığı
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/gorsel-olusturma"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
-                >
-                  Görsel Oluşturma
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/logo-olusturma"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
-                >
-                  Logo Oluşturma
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50 mb-3">
-              Hızlı Linkler
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
-                >
-                  Ana Sayfa
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/giris"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
-                >
-                  Giriş Yap
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/kayit"
-                  className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
-                >
-                  Kayıt Ol
-                </Link>
-              </li>
-            </ul>
+          <div className="w-full md:w-auto">
+            <Link
+              href="/kayit"
+              className="inline-flex w-full justify-center rounded-md bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 md:w-auto dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              Topluluğa Katıl
+            </Link>
           </div>
         </div>
 
-        <div className="border-t border-zinc-200 dark:border-zinc-800 mt-8 pt-8">
-          <p className="text-sm text-zinc-500 dark:text-zinc-500 text-center">
+        <div className="border-t border-zinc-200 pt-6 dark:border-zinc-800">
+          <p className="text-center text-sm text-zinc-500 dark:text-zinc-500">
             © {new Date().getFullYear()} Prompts34. Tüm hakları saklıdır.
           </p>
         </div>

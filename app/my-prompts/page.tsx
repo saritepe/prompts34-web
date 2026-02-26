@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/lib/auth';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getMyPrompts, deletePrompt, createPrompt, updatePrompt } from '@/lib/api/prompts';
 import { PromptResponse, PromptCreate, PromptUpdate } from '@/types/prompt';
 import { useRouter } from 'next/navigation';
@@ -17,16 +17,7 @@ export default function MyPromptsPage() {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editingPrompt, setEditingPrompt] = useState<PromptResponse | null>(null);
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/giris');
-      return;
-    }
-
-    fetchPrompts();
-  }, [user, router]);
-
-  async function fetchPrompts() {
+  const fetchPrompts = useCallback(async () => {
     if (!token) return;
 
     try {
@@ -39,7 +30,16 @@ export default function MyPromptsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [token]);
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/giris');
+      return;
+    }
+
+    fetchPrompts();
+  }, [user, router, fetchPrompts]);
 
   async function handleDelete(promptId: string) {
     if (!token) return;

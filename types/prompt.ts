@@ -8,8 +8,16 @@ export interface PromptResponse {
   explanation: string | null;
   suggested_model: string | null;
   is_public: boolean;
+  like_count: number;
+  liked_by_me: boolean;
   created_at: string;
   updated_at: string;
+}
+
+export interface PromptVoteResponse {
+  prompt_id: string;
+  like_count: number;
+  liked: boolean;
 }
 
 export interface PromptCreate {

@@ -1,6 +1,13 @@
 'use client';
 
-import { createContext, useCallback, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 
 interface User {
   email: string;
@@ -70,15 +77,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!token || !sessionExpiresAt) return;
 
-    const msRemaining = sessionExpiresAt - Date.now();
-    if (msRemaining <= 0) {
-      clearSession();
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      clearSession();
-    }, msRemaining);
+    const timeoutId = window.setTimeout(
+      () => {
+        clearSession();
+      },
+      Math.max(0, sessionExpiresAt - Date.now()),
+    );
 
     return () => window.clearTimeout(timeoutId);
   }, [token, sessionExpiresAt, clearSession]);
@@ -99,7 +103,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Don't auto-login after signup - user needs to verify email first
     } catch (error) {
       if (error instanceof TypeError) {
-        throw new Error('Sunucuya bağlanılamadı, lütfen daha sonra tekrar deneyin');
+        throw new Error(
+          'Sunucuya bağlanılamadı, lütfen daha sonra tekrar deneyin',
+        );
       }
       throw error;
     }
@@ -124,7 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Fetch user profile from /auth/me
       const meResponse = await fetch(`${API_URL}/auth/me`, {
         headers: {
-          'Authorization': `Bearer ${newToken}`,
+          Authorization: `Bearer ${newToken}`,
         },
       });
 
@@ -138,21 +144,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setToken(newToken);
       setUser({
         email: currentUser.email,
-        username: currentUser.user_metadata?.username || currentUser.username || currentUser.email,
-        id: currentUser.id
+        username:
+          currentUser.user_metadata?.username ||
+          currentUser.username ||
+          currentUser.email,
+        id: currentUser.id,
       });
       const expiresAt = Date.now() + SESSION_DURATION_MS;
       setSessionExpiresAt(expiresAt);
       localStorage.setItem('token', newToken);
-      localStorage.setItem('user', JSON.stringify({
-        email: currentUser.email,
-        username: currentUser.user_metadata?.username || currentUser.username || currentUser.email,
-        id: currentUser.id
-      }));
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          email: currentUser.email,
+          username:
+            currentUser.user_metadata?.username ||
+            currentUser.username ||
+            currentUser.email,
+          id: currentUser.id,
+        }),
+      );
       localStorage.setItem(SESSION_EXPIRES_KEY, String(expiresAt));
     } catch (error) {
       if (error instanceof TypeError) {
-        throw new Error('Sunucuya bağlanılamadı, lütfen daha sonra tekrar deneyin');
+        throw new Error(
+          'Sunucuya bağlanılamadı, lütfen daha sonra tekrar deneyin',
+        );
       }
       throw error;
     }
@@ -163,7 +180,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, signIn, signUp, signOut, loading }}>
+    <AuthContext.Provider
+      value={{ user, token, signIn, signUp, signOut, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

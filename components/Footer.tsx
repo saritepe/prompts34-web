@@ -6,9 +6,12 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <h3 className="mb-2 text-sm font-semibold text-zinc-900 dark:text-zinc-50">Prompts34</h3>
+            <h3 className="mb-2 text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+              Prompts34
+            </h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
-              Türkçe yapay zeka prompt kütüphanesi. Keşfet, kopyala, düzenle ve paylaş.
+              Türkçe yapay zeka prompt kütüphanesi. Keşfet, kopyala, düzenle ve
+              paylaş.
             </p>
           </div>
           <div className="w-full md:w-auto">

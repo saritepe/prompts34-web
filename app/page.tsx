@@ -22,7 +22,7 @@ function getPromptType(tags: string[]): 'Görsel' | 'Video' | 'Metin' {
         tag.includes('görsel') ||
         tag.includes('image') ||
         tag.includes('logo') ||
-        tag.includes('midjourney')
+        tag.includes('midjourney'),
     )
   ) {
     return 'Görsel';
@@ -34,9 +34,13 @@ function getPromptType(tags: string[]): 'Görsel' | 'Video' | 'Metin' {
 function getPromptScore(prompt: PromptResponse): number {
   const now = Date.now();
   const createdAt = new Date(prompt.created_at).getTime();
-  const daysOld = Math.max(1, Math.floor((now - createdAt) / (1000 * 60 * 60 * 24)));
+  const daysOld = Math.max(
+    1,
+    Math.floor((now - createdAt) / (1000 * 60 * 60 * 24)),
+  );
   const freshness = Math.max(1, 40 - daysOld);
-  const detailsBoost = (prompt.explanation ? 8 : 0) + (prompt.suggested_model ? 6 : 0);
+  const detailsBoost =
+    (prompt.explanation ? 8 : 0) + (prompt.suggested_model ? 6 : 0);
   const tagsBoost = Math.min(prompt.tags.length * 3, 15);
   const lengthBoost = Math.min(Math.floor(prompt.content.length / 140), 12);
 
@@ -58,13 +62,19 @@ function PromptCard({
     const targetUrl = `/prompts/${prompt.id}`;
 
     try {
-      const doc = document as Document & { startViewTransition?: (cb: () => void) => void };
-      if (typeof doc.startViewTransition === 'function') {
-        doc.startViewTransition(() => router.push(targetUrl));
-        return;
-      }
+      const doc = document as Document & {
+        startViewTransition?: (cb: () => void) => void;
+      };
+      (
+        doc.startViewTransition?.bind(doc) ??
+        ((callback: () => void) => callback())
+      )(() => router.push(targetUrl));
+      return;
     } catch (err) {
-      console.error('View transition failed, fallback navigation applied.', err);
+      console.error(
+        'View transition failed, fallback navigation applied.',
+        err,
+      );
     }
 
     router.push(targetUrl);
@@ -72,7 +82,6 @@ function PromptCard({
 
   async function handleVote(event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation();
-    if (voting) return;
     try {
       setVoting(true);
       await onVote(prompt.id);
@@ -91,10 +100,14 @@ function PromptCard({
           <span className="mb-2 inline-flex rounded-full border border-zinc-300 px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:border-zinc-700 dark:text-zinc-300">
             {promptType}
           </span>
-          <h3 className="line-clamp-2 text-lg font-semibold text-zinc-900 dark:text-zinc-50">{prompt.title}</h3>
+          <h3 className="line-clamp-2 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+            {prompt.title}
+          </h3>
         </div>
         <div className="flex flex-col items-end gap-2">
-          {prompt.username && <span className="text-xs text-zinc-500">@{prompt.username}</span>}
+          {prompt.username && (
+            <span className="text-xs text-zinc-500">@{prompt.username}</span>
+          )}
           <button
             onClick={handleVote}
             disabled={voting}
@@ -110,7 +123,9 @@ function PromptCard({
       </div>
 
       {prompt.explanation && (
-        <p className="mb-4 line-clamp-3 text-sm text-zinc-600 dark:text-zinc-400">{prompt.explanation}</p>
+        <p className="mb-4 line-clamp-3 text-sm text-zinc-600 dark:text-zinc-400">
+          {prompt.explanation}
+        </p>
       )}
 
       <div className="mt-auto rounded-xl bg-zinc-50 p-3 dark:bg-zinc-900">
@@ -129,7 +144,6 @@ function PromptCard({
           </span>
         ))}
       </div>
-
     </article>
   );
 }
@@ -153,8 +167,14 @@ function PromptSection({
     <section id={id} className="mb-14">
       <div className="mb-6 flex items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{title}</h2>
-          {description && <p className="text-sm text-zinc-600 dark:text-zinc-400">{description}</p>}
+          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+            {title}
+          </h2>
+          {description && (
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              {description}
+            </p>
+          )}
         </div>
         <Link
           href={viewAllHref}
@@ -237,12 +257,17 @@ export default function Home() {
       setPrompts((prev) =>
         prev.map((prompt) =>
           prompt.id === promptId
-            ? { ...prompt, like_count: result.like_count, liked_by_me: result.liked }
-            : prompt
-        )
+            ? {
+                ...prompt,
+                like_count: result.like_count,
+                liked_by_me: result.liked,
+              }
+            : prompt,
+        ),
       );
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Oylama sırasında hata oluştu';
+      const message =
+        error instanceof Error ? error.message : 'Oylama sırasında hata oluştu';
       alert(message);
     }
   }
@@ -270,20 +295,26 @@ export default function Home() {
   }, [prompts, search]);
 
   const sortedByDate = useMemo(
-    () => [...filteredPrompts].sort((a, b) => +new Date(b.created_at) - +new Date(a.created_at)),
-    [filteredPrompts]
+    () =>
+      [...filteredPrompts].sort(
+        (a, b) => +new Date(b.created_at) - +new Date(a.created_at),
+      ),
+    [filteredPrompts],
   );
 
   const featuredPrompts = useMemo(
     () =>
       [...filteredPrompts]
-        .sort((a, b) => b.like_count - a.like_count || getPromptScore(b) - getPromptScore(a))
+        .sort(
+          (a, b) =>
+            b.like_count - a.like_count ||
+            getPromptScore(b) - getPromptScore(a),
+        )
         .slice(0, 6),
-    [filteredPrompts]
+    [filteredPrompts],
   );
 
   const latestPrompts = sortedByDate.slice(0, 6);
-
 
   const quickFilters = [
     'cv',
@@ -319,8 +350,9 @@ export default function Home() {
                 Türkçe yapay zeka promptlarını keşfet, paylaş, geliştir.
               </h1>
               <p className="mb-7 max-w-2xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
-                ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için topluluk tarafından üretilen prompt kütüphanesi.
-                Hızlıca ara, kopyala ve kendi prompt koleksiyonunu oluştur.
+                ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için
+                topluluk tarafından üretilen prompt kütüphanesi. Hızlıca ara,
+                kopyala ve kendi prompt koleksiyonunu oluştur.
               </p>
               <div className="flex flex-wrap gap-3">
                 {!token && !user && (
@@ -399,12 +431,15 @@ export default function Home() {
             </div>
           </section>
         ) : error ? (
-          <div className="py-16 text-center text-red-600 dark:text-red-400">{error}</div>
+          <div className="py-16 text-center text-red-600 dark:text-red-400">
+            {error}
+          </div>
         ) : (
           <>
             <PromptSection
               id="one-cikanlar"
               title="Öne Çıkan Promptlar"
+              description="Topluluk tarafından en çok beğenilen promptlar."
               prompts={featuredPrompts}
               onVote={handleVote}
               viewAllHref="/one-cikanlar"
@@ -412,6 +447,7 @@ export default function Home() {
             <PromptSection
               id="bugunun-secimleri"
               title="En Yeni Promptlar"
+              description="Kütüphaneye en son eklenen promptlar."
               prompts={latestPrompts}
               onVote={handleVote}
               viewAllHref="/en-yeni-prompts"

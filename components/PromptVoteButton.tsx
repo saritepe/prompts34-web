@@ -26,17 +26,14 @@ export default function PromptVoteButton({
       return;
     }
 
-    if (loading) {
-      return;
-    }
-
     try {
       setLoading(true);
       const result = await votePrompt(promptId, token);
       setLikeCount(result.like_count);
       setLiked(result.liked);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Oylama sırasında hata oluştu';
+      const message =
+        error instanceof Error ? error.message : 'Oylama sırasında hata oluştu';
       alert(message);
     } finally {
       setLoading(false);

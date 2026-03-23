@@ -2,14 +2,24 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
-import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
+import {
+  BreadcrumbStructuredData,
+  CollectionPageStructuredData,
+} from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Mülakat Hazırlığı Promptları',
-  description: 'İş görüşmelerine hazırlanmak için yapay zeka promptları. ChatGPT ile mülakat soruları, cevapları ve hazırlık stratejileri geliştirin.',
-  keywords: ['mülakat hazırlığı', 'iş görüşmesi', 'interview hazırlık', 'ai mülakat', 'chatgpt mülakat'],
+  description:
+    'İş görüşmelerine hazırlanmak için yapay zeka promptları. ChatGPT ile mülakat soruları, cevapları ve hazırlık stratejileri geliştirin.',
+  keywords: [
+    'mülakat hazırlığı',
+    'iş görüşmesi',
+    'interview hazırlık',
+    'ai mülakat',
+    'chatgpt mülakat',
+  ],
   openGraph: {
     title: 'Mülakat Hazırlığı Promptları | Prompts34',
     description: 'İş görüşmelerine hazırlanmak için yapay zeka promptları',
@@ -44,7 +54,10 @@ export default async function MulakatHazirligiPage() {
       <BreadcrumbStructuredData
         items={[
           { name: 'Ana Sayfa', url: 'https://prompts34.com' },
-          { name: 'Mülakat Hazırlığı', url: 'https://prompts34.com/mulakat-hazirligi' },
+          {
+            name: 'Mülakat Hazırlığı',
+            url: 'https://prompts34.com/mulakat-hazirligi',
+          },
         ]}
       />
       <CollectionPageStructuredData
@@ -60,8 +73,9 @@ export default async function MulakatHazirligiPage() {
             Mülakat Hazırlığı Promptları
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-6">
-            Yapay zeka ile iş görüşmelerine hazırlanın. ChatGPT, Claude ve diğer AI araçları
-            kullanarak mülakat sorularına hazırlanın, cevaplar geliştirin ve kendinizi test edin.
+            Yapay zeka ile iş görüşmelerine hazırlanın. ChatGPT, Claude ve diğer
+            AI araçları kullanarak mülakat sorularına hazırlanın, cevaplar
+            geliştirin ve kendinizi test edin.
           </p>
           <div className="bg-purple-50 dark:bg-purple-950 border border-purple-200 dark:border-purple-800 rounded-lg p-6">
             <h2 className="text-xl font-semibold text-purple-900 dark:text-purple-100 mb-3">

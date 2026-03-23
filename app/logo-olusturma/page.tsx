@@ -2,14 +2,25 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
-import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
+import {
+  BreadcrumbStructuredData,
+  CollectionPageStructuredData,
+} from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Logo Oluşturma Promptları',
-  description: 'Yapay zeka ile profesyonel logo tasarımı için promptlar. AI araçları ile markanız için özgün ve etkileyici logolar oluşturun.',
-  keywords: ['logo oluşturma', 'logo tasarımı', 'ai logo', 'yapay zeka logo', 'marka logosu', 'logo yapay zeka'],
+  description:
+    'Yapay zeka ile profesyonel logo tasarımı için promptlar. AI araçları ile markanız için özgün ve etkileyici logolar oluşturun.',
+  keywords: [
+    'logo oluşturma',
+    'logo tasarımı',
+    'ai logo',
+    'yapay zeka logo',
+    'marka logosu',
+    'logo yapay zeka',
+  ],
   openGraph: {
     title: 'Logo Oluşturma Promptları | Prompts34',
     description: 'Yapay zeka ile profesyonel logo tasarımı için promptlar',
@@ -44,7 +55,10 @@ export default async function LogoOlusturmaPage() {
       <BreadcrumbStructuredData
         items={[
           { name: 'Ana Sayfa', url: 'https://prompts34.com' },
-          { name: 'Logo Oluşturma', url: 'https://prompts34.com/logo-olusturma' },
+          {
+            name: 'Logo Oluşturma',
+            url: 'https://prompts34.com/logo-olusturma',
+          },
         ]}
       />
       <CollectionPageStructuredData
@@ -60,8 +74,9 @@ export default async function LogoOlusturmaPage() {
             Logo Oluşturma Promptları
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-6">
-            Yapay zeka ile markanız için profesyonel ve özgün logolar tasarlayın.
-            AI destekli araçlarla dakikalar içinde etkileyici logo konseptleri oluşturun.
+            Yapay zeka ile markanız için profesyonel ve özgün logolar
+            tasarlayın. AI destekli araçlarla dakikalar içinde etkileyici logo
+            konseptleri oluşturun.
           </p>
           <div className="bg-orange-50 dark:bg-orange-950 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
             <h2 className="text-xl font-semibold text-orange-900 dark:text-orange-100 mb-3">

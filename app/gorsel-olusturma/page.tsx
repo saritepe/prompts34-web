@@ -2,14 +2,25 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
-import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
+import {
+  BreadcrumbStructuredData,
+  CollectionPageStructuredData,
+} from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Görsel Oluşturma Promptları',
-  description: 'Yapay zeka ile görsel oluşturmak için promptlar. DALL-E, Midjourney, Stable Diffusion ve diğer AI araçları ile yaratıcı görseller üretin.',
-  keywords: ['görsel oluşturma', 'ai görsel', 'dall-e', 'midjourney', 'stable diffusion', 'yapay zeka sanat'],
+  description:
+    'Yapay zeka ile görsel oluşturmak için promptlar. DALL-E, Midjourney, Stable Diffusion ve diğer AI araçları ile yaratıcı görseller üretin.',
+  keywords: [
+    'görsel oluşturma',
+    'ai görsel',
+    'dall-e',
+    'midjourney',
+    'stable diffusion',
+    'yapay zeka sanat',
+  ],
   openGraph: {
     title: 'Görsel Oluşturma Promptları | Prompts34',
     description: 'Yapay zeka ile görsel oluşturmak için promptlar',
@@ -44,7 +55,10 @@ export default async function GorselOlusturmaPage() {
       <BreadcrumbStructuredData
         items={[
           { name: 'Ana Sayfa', url: 'https://prompts34.com' },
-          { name: 'Görsel Oluşturma', url: 'https://prompts34.com/gorsel-olusturma' },
+          {
+            name: 'Görsel Oluşturma',
+            url: 'https://prompts34.com/gorsel-olusturma',
+          },
         ]}
       />
       <CollectionPageStructuredData
@@ -60,8 +74,9 @@ export default async function GorselOlusturmaPage() {
             Görsel Oluşturma Promptları
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-6">
-            Yapay zeka ile etkileyici görseller oluşturun. DALL-E, Midjourney, Stable Diffusion
-            ve diğer AI araçları için hazırlanmış promptlarla yaratıcı projelerinizi hayata geçirin.
+            Yapay zeka ile etkileyici görseller oluşturun. DALL-E, Midjourney,
+            Stable Diffusion ve diğer AI araçları için hazırlanmış promptlarla
+            yaratıcı projelerinizi hayata geçirin.
           </p>
           <div className="bg-orange-50 dark:bg-orange-950 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
             <h2 className="text-xl font-semibold text-orange-900 dark:text-orange-100 mb-3">

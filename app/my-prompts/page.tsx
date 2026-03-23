@@ -2,7 +2,12 @@
 
 import { useAuth } from '@/lib/auth';
 import { useCallback, useEffect, useState } from 'react';
-import { getMyPrompts, deletePrompt, createPrompt, updatePrompt } from '@/lib/api/prompts';
+import {
+  getMyPrompts,
+  deletePrompt,
+  createPrompt,
+  updatePrompt,
+} from '@/lib/api/prompts';
 import { PromptResponse, PromptCreate, PromptUpdate } from '@/types/prompt';
 import { useRouter } from 'next/navigation';
 import PromptForm from '@/components/PromptForm';
@@ -15,10 +20,15 @@ export default function MyPromptsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [editingPrompt, setEditingPrompt] = useState<PromptResponse | null>(null);
+  const [editingPrompt, setEditingPrompt] = useState<PromptResponse | null>(
+    null,
+  );
 
   const fetchPrompts = useCallback(async () => {
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     try {
       setLoading(true);
@@ -47,7 +57,7 @@ export default function MyPromptsPage() {
 
     try {
       await deletePrompt(promptId, token);
-      setPrompts(prompts.filter(p => p.id !== promptId));
+      setPrompts(prompts.filter((p) => p.id !== promptId));
     } catch (err) {
       alert('Prompt silinirken bir hata oluştu');
       console.error(err);
@@ -66,7 +76,9 @@ export default function MyPromptsPage() {
     if (!token || !editingPrompt) return;
 
     const updatedPrompt = await updatePrompt(editingPrompt.id, data, token);
-    setPrompts(prompts.map(p => p.id === updatedPrompt.id ? updatedPrompt : p));
+    setPrompts(
+      prompts.map((p) => (p.id === updatedPrompt.id ? updatedPrompt : p)),
+    );
     setEditingPrompt(null);
   }
 
@@ -139,7 +151,8 @@ export default function MyPromptsPage() {
         ) : prompts.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-zinc-600 dark:text-zinc-400">
-              Henüz prompt oluşturmadınız. Yeni bir prompt oluşturmak için yukarıdaki butona tıklayın.
+              Henüz prompt oluşturmadınız. Yeni bir prompt oluşturmak için
+              yukarıdaki butona tıklayın.
             </p>
           </div>
         ) : (
@@ -160,11 +173,13 @@ export default function MyPromptsPage() {
                       </span>
                     )}
                   </div>
-                  <span className={`px-2 py-1 text-xs rounded ${
-                    prompt.is_public
-                      ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
-                      : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
-                  }`}>
+                  <span
+                    className={`px-2 py-1 text-xs rounded ${
+                      prompt.is_public
+                        ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                        : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300'
+                    }`}
+                  >
                     {prompt.is_public ? 'Halka Açık' : 'Özel'}
                   </span>
                 </div>

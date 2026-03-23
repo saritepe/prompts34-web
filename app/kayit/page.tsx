@@ -34,15 +34,26 @@ export default function SignUpPage() {
         <div className="max-w-md w-full text-center space-y-6">
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 bg-blue-100 dark:bg-blue-950 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              <svg
+                className="w-8 h-8 text-blue-600 dark:text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
               E-postanızı Kontrol Edin
             </h2>
             <p className="text-zinc-600 dark:text-zinc-400">
-              <span className="font-medium">{email}</span> adresine doğrulama linki gönderdik.
+              <span className="font-medium">{email}</span> adresine doğrulama
+              linki gönderdik.
             </p>
             <p className="text-sm text-zinc-500 dark:text-zinc-500">
               E-postanızdaki linke tıklayarak hesabınızı aktifleştirebilirsiniz.
@@ -68,7 +79,10 @@ export default function SignUpPage() {
           </h2>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Zaten hesabınız var mı?{' '}
-            <Link href="/giris" className="font-medium text-zinc-900 dark:text-zinc-50 hover:underline">
+            <Link
+              href="/giris"
+              className="font-medium text-zinc-900 dark:text-zinc-50 hover:underline"
+            >
               Giriş yapın
             </Link>
           </p>
@@ -77,7 +91,10 @@ export default function SignUpPage() {
         <form onSubmit={handleSubmit} className="mt-8 space-y-6" method="post">
           <div className="space-y-4">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              >
                 Kullanıcı Adı
               </label>
               <input
@@ -94,7 +111,10 @@ export default function SignUpPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              >
                 E-posta
               </label>
               <input
@@ -111,7 +131,10 @@ export default function SignUpPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              >
                 Şifre
               </label>
               <input

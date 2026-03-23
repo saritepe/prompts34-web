@@ -7,7 +7,9 @@ type PromptFormData = Partial<PromptResponse>;
 
 interface PromptFormProps {
   initialData?: PromptFormData;
-  onSubmit: ((data: PromptCreate) => Promise<void>) | ((data: PromptUpdate) => Promise<void>);
+  onSubmit:
+    | ((data: PromptCreate) => Promise<void>)
+    | ((data: PromptUpdate) => Promise<void>);
   onCancel?: () => void;
   submitLabel?: string;
 }
@@ -37,8 +39,8 @@ export default function PromptForm({
     try {
       const tags = formData.tags
         .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag.length > 0);
+        .map((tag) => tag.trim())
+        .filter((tag) => tag.length > 0);
 
       // If we have initialData, we're updating, otherwise creating
       if (initialData) {
@@ -90,7 +92,10 @@ export default function PromptForm({
       )}
 
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+        <label
+          htmlFor="title"
+          className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2"
+        >
           Başlık *
         </label>
         <input
@@ -105,7 +110,10 @@ export default function PromptForm({
       </div>
 
       <div>
-        <label htmlFor="content" className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+        <label
+          htmlFor="content"
+          className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2"
+        >
           Prompt İçeriği *
         </label>
         <textarea
@@ -113,28 +121,38 @@ export default function PromptForm({
           required
           rows={8}
           value={formData.content}
-          onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, content: e.target.value })
+          }
           className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50 focus:border-transparent font-mono text-sm"
           placeholder="Prompt içeriğinizi buraya yazın..."
         />
       </div>
 
       <div>
-        <label htmlFor="explanation" className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+        <label
+          htmlFor="explanation"
+          className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2"
+        >
           Açıklama
         </label>
         <textarea
           id="explanation"
           rows={3}
           value={formData.explanation}
-          onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, explanation: e.target.value })
+          }
           className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50 focus:border-transparent"
           placeholder="Bu promptun ne işe yaradığını açıklayın"
         />
       </div>
 
       <div>
-        <label htmlFor="tags" className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+        <label
+          htmlFor="tags"
+          className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2"
+        >
           Etiketler
         </label>
         <input
@@ -151,14 +169,19 @@ export default function PromptForm({
       </div>
 
       <div>
-        <label htmlFor="suggested_model" className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+        <label
+          htmlFor="suggested_model"
+          className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2"
+        >
           Önerilen Model
         </label>
         <input
           type="text"
           id="suggested_model"
           value={formData.suggested_model}
-          onChange={(e) => setFormData({ ...formData, suggested_model: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, suggested_model: e.target.value })
+          }
           className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50 focus:border-transparent"
           placeholder="örn: GPT-4, Claude, Gemini"
         />
@@ -169,10 +192,15 @@ export default function PromptForm({
           type="checkbox"
           id="is_public"
           checked={formData.is_public}
-          onChange={(e) => setFormData({ ...formData, is_public: e.target.checked })}
+          onChange={(e) =>
+            setFormData({ ...formData, is_public: e.target.checked })
+          }
           className="h-4 w-4 rounded border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-50 focus:ring-zinc-900 dark:focus:ring-zinc-50"
         />
-        <label htmlFor="is_public" className="ml-2 block text-sm text-zinc-900 dark:text-zinc-50">
+        <label
+          htmlFor="is_public"
+          className="ml-2 block text-sm text-zinc-900 dark:text-zinc-50"
+        >
           Bu promptu halka açık yap (Diğer kullanıcılar görebilir)
         </label>
       </div>

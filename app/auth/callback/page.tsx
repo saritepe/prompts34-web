@@ -6,7 +6,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 function AuthCallbackContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+  const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
+    'loading',
+  );
   const [message, setMessage] = useState('Email doğrulanıyor...');
 
   useEffect(() => {
@@ -33,7 +35,7 @@ function AuthCallbackContent() {
         const response = await fetch(`${apiUrl}/auth/me`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
@@ -69,26 +71,50 @@ function AuthCallbackContent() {
         {status === 'loading' && (
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 border-4 border-zinc-300 dark:border-zinc-700 border-t-zinc-900 dark:border-t-zinc-50 rounded-full animate-spin"></div>
-            <p className="text-lg text-zinc-700 dark:text-zinc-300">{message}</p>
+            <p className="text-lg text-zinc-700 dark:text-zinc-300">
+              {message}
+            </p>
           </div>
         )}
 
         {status === 'success' && (
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="w-8 h-8 text-green-600 dark:text-green-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
-            <p className="text-lg text-green-700 dark:text-green-300">{message}</p>
+            <p className="text-lg text-green-700 dark:text-green-300">
+              {message}
+            </p>
           </div>
         )}
 
         {status === 'error' && (
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 bg-red-100 dark:bg-red-950 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-8 h-8 text-red-600 dark:text-red-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </div>
             <p className="text-lg text-red-700 dark:text-red-300">{message}</p>
@@ -107,11 +133,13 @@ function AuthCallbackContent() {
 
 export default function AuthCallbackPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center px-4">
-        <div className="w-16 h-16 border-4 border-zinc-300 dark:border-zinc-700 border-t-zinc-900 dark:border-t-zinc-50 rounded-full animate-spin"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center px-4">
+          <div className="w-16 h-16 border-4 border-zinc-300 dark:border-zinc-700 border-t-zinc-900 dark:border-t-zinc-50 rounded-full animate-spin"></div>
+        </div>
+      }
+    >
       <AuthCallbackContent />
     </Suspense>
   );

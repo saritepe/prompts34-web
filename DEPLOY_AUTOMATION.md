@@ -12,6 +12,7 @@ In GitHub -> `prompts34-web` -> Settings -> Secrets and variables -> Actions, ad
 - `VERCEL_PROJECT_ID`
 
 How to get IDs:
+
 - In Vercel project, run locally once inside `prompts34-web`:
   - `vercel link`
 - Then open `.vercel/project.json` and copy:
@@ -21,6 +22,7 @@ How to get IDs:
 ## 2) Deploy
 
 Push to `main` branch. Workflow will:
+
 1. `vercel pull`
 2. `vercel build --prod`
 3. `vercel deploy --prebuilt --prod`

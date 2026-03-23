@@ -4,7 +4,7 @@ export function WebSiteStructuredData() {
     '@type': 'WebSite',
     name: 'Prompts34',
     url: 'https://prompts34.com',
-    description: 'Türkiye\'nin en kapsamlı yapay zeka prompt kütüphanesi',
+    description: "Türkiye'nin en kapsamlı yapay zeka prompt kütüphanesi",
     inLanguage: 'tr-TR',
     potentialAction: {
       '@type': 'SearchAction',
@@ -24,7 +24,11 @@ export function WebSiteStructuredData() {
   );
 }
 
-export function BreadcrumbStructuredData({ items }: { items: Array<{ name: string; url: string }> }) {
+export function BreadcrumbStructuredData({
+  items,
+}: {
+  items: Array<{ name: string; url: string }>;
+}) {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -47,7 +51,7 @@ export function BreadcrumbStructuredData({ items }: { items: Array<{ name: strin
 export function CollectionPageStructuredData({
   name,
   description,
-  url
+  url,
 }: {
   name: string;
   description: string;

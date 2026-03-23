@@ -17,7 +17,10 @@ export default function Navigation() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setShowDropdown(false);
       }
     }
@@ -31,12 +34,19 @@ export default function Navigation() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex min-h-16 items-center justify-between gap-4 py-2">
           <div className="flex min-w-0 items-center gap-5">
-            <Link href="/" className="shrink-0 text-xl font-black text-zinc-900 dark:text-zinc-50">
+            <Link
+              href="/"
+              className="shrink-0 text-xl font-black text-zinc-900 dark:text-zinc-50"
+            >
               Prompts34
             </Link>
             <div className="hidden items-center gap-3 text-sm font-semibold text-zinc-600 dark:text-zinc-300 md:flex">
               {mainLinks.map((link) => (
-                <Link key={link.label} href={link.href} className="rounded-md px-2 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="rounded-md px-2 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                >
                   {link.label}
                 </Link>
               ))}
@@ -52,7 +62,11 @@ export default function Navigation() {
                 >
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 dark:bg-zinc-50">
                     <span className="text-sm font-medium text-white dark:text-zinc-900">
-                      {(user.username?.[0] || user.email?.[0] || 'U').toUpperCase()}
+                      {(
+                        user.username?.[0] ||
+                        user.email?.[0] ||
+                        'U'
+                      ).toUpperCase()}
                     </span>
                   </div>
                   <svg
@@ -63,7 +77,12 @@ export default function Navigation() {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </button>
 

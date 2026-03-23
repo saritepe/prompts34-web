@@ -18,10 +18,12 @@ This guide will help you deploy the Prompts34 web application to Vercel.
 ## Step 2: Configure Project Settings
 
 ### Framework Preset
+
 - Vercel should auto-detect **Next.js**
 - If not, select it manually
 
 ### Build Settings
+
 - **Build Command**: `npm run build` (default)
 - **Output Directory**: `.next` (default)
 - **Install Command**: `npm install` (default)
@@ -30,10 +32,10 @@ This guide will help you deploy the Prompts34 web application to Vercel.
 
 Add these environment variables in the Vercel dashboard:
 
-| Variable Name | Value | Description |
-|--------------|-------|-------------|
-| `NEXT_PUBLIC_API_URL` | `https://api.prompts34.com` | Your backend API URL |
-| `NEXT_PUBLIC_APP_URL` | `https://prompts34.com` | Your app URL (custom domain) |
+| Variable Name         | Value                       | Description                  |
+| --------------------- | --------------------------- | ---------------------------- |
+| `NEXT_PUBLIC_API_URL` | `https://api.prompts34.com` | Your backend API URL         |
+| `NEXT_PUBLIC_APP_URL` | `https://prompts34.com`     | Your app URL (custom domain) |
 
 ### How to Add Environment Variables:
 
@@ -86,22 +88,26 @@ app.add_middleware(
 ## Automatic Deployments
 
 Vercel automatically deploys:
+
 - **Production**: Every push to `main` branch
 - **Preview**: Every push to other branches or pull requests
 
 ## Troubleshooting
 
 ### Build Fails
+
 - Check build logs in Vercel dashboard
 - Ensure all dependencies are in `package.json`
 - Verify Node.js version compatibility
 
 ### API Connection Issues
+
 - Verify `NEXT_PUBLIC_API_URL` is set correctly
 - Check backend CORS settings
 - Ensure API is accessible from Vercel's servers
 
 ### Environment Variables Not Working
+
 - Make sure variable names start with `NEXT_PUBLIC_` for client-side access
 - Redeploy after adding/changing environment variables
 - Check that variables are set for the correct environment (Production/Preview/Development)
@@ -115,6 +121,7 @@ NEXT_PUBLIC_API_URL=https://api.prompts34.com npm run dev
 ```
 
 Or update `.env.local`:
+
 ```
 NEXT_PUBLIC_API_URL=https://api.prompts34.com
 ```
@@ -149,6 +156,7 @@ vercel env pull
 ## Next Steps
 
 After successful deployment:
+
 1. Test authentication flow
 2. Verify prompt creation/viewing
 3. Check responsive design on mobile

@@ -42,6 +42,7 @@ supabase.auth.sign_up({
 ## Deployment Checklist
 
 ### Vercel Deployment
+
 1. Push to GitHub
 2. Import to Vercel
 3. Add environment variables in Vercel dashboard:
@@ -50,10 +51,12 @@ supabase.auth.sign_up({
 4. Deploy
 
 ### Backend Deployment
+
 1. Set `FRONTEND_URL` environment variable to your frontend domain
 2. Redeploy backend
 
 ### Test Flow
+
 1. Sign up with email
 2. Check email for verification link
 3. Click link → should redirect to `yourdomain.com/auth/callback`
@@ -62,6 +65,7 @@ supabase.auth.sign_up({
 ## Why Callback is Needed
 
 When user clicks email verification link:
+
 1. Supabase redirects: `supabase.co → yourdomain.com/auth/callback?token=xxx`
 2. Callback page extracts token from URL
 3. Calls `/auth/me` to verify token and get user data

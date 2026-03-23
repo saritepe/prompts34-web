@@ -37,7 +37,10 @@ export default function SignInPage() {
           </h2>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
             Hesabınız yok mu?{' '}
-            <Link href="/kayit" className="font-medium text-zinc-900 dark:text-zinc-50 hover:underline">
+            <Link
+              href="/kayit"
+              className="font-medium text-zinc-900 dark:text-zinc-50 hover:underline"
+            >
               Kayıt olun
             </Link>
           </p>
@@ -46,7 +49,10 @@ export default function SignInPage() {
         <form onSubmit={handleSubmit} className="mt-8 space-y-6" method="post">
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              >
                 E-posta
               </label>
               <input
@@ -63,7 +69,10 @@ export default function SignInPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+              >
                 Şifre
               </label>
               <input

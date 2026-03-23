@@ -2,17 +2,29 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
-import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
+import {
+  BreadcrumbStructuredData,
+  CollectionPageStructuredData,
+} from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'CV Hazırlama Promptları',
-  description: 'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları. ChatGPT, Claude ve diğer AI araçları ile etkili CV oluşturun.',
-  keywords: ['cv hazırlama', 'özgeçmiş', 'cv promptları', 'ai cv', 'chatgpt cv', 'yapay zeka cv'],
+  description:
+    'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları. ChatGPT, Claude ve diğer AI araçları ile etkili CV oluşturun.',
+  keywords: [
+    'cv hazırlama',
+    'özgeçmiş',
+    'cv promptları',
+    'ai cv',
+    'chatgpt cv',
+    'yapay zeka cv',
+  ],
   openGraph: {
     title: 'CV Hazırlama Promptları | Prompts34',
-    description: 'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları',
+    description:
+      'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları',
     type: 'website',
     url: 'https://prompts34.com/cv-hazirlama',
     siteName: 'Prompts34',
@@ -21,7 +33,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'CV Hazırlama Promptları | Prompts34',
-    description: 'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları',
+    description:
+      'Profesyonel CV ve özgeçmiş hazırlamak için yapay zeka promptları',
   },
   alternates: {
     canonical: 'https://prompts34.com/cv-hazirlama',
@@ -60,8 +73,9 @@ export default async function CVHazirlamaPage() {
             CV Hazırlama Promptları
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-6">
-            Yapay zeka ile profesyonel CV ve özgeçmiş hazırlamak için hazırlanmış promptlar.
-            ChatGPT, Claude ve diğer AI araçları kullanarak etkili özgeçmişler oluşturun.
+            Yapay zeka ile profesyonel CV ve özgeçmiş hazırlamak için
+            hazırlanmış promptlar. ChatGPT, Claude ve diğer AI araçları
+            kullanarak etkili özgeçmişler oluşturun.
           </p>
           <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
             <h2 className="text-xl font-semibold text-blue-900 dark:text-blue-100 mb-3">

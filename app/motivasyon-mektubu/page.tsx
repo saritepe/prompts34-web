@@ -2,14 +2,24 @@ import { Metadata } from 'next';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
-import { BreadcrumbStructuredData, CollectionPageStructuredData } from '../components/StructuredData';
+import {
+  BreadcrumbStructuredData,
+  CollectionPageStructuredData,
+} from '../components/StructuredData';
 
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Motivasyon Mektubu Promptları',
-  description: 'Etkili motivasyon mektubu yazmak için yapay zeka promptları. ChatGPT ve AI araçları ile profesyonel başvuru mektupları oluşturun.',
-  keywords: ['motivasyon mektubu', 'başvuru mektubu', 'cover letter', 'ai mektup', 'chatgpt motivasyon mektubu'],
+  description:
+    'Etkili motivasyon mektubu yazmak için yapay zeka promptları. ChatGPT ve AI araçları ile profesyonel başvuru mektupları oluşturun.',
+  keywords: [
+    'motivasyon mektubu',
+    'başvuru mektubu',
+    'cover letter',
+    'ai mektup',
+    'chatgpt motivasyon mektubu',
+  ],
   openGraph: {
     title: 'Motivasyon Mektubu Promptları | Prompts34',
     description: 'Etkili motivasyon mektubu yazmak için yapay zeka promptları',
@@ -44,7 +54,10 @@ export default async function MotivasyonMektubuPage() {
       <BreadcrumbStructuredData
         items={[
           { name: 'Ana Sayfa', url: 'https://prompts34.com' },
-          { name: 'Motivasyon Mektubu', url: 'https://prompts34.com/motivasyon-mektubu' },
+          {
+            name: 'Motivasyon Mektubu',
+            url: 'https://prompts34.com/motivasyon-mektubu',
+          },
         ]}
       />
       <CollectionPageStructuredData
@@ -60,8 +73,9 @@ export default async function MotivasyonMektubuPage() {
             Motivasyon Mektubu Promptları
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-6">
-            Yapay zeka ile etkili motivasyon mektubu ve başvuru mektubu hazırlayın.
-            ChatGPT, Claude ve diğer AI araçları kullanarak dikkat çekici mektuplar yazın.
+            Yapay zeka ile etkili motivasyon mektubu ve başvuru mektubu
+            hazırlayın. ChatGPT, Claude ve diğer AI araçları kullanarak dikkat
+            çekici mektuplar yazın.
           </p>
           <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg p-6">
             <h2 className="text-xl font-semibold text-green-900 dark:text-green-100 mb-3">

@@ -1,5 +1,11 @@
 import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import AuthCallbackPage from '@/app/auth/callback/page';
 import { routerMock, setSearchParams } from './test-utils/next-navigation';
@@ -35,6 +41,7 @@ describe('auth callback page', () => {
   });
 
   it('uses the query-string token, stores the session, and redirects home after success', async () => {
+    vi.useFakeTimers();
     setSearchParams({ token: 'query-token' });
     fetchMock.mockResolvedValueOnce(
       jsonResponse({ email: 'user@example.com', username: 'ali' }),
@@ -42,11 +49,14 @@ describe('auth callback page', () => {
 
     render(<AuthCallbackPage />);
 
-    await waitFor(() =>
-      expect(
-        screen.getByText('Email doğrulandı! Giriş yapılıyor...'),
-      ).toBeInTheDocument(),
-    );
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(
+      screen.getByText('Email doğrulandı! Giriş yapılıyor...'),
+    ).toBeInTheDocument();
 
     expect(fetchMock).toHaveBeenCalledWith('http://0.0.0.0:8000/auth/me', {
       method: 'GET',
@@ -60,9 +70,12 @@ describe('auth callback page', () => {
       JSON.stringify({ email: 'user@example.com', username: 'ali' }),
     );
 
-    await waitFor(() => expect(window.location.href).toBe('/'), {
-      timeout: 2500,
+    act(() => {
+      vi.advanceTimersByTime(1500);
     });
+    expect(window.location.href).toBe('/');
+
+    vi.useRealTimers();
   });
 
   it('uses the hash token and shows fetch failures as errors', async () => {

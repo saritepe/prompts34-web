@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import PromptDetailPage from '@/app/prompts/[id]/page';
 import { getPrompt } from '@/lib/api/prompts';
+import { buildPrompt } from './test-utils/fixtures';
 
 vi.mock('@/components/Navigation', () => ({
   default: () => <nav data-testid="navigation">Navigation</nav>,
@@ -32,20 +33,16 @@ describe('prompt detail page', () => {
   const getPromptMock = vi.mocked(getPrompt);
 
   it('renders the prompt detail with explanation, tags, and actions', async () => {
-    getPromptMock.mockResolvedValueOnce({
-      id: 'prompt-1',
-      user_id: 'user-1',
-      title: 'Detaylı Prompt',
-      content: 'Prompt içeriği',
-      tags: ['cv', 'analiz'],
-      explanation: 'Uzun açıklama',
-      suggested_model: 'GPT-4',
-      is_public: true,
-      like_count: 12,
-      liked_by_me: false,
-      created_at: '2026-03-20T10:00:00.000Z',
-      updated_at: '2026-03-20T10:00:00.000Z',
-    });
+    getPromptMock.mockResolvedValueOnce(
+      buildPrompt({
+        title: 'Detaylı Prompt',
+        content: 'Prompt içeriği',
+        tags: ['cv', 'analiz'],
+        explanation: 'Uzun açıklama',
+        suggested_model: 'GPT-4',
+        like_count: 12,
+      }),
+    );
 
     render(
       await PromptDetailPage({ params: Promise.resolve({ id: 'prompt-1' }) }),
@@ -64,20 +61,18 @@ describe('prompt detail page', () => {
   });
 
   it('renders prompts without an explanation', async () => {
-    getPromptMock.mockResolvedValueOnce({
-      id: 'prompt-2',
-      user_id: 'user-1',
-      title: 'Açıklamasız Prompt',
-      content: 'Sade içerik',
-      tags: ['etiket'],
-      explanation: null,
-      suggested_model: null,
-      is_public: true,
-      like_count: 1,
-      liked_by_me: true,
-      created_at: '2026-03-20T10:00:00.000Z',
-      updated_at: '2026-03-20T10:00:00.000Z',
-    });
+    getPromptMock.mockResolvedValueOnce(
+      buildPrompt({
+        id: 'prompt-2',
+        title: 'Açıklamasız Prompt',
+        content: 'Sade içerik',
+        tags: ['etiket'],
+        explanation: null,
+        suggested_model: null,
+        like_count: 1,
+        liked_by_me: true,
+      }),
+    );
 
     render(
       await PromptDetailPage({ params: Promise.resolve({ id: 'prompt-2' }) }),

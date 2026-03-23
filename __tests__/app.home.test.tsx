@@ -205,6 +205,8 @@ describe('home page', () => {
     expect(alertMock).toHaveBeenCalledWith('Beğenmek için giriş yapmalısınız.');
   });
 
+  // These test the Home page's handleVote wrapper, not the PromptVoteButton component directly.
+  // See components.shared.test.tsx for PromptVoteButton-level error handling tests.
   it('shows the fallback vote error for non-Error failures', async () => {
     getPublicPromptsMock.mockResolvedValueOnce([
       buildPrompt({ id: 'vote-error', title: 'Hata Veren Prompt' }),
@@ -252,49 +254,57 @@ describe('home page', () => {
       value: startViewTransition,
     });
 
-    render(<Home />);
-
-    await waitFor(() =>
-      expect(screen.getAllByText('Geçişli Prompt')).toHaveLength(2),
-    );
-
-    fireEvent.click(
-      screen.getAllByText('Geçişli Prompt')[0]!.closest('article')!,
-    );
-
-    expect(startViewTransition).toHaveBeenCalledTimes(1);
-    expect(routerMock.push).toHaveBeenCalledWith('/prompts/with-transition');
-
     const consoleError = vi
       .spyOn(console, 'error')
       .mockImplementation(() => undefined);
-    Object.defineProperty(document, 'startViewTransition', {
-      configurable: true,
-      value: vi.fn(() => {
-        throw new Error('transition failed');
-      }),
-    });
 
-    fireEvent.click(
-      screen.getAllByText('Geçişli Prompt')[0]!.closest('article')!,
-    );
+    try {
+      render(<Home />);
 
-    expect(routerMock.push).toHaveBeenCalledWith('/prompts/with-transition');
-    expect(consoleError).toHaveBeenCalledWith(
-      'View transition failed, fallback navigation applied.',
-      expect.any(Error),
-    );
+      await waitFor(() =>
+        expect(screen.getAllByText('Geçişli Prompt')).toHaveLength(2),
+      );
 
-    Object.defineProperty(document, 'startViewTransition', {
-      configurable: true,
-      value: undefined,
-    });
-    fireEvent.click(
-      screen.getAllByText('Geçişli Prompt')[0]!.closest('article')!,
-    );
+      fireEvent.click(
+        screen.getAllByText('Geçişli Prompt')[0]!.closest('article')!,
+      );
 
-    expect(routerMock.push).toHaveBeenCalledWith('/prompts/with-transition');
-    consoleError.mockRestore();
+      expect(startViewTransition).toHaveBeenCalledTimes(1);
+      expect(routerMock.push).toHaveBeenCalledWith('/prompts/with-transition');
+
+      Object.defineProperty(document, 'startViewTransition', {
+        configurable: true,
+        value: vi.fn(() => {
+          throw new Error('transition failed');
+        }),
+      });
+
+      fireEvent.click(
+        screen.getAllByText('Geçişli Prompt')[0]!.closest('article')!,
+      );
+
+      expect(routerMock.push).toHaveBeenCalledWith('/prompts/with-transition');
+      expect(consoleError).toHaveBeenCalledWith(
+        'View transition failed, fallback navigation applied.',
+        expect.any(Error),
+      );
+
+      Object.defineProperty(document, 'startViewTransition', {
+        configurable: true,
+        value: undefined,
+      });
+      fireEvent.click(
+        screen.getAllByText('Geçişli Prompt')[0]!.closest('article')!,
+      );
+
+      expect(routerMock.push).toHaveBeenCalledWith('/prompts/with-transition');
+    } finally {
+      Object.defineProperty(document, 'startViewTransition', {
+        configurable: true,
+        value: undefined,
+      });
+      consoleError.mockRestore();
+    }
   });
 
   it('sorts featured prompts by computed score when like counts tie and supports typed search input', async () => {

@@ -8,13 +8,6 @@ export function jsonResponse(data: unknown, init?: ResponseInit) {
   });
 }
 
-export function textResponse(body: string, init?: ResponseInit) {
-  return new Response(body, {
-    status: 200,
-    ...init,
-  });
-}
-
 export function createDeferred<T>() {
   let resolve!: (value: T | PromiseLike<T>) => void;
   let reject!: (reason?: unknown) => void;

@@ -1,6 +1,7 @@
 import Navigation from '@/components/Navigation';
 import CopyContentButton from '@/components/CopyContentButton';
 import PromptVoteButton from '@/components/PromptVoteButton';
+import CommentSection from '@/components/CommentSection';
 import { getPrompt } from '@/lib/api/prompts';
 import { notFound } from 'next/navigation';
 
@@ -63,20 +64,11 @@ export default async function PromptDetailPage({
             </pre>
           </div>
 
-          <div className="border-t border-zinc-200 pt-6 dark:border-zinc-800">
-            <h3 className="mb-3 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
-              Yorumlar (0)
-            </h3>
-            <textarea
-              placeholder="Yorum yaz..."
-              className="mb-3 min-h-28 w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none ring-amber-300 transition focus:ring-2 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
-            />
-            <div className="flex justify-end">
-              <button className="rounded-lg bg-zinc-900 px-5 py-2 text-sm font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200">
-                Yorum Gönder
-              </button>
-            </div>
-          </div>
+          <CommentSection
+            promptId={prompt.id}
+            promptOwnerId={prompt.user_id}
+            initialCommentCount={prompt.comment_count}
+          />
         </section>
       </main>
     </div>

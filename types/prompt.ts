@@ -10,6 +10,7 @@ export interface PromptResponse {
   is_public: boolean;
   like_count: number;
   liked_by_me: boolean;
+  comment_count: number;
   created_at: string;
   updated_at: string;
 }
@@ -36,4 +37,18 @@ export interface PromptUpdate {
   explanation?: string | null;
   suggested_model?: string | null;
   is_public?: boolean | null;
+}
+
+export interface CommentResponse {
+  id: string;
+  prompt_id: string;
+  user_id: string;
+  username: string | null;
+  content: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CommentCreate {
+  content: string;
 }

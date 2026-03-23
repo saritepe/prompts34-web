@@ -119,6 +119,9 @@ function PromptCard({
           >
             👍 {prompt.like_count}
           </button>
+          <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-md border border-zinc-300 px-2 py-1 text-xs font-medium text-zinc-600 dark:border-zinc-700 dark:text-zinc-400">
+            💬 {prompt.comment_count}
+          </span>
         </div>
       </div>
 

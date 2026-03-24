@@ -25,6 +25,16 @@ vi.mock('@/components/PromptVoteButton', () => ({
   }) => <button type="button">Vote: {initialLikeCount}</button>,
 }));
 
+vi.mock('@/components/CommentSection', () => ({
+  default: ({
+    initialCommentCount,
+  }: {
+    promptId: string;
+    promptOwnerId: string;
+    initialCommentCount: number;
+  }) => <div>Yorumlar ({initialCommentCount})</div>,
+}));
+
 vi.mock('@/lib/api/prompts', () => ({
   getPrompt: vi.fn(),
 }));

@@ -20,6 +20,7 @@ export function buildPrompt(
     is_public: true,
     like_count: 3,
     liked_by_me: false,
+    comment_count: 0,
     created_at: '2026-03-20T10:00:00.000Z',
     updated_at: '2026-03-20T10:00:00.000Z',
     ...overrides,

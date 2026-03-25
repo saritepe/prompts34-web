@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import PromptDetailPage from '@/app/prompts/[id]/page';
+import PromptDetailPage, { generateMetadata } from '@/app/prompts/[id]/page';
 import { getPrompt } from '@/lib/api/prompts';
 import { buildPrompt } from './test-utils/fixtures';
 
@@ -97,6 +97,72 @@ describe('prompt detail page', () => {
 
     await expect(
       PromptDetailPage({ params: Promise.resolve({ id: 'missing' }) }),
+    ).rejects.toThrow('NEXT_NOT_FOUND');
+  });
+});
+
+describe('generateMetadata', () => {
+  const getPromptMock = vi.mocked(getPrompt);
+
+  it('uses the prompt title as the metadata title', async () => {
+    getPromptMock.mockResolvedValueOnce(
+      buildPrompt({ id: 'p1', title: 'Harika Prompt' }),
+    );
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ id: 'p1' }),
+    });
+
+    expect(metadata.title).toBe('Harika Prompt');
+  });
+
+  it('sets the canonical to the prompt URL', async () => {
+    getPromptMock.mockResolvedValueOnce(
+      buildPrompt({ id: 'abc-123', title: 'Test' }),
+    );
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ id: 'abc-123' }),
+    });
+
+    expect(metadata.alternates?.canonical).toBe('/prompts/abc-123');
+  });
+
+  it('prefers explanation as the description', async () => {
+    getPromptMock.mockResolvedValueOnce(
+      buildPrompt({
+        id: 'p2',
+        explanation: 'Bu bir aciklama.',
+        content: 'Bu icerik metnidir.',
+      }),
+    );
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ id: 'p2' }),
+    });
+
+    expect(metadata.description).toBe('Bu bir aciklama.');
+  });
+
+  it('falls back to truncated content when explanation is absent', async () => {
+    const longContent = 'A'.repeat(200);
+    getPromptMock.mockResolvedValueOnce(
+      buildPrompt({ id: 'p3', explanation: null, content: longContent }),
+    );
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ id: 'p3' }),
+    });
+
+    expect(metadata.description).toHaveLength(155);
+    expect(metadata.description).toBe('A'.repeat(155));
+  });
+
+  it('surfaces notFound when the prompt is missing', async () => {
+    getPromptMock.mockRejectedValueOnce(new Error('not found'));
+
+    await expect(
+      generateMetadata({ params: Promise.resolve({ id: 'gone' }) }),
     ).rejects.toThrow('NEXT_NOT_FOUND');
   });
 });

@@ -1,9 +1,60 @@
+import type { Metadata } from 'next';
 import Navigation from '@/components/Navigation';
 import CopyContentButton from '@/components/CopyContentButton';
 import PromptVoteButton from '@/components/PromptVoteButton';
 import CommentSection from '@/components/CommentSection';
 import { getPrompt } from '@/lib/api/prompts';
 import { notFound } from 'next/navigation';
+
+const DESCRIPTION_MAX_LENGTH = 155;
+
+function buildDescription(explanation: string | null, content: string): string {
+  const primary = explanation?.trim();
+  if (primary) {
+    return primary.length <= DESCRIPTION_MAX_LENGTH
+      ? primary
+      : primary.slice(0, DESCRIPTION_MAX_LENGTH).trimEnd();
+  }
+  const normalized = content.replace(/\s+/g, ' ').trim();
+  return normalized.length <= DESCRIPTION_MAX_LENGTH
+    ? normalized
+    : normalized.slice(0, DESCRIPTION_MAX_LENGTH).trimEnd();
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const prompt = await getPrompt(id).catch(() => null);
+
+  if (!prompt) {
+    return notFound();
+  }
+
+  const description = buildDescription(prompt.explanation, prompt.content);
+  const title = prompt.title;
+  const fullTitle = `${title} | Prompts34`;
+  const url = `/prompts/${prompt.id}`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: fullTitle,
+      description,
+      url,
+    },
+    twitter: {
+      title: fullTitle,
+      description,
+    },
+  };
+}
 
 export default async function PromptDetailPage({
   params,

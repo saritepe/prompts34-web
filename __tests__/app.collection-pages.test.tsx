@@ -23,6 +23,7 @@ import MulakatHazirligiPage, {
   metadata as mulakatMetadata,
 } from '@/app/mulakat-hazirligi/page';
 import FeaturedPromptsPage from '@/app/one-cikanlar/page';
+import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPromptsByTags, getPublicPrompts } from '@/lib/api/prompts';
 import { buildPrompt } from './test-utils/fixtures';
 
@@ -157,6 +158,15 @@ describe('collection and listing pages', () => {
       expect(pageConfig.metadata.alternates?.canonical).toBe(
         pageConfig.canonical,
       );
+      expect(pageConfig.metadata.openGraph?.images).toEqual([
+        {
+          url: SOCIAL_IMAGE_PATH,
+          width: 1200,
+          height: 630,
+          alt: 'Prompts34 - Yapay Zeka Promptları',
+        },
+      ]);
+      expect(pageConfig.metadata.twitter?.images).toEqual([SOCIAL_IMAGE_PATH]);
     });
   });
 

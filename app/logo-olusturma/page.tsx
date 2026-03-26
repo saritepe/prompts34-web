@@ -1,4 +1,8 @@
 import { Metadata } from 'next';
+import {
+  sharedOpenGraphImage,
+  sharedTwitterImage,
+} from '@/app/shared-metadata';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
@@ -28,11 +32,13 @@ export const metadata: Metadata = {
     url: 'https://prompts34.com/logo-olusturma',
     siteName: 'Prompts34',
     locale: 'tr_TR',
+    ...sharedOpenGraphImage,
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Logo Oluşturma Promptları | Prompts34',
     description: 'Yapay zeka ile profesyonel logo tasarımı için promptlar',
+    ...sharedTwitterImage,
   },
   alternates: {
     canonical: 'https://prompts34.com/logo-olusturma',

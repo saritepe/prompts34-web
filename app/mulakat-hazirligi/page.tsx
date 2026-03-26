@@ -1,4 +1,8 @@
 import { Metadata } from 'next';
+import {
+  sharedOpenGraphImage,
+  sharedTwitterImage,
+} from '@/app/shared-metadata';
 import { getPromptsByTags } from '@/lib/api/prompts';
 import { PromptResponse } from '@/types/prompt';
 import Navigation from '@/components/Navigation';
@@ -27,11 +31,13 @@ export const metadata: Metadata = {
     url: 'https://prompts34.com/mulakat-hazirligi',
     siteName: 'Prompts34',
     locale: 'tr_TR',
+    ...sharedOpenGraphImage,
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Mülakat Hazırlığı Promptları | Prompts34',
     description: 'İş görüşmelerine hazırlanmak için yapay zeka promptları',
+    ...sharedTwitterImage,
   },
   alternates: {
     canonical: 'https://prompts34.com/mulakat-hazirligi',

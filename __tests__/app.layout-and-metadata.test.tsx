@@ -1,12 +1,25 @@
 import React from 'react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
 import RootLayout, { metadata } from '@/app/layout';
 import robots from '@/app/robots';
 import sitemap from '@/app/sitemap';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
+import { getPublicPrompts } from '@/lib/api/prompts';
+import { buildPrompt } from './test-utils/fixtures';
+
+vi.mock('@/lib/api/prompts', () => ({
+  getPublicPrompts: vi.fn(),
+}));
 
 describe('layout and metadata routes', () => {
+  const getPublicPromptsMock = vi.mocked(getPublicPrompts);
+
+  beforeEach(() => {
+    getPublicPromptsMock.mockReset();
+    getPublicPromptsMock.mockResolvedValue([]);
+  });
+
   it('renders the root layout shell, structured data, footer, and analytics', () => {
     const markup = renderToStaticMarkup(
       <RootLayout>
@@ -63,10 +76,23 @@ describe('layout and metadata routes', () => {
     });
   });
 
-  it('returns the expected sitemap entries', () => {
-    const entries = sitemap();
+  it('returns the expected sitemap entries', async () => {
+    getPublicPromptsMock.mockResolvedValueOnce([
+      buildPrompt({
+        id: 'prompt-updated',
+        created_at: '2026-03-20T10:00:00.000Z',
+        updated_at: '2026-03-25T10:00:00.000Z',
+      }),
+      buildPrompt({
+        id: 'prompt-created',
+        created_at: '2026-03-21T10:00:00.000Z',
+        updated_at: '',
+      }),
+    ]);
 
-    expect(entries).toHaveLength(6);
+    const entries = await sitemap();
+
+    expect(entries).toHaveLength(8);
     expect(entries.map((entry) => entry.url)).toEqual([
       'https://prompts34.com',
       'https://prompts34.com/cv-hazirlama',
@@ -74,8 +100,40 @@ describe('layout and metadata routes', () => {
       'https://prompts34.com/mulakat-hazirligi',
       'https://prompts34.com/gorsel-olusturma',
       'https://prompts34.com/logo-olusturma',
+      'https://prompts34.com/prompts/prompt-updated',
+      'https://prompts34.com/prompts/prompt-created',
     ]);
     expect(entries[0]?.priority).toBe(1);
     expect(entries[1]?.changeFrequency).toBe('daily');
+    expect(entries[0]?.lastModified).toBeUndefined();
+    expect(entries[1]?.lastModified).toBeUndefined();
+    expect(entries[6]?.lastModified).toBe('2026-03-25T10:00:00.000Z');
+    expect(entries[7]?.lastModified).toBe('2026-03-21T10:00:00.000Z');
+  });
+
+  it('returns the static sitemap entries when the public prompt fetch fails', async () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => undefined);
+
+    getPublicPromptsMock.mockRejectedValueOnce(new Error('boom'));
+
+    try {
+      const entries = await sitemap();
+
+      expect(entries.map((entry) => entry.url)).toEqual([
+        'https://prompts34.com',
+        'https://prompts34.com/cv-hazirlama',
+        'https://prompts34.com/motivasyon-mektubu',
+        'https://prompts34.com/mulakat-hazirligi',
+        'https://prompts34.com/gorsel-olusturma',
+        'https://prompts34.com/logo-olusturma',
+      ]);
+      expect(entries.every((entry) => entry.lastModified === undefined)).toBe(
+        true,
+      );
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 });

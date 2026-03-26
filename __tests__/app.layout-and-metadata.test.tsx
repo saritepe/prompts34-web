@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import RootLayout, { metadata } from '@/app/layout';
 import robots from '@/app/robots';
 import sitemap from '@/app/sitemap';
+import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 
 describe('layout and metadata routes', () => {
   it('renders the root layout shell, structured data, footer, and analytics', () => {
@@ -40,6 +41,15 @@ describe('layout and metadata routes', () => {
         'max-snippet': -1,
       },
     });
+    expect(metadata.openGraph?.images).toEqual([
+      {
+        url: SOCIAL_IMAGE_PATH,
+        width: 1200,
+        height: 630,
+        alt: 'Prompts34 - Yapay Zeka Promptları',
+      },
+    ]);
+    expect(metadata.twitter?.images).toEqual([SOCIAL_IMAGE_PATH]);
   });
 
   it('returns the expected robots rules', () => {

@@ -4,6 +4,7 @@ import './globals.css';
 import { AuthProvider } from '@/lib/auth';
 import Footer from '@/components/Footer';
 import { WebSiteStructuredData } from './components/StructuredData';
+import { sharedOpenGraphImage, sharedTwitterImage } from './shared-metadata';
 import { Analytics } from '@vercel/analytics/react';
 
 const geistSans = Geist({
@@ -54,21 +55,14 @@ export const metadata: Metadata = {
       'Prompts34 | Yapay Zeka Promptları - ChatGPT, Claude, AI Prompt Kütüphanesi',
     description:
       "Türkiye'nin en kapsamlı yapay zeka prompt kütüphanesi. ChatGPT, Claude ve diğer AI araçları için hazır promptlar.",
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Prompts34 - Yapay Zeka Promptları',
-      },
-    ],
+    ...sharedOpenGraphImage,
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Prompts34 | Yapay Zeka Promptları',
     description:
       "Türkiye'nin en kapsamlı yapay zeka prompt kütüphanesi. ChatGPT, Claude ve diğer AI araçları için hazır promptlar.",
-    images: ['/og-image.png'],
+    ...sharedTwitterImage,
   },
   robots: {
     index: true,

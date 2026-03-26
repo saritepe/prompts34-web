@@ -1,6 +1,37 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
+import {
+  sharedOpenGraphImage,
+  sharedTwitterImage,
+} from '@/app/shared-metadata';
 import Navigation from '@/components/Navigation';
 import { getPublicPrompts } from '@/lib/api/prompts';
+
+export const metadata: Metadata = {
+  title: 'Öne Çıkan Promptlar',
+  description:
+    'Prompts34 üzerindeki en çok beğenilen yapay zeka promptlarını keşfedin. ChatGPT, Claude ve diğer AI araçları için öne çıkan promptlar.',
+  openGraph: {
+    title: 'Öne Çıkan Promptlar | Prompts34',
+    description:
+      'Prompts34 üzerindeki en çok beğenilen yapay zeka promptlarını keşfedin.',
+    type: 'website',
+    url: 'https://prompts34.com/one-cikanlar',
+    siteName: 'Prompts34',
+    locale: 'tr_TR',
+    ...sharedOpenGraphImage,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Öne Çıkan Promptlar | Prompts34',
+    description:
+      'Prompts34 üzerindeki en çok beğenilen yapay zeka promptlarını keşfedin.',
+    ...sharedTwitterImage,
+  },
+  alternates: {
+    canonical: 'https://prompts34.com/one-cikanlar',
+  },
+};
 
 export default async function FeaturedPromptsPage() {
   const prompts = await getPublicPrompts().catch(() => []);

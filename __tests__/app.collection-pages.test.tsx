@@ -5,7 +5,9 @@ import CVHazirlamaPage, {
   dynamic as cvDynamic,
   metadata as cvMetadata,
 } from '@/app/cv-hazirlama/page';
-import LatestPromptsPage from '@/app/en-yeni-prompts/page';
+import LatestPromptsPage, {
+  metadata as latestMetadata,
+} from '@/app/en-yeni-prompts/page';
 import GorselOlusturmaPage, {
   dynamic as gorselDynamic,
   metadata as gorselMetadata,
@@ -22,7 +24,9 @@ import MulakatHazirligiPage, {
   dynamic as mulakatDynamic,
   metadata as mulakatMetadata,
 } from '@/app/mulakat-hazirligi/page';
-import FeaturedPromptsPage from '@/app/one-cikanlar/page';
+import FeaturedPromptsPage, {
+  metadata as featuredMetadata,
+} from '@/app/one-cikanlar/page';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPromptsByTags, getPublicPrompts } from '@/lib/api/prompts';
 import { buildPrompt } from './test-utils/fixtures';
@@ -204,6 +208,25 @@ describe('collection and listing pages', () => {
     expect(screen.getByText('Henüz prompt bulunmuyor.')).toBeInTheDocument();
   });
 
+  it('exports the expected latest prompts metadata', () => {
+    expect(latestMetadata.title).toBe('En Yeni Promptlar');
+    expect(latestMetadata.description).toBe(
+      'Prompts34 üzerindeki en yeni yapay zeka promptlarını keşfedin. ChatGPT, Claude ve diğer AI araçları için son eklenen promptlar.',
+    );
+    expect(latestMetadata.alternates?.canonical).toBe(
+      'https://prompts34.com/en-yeni-prompts',
+    );
+    expect(latestMetadata.openGraph?.images).toEqual([
+      {
+        url: SOCIAL_IMAGE_PATH,
+        width: 1200,
+        height: 630,
+        alt: 'Prompts34 - Yapay Zeka Promptları',
+      },
+    ]);
+    expect(latestMetadata.twitter?.images).toEqual([SOCIAL_IMAGE_PATH]);
+  });
+
   it('renders featured prompts sorted by likes and then by date', async () => {
     getPublicPromptsMock.mockResolvedValueOnce([
       buildPrompt({
@@ -243,5 +266,24 @@ describe('collection and listing pages', () => {
     render(await FeaturedPromptsPage());
 
     expect(screen.getByText('Henüz prompt bulunmuyor.')).toBeInTheDocument();
+  });
+
+  it('exports the expected featured prompts metadata', () => {
+    expect(featuredMetadata.title).toBe('Öne Çıkan Promptlar');
+    expect(featuredMetadata.description).toBe(
+      'Prompts34 üzerindeki en çok beğenilen yapay zeka promptlarını keşfedin. ChatGPT, Claude ve diğer AI araçları için öne çıkan promptlar.',
+    );
+    expect(featuredMetadata.alternates?.canonical).toBe(
+      'https://prompts34.com/one-cikanlar',
+    );
+    expect(featuredMetadata.openGraph?.images).toEqual([
+      {
+        url: SOCIAL_IMAGE_PATH,
+        width: 1200,
+        height: 630,
+        alt: 'Prompts34 - Yapay Zeka Promptları',
+      },
+    ]);
+    expect(featuredMetadata.twitter?.images).toEqual([SOCIAL_IMAGE_PATH]);
   });
 });

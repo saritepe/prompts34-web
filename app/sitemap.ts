@@ -34,6 +34,16 @@ const STATIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
     changeFrequency: 'daily',
     priority: 0.9,
   },
+  {
+    url: `${BASE_URL}/en-yeni-prompts`,
+    changeFrequency: 'daily',
+    priority: 0.9,
+  },
+  {
+    url: `${BASE_URL}/one-cikanlar`,
+    changeFrequency: 'daily',
+    priority: 0.9,
+  },
 ];
 
 export const dynamic = 'force-dynamic';

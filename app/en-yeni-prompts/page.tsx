@@ -1,6 +1,37 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
+import {
+  sharedOpenGraphImage,
+  sharedTwitterImage,
+} from '@/app/shared-metadata';
 import Navigation from '@/components/Navigation';
 import { getPublicPrompts } from '@/lib/api/prompts';
+
+export const metadata: Metadata = {
+  title: 'En Yeni Promptlar',
+  description:
+    'Prompts34 üzerindeki en yeni yapay zeka promptlarını keşfedin. ChatGPT, Claude ve diğer AI araçları için son eklenen promptlar.',
+  openGraph: {
+    title: 'En Yeni Promptlar | Prompts34',
+    description:
+      'Prompts34 üzerindeki en yeni yapay zeka promptlarını keşfedin.',
+    type: 'website',
+    url: 'https://prompts34.com/en-yeni-prompts',
+    siteName: 'Prompts34',
+    locale: 'tr_TR',
+    ...sharedOpenGraphImage,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'En Yeni Promptlar | Prompts34',
+    description:
+      'Prompts34 üzerindeki en yeni yapay zeka promptlarını keşfedin.',
+    ...sharedTwitterImage,
+  },
+  alternates: {
+    canonical: 'https://prompts34.com/en-yeni-prompts',
+  },
+};
 
 export default async function LatestPromptsPage() {
   const prompts = await getPublicPrompts().catch(() => []);

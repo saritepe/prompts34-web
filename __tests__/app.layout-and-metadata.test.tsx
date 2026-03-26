@@ -92,7 +92,7 @@ describe('layout and metadata routes', () => {
 
     const entries = await sitemap();
 
-    expect(entries).toHaveLength(8);
+    expect(entries).toHaveLength(10);
     expect(entries.map((entry) => entry.url)).toEqual([
       'https://prompts34.com',
       'https://prompts34.com/cv-hazirlama',
@@ -100,6 +100,8 @@ describe('layout and metadata routes', () => {
       'https://prompts34.com/mulakat-hazirligi',
       'https://prompts34.com/gorsel-olusturma',
       'https://prompts34.com/logo-olusturma',
+      'https://prompts34.com/en-yeni-prompts',
+      'https://prompts34.com/one-cikanlar',
       'https://prompts34.com/prompts/prompt-updated',
       'https://prompts34.com/prompts/prompt-created',
     ]);
@@ -107,8 +109,8 @@ describe('layout and metadata routes', () => {
     expect(entries[1]?.changeFrequency).toBe('daily');
     expect(entries[0]?.lastModified).toBeUndefined();
     expect(entries[1]?.lastModified).toBeUndefined();
-    expect(entries[6]?.lastModified).toBe('2026-03-25T10:00:00.000Z');
-    expect(entries[7]?.lastModified).toBe('2026-03-21T10:00:00.000Z');
+    expect(entries[8]?.lastModified).toBe('2026-03-25T10:00:00.000Z');
+    expect(entries[9]?.lastModified).toBe('2026-03-21T10:00:00.000Z');
   });
 
   it('returns the static sitemap entries when the public prompt fetch fails', async () => {
@@ -128,6 +130,8 @@ describe('layout and metadata routes', () => {
         'https://prompts34.com/mulakat-hazirligi',
         'https://prompts34.com/gorsel-olusturma',
         'https://prompts34.com/logo-olusturma',
+        'https://prompts34.com/en-yeni-prompts',
+        'https://prompts34.com/one-cikanlar',
       ]);
       expect(entries.every((entry) => entry.lastModified === undefined)).toBe(
         true,

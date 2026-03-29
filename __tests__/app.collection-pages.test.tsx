@@ -99,22 +99,24 @@ describe('collection and listing pages', () => {
 
   describe.each(collectionPages)('$name page', (pageConfig) => {
     it('renders prompts for the collection', async () => {
-      getPromptsByTagsMock.mockResolvedValueOnce([
+      const prompts = [
         buildPrompt({
+          id: 'prompt-1',
           title: `${pageConfig.heading} Başlık`,
           tags: [pageConfig.tag],
           username: 'ali',
           suggested_model: 'GPT-4',
         }),
         buildPrompt({
-          id: `${pageConfig.tag}-minimal`,
+          id: 'prompt-2',
           title: `${pageConfig.heading} Minimal`,
           tags: [pageConfig.tag],
           username: undefined,
           explanation: null,
           suggested_model: null,
         }),
-      ]);
+      ];
+      getPromptsByTagsMock.mockResolvedValueOnce(prompts);
 
       render(await pageConfig.component());
 
@@ -130,6 +132,16 @@ describe('collection and listing pages', () => {
       ).toBeInTheDocument();
       expect(screen.getByText('@ali')).toBeInTheDocument();
       expect(screen.getByText('Önerilen model: GPT-4')).toBeInTheDocument();
+      prompts.forEach((prompt) => {
+        expect(
+          screen.getByRole('link', { name: prompt.title }),
+        ).toHaveAttribute('href', `/prompts/${prompt.id}`);
+      });
+      expect(
+        screen
+          .getAllByRole('link')
+          .filter((link) => link.getAttribute('href')?.startsWith('/prompts/')),
+      ).toHaveLength(prompts.length);
       expect(getPromptsByTagsMock).toHaveBeenCalledWith([pageConfig.tag]);
     });
 

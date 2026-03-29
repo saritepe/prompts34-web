@@ -2,7 +2,6 @@
 
 import type { MouseEvent } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import Navigation from '@/components/Navigation';
 import { getPublicPrompts, votePrompt } from '@/lib/api/prompts';
@@ -80,31 +79,9 @@ function PromptCard({
   prompt: PromptResponse;
   onVote: (promptId: string) => Promise<void>;
 }) {
-  const router = useRouter();
   const promptType = getPromptType(prompt.tags);
   const [voting, setVoting] = useState(false);
-
-  function navigateToPrompt() {
-    const targetUrl = `/prompts/${prompt.id}`;
-
-    try {
-      const doc = document as Document & {
-        startViewTransition?: (cb: () => void) => void;
-      };
-      (
-        doc.startViewTransition?.bind(doc) ??
-        ((callback: () => void) => callback())
-      )(() => router.push(targetUrl));
-      return;
-    } catch (error) {
-      console.error(
-        'View transition failed, fallback navigation applied.',
-        error,
-      );
-    }
-
-    router.push(targetUrl);
-  }
+  const promptHref = `/prompts/${prompt.id}`;
 
   async function handleVote(event: MouseEvent<HTMLButtonElement>) {
     event.stopPropagation();
@@ -117,17 +94,19 @@ function PromptCard({
   }
 
   return (
-    <article
-      onClick={navigateToPrompt}
-      className="group flex h-full cursor-pointer flex-col rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-950"
-    >
+    <article className="group flex h-full flex-col rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-950">
       <div className="mb-4 flex items-start justify-between gap-3">
-        <div>
+        <div className="min-w-0 flex-1">
           <span className="mb-2 inline-flex rounded-full border border-zinc-300 px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:border-zinc-700 dark:text-zinc-300">
             {promptType}
           </span>
           <h3 className="line-clamp-2 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
-            {prompt.title}
+            <Link
+              href={promptHref}
+              className="rounded-sm hover:underline focus:outline-none focus-visible:underline"
+            >
+              {prompt.title}
+            </Link>
           </h3>
         </div>
         <div className="flex flex-col items-end gap-2">

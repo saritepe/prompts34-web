@@ -3,6 +3,10 @@ import Navigation from '@/components/Navigation';
 import CopyContentButton from '@/components/CopyContentButton';
 import PromptVoteButton from '@/components/PromptVoteButton';
 import CommentSection from '@/components/CommentSection';
+import {
+  sharedOpenGraphImage,
+  sharedTwitterImage,
+} from '@/app/shared-metadata';
 import { getPrompt } from '@/lib/api/prompts';
 import { notFound } from 'next/navigation';
 
@@ -48,10 +52,13 @@ export async function generateMetadata({
       title: fullTitle,
       description,
       url,
+      ...sharedOpenGraphImage,
     },
     twitter: {
+      card: 'summary_large_image',
       title: fullTitle,
       description,
+      ...sharedTwitterImage,
     },
   };
 }

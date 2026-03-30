@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import PromptDetailPage, { generateMetadata } from '@/app/prompts/[id]/page';
+import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPrompt } from '@/lib/api/prompts';
 import { buildPrompt } from './test-utils/fixtures';
 
@@ -142,6 +143,29 @@ describe('generateMetadata', () => {
     });
 
     expect(metadata.description).toBe('Bu bir aciklama.');
+  });
+
+  it('keeps the shared social preview image metadata', async () => {
+    getPromptMock.mockResolvedValueOnce(
+      buildPrompt({ id: 'p-social', title: 'Sosyal Preview Testi' }),
+    );
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ id: 'p-social' }),
+    });
+
+    expect(metadata.openGraph?.images).toEqual([
+      {
+        url: SOCIAL_IMAGE_PATH,
+        width: 1200,
+        height: 630,
+        alt: 'Prompts34 - Yapay Zeka Promptları',
+      },
+    ]);
+    expect(metadata.twitter).toMatchObject({
+      card: 'summary_large_image',
+      images: [SOCIAL_IMAGE_PATH],
+    });
   });
 
   it('falls back to truncated content when explanation is absent', async () => {

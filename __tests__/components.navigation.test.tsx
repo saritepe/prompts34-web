@@ -25,6 +25,10 @@ describe('Navigation', () => {
       'href',
       '/',
     );
+    expect(screen.getByRole('link', { name: 'Konular' })).toHaveAttribute(
+      'href',
+      '/konular',
+    );
     expect(screen.getByRole('link', { name: 'Giriş Yap' })).toHaveAttribute(
       'href',
       '/giris',

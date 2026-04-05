@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 
 const mainLinks = [
   { href: '/#one-cikanlar', label: 'Promptlar' },
+  { href: '/konular', label: 'Konular' },
   { href: '/#beceriler', label: 'Beceriler' },
   { href: '/#is-akislari', label: 'İş Akışları' },
 ];

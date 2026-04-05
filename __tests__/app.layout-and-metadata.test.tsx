@@ -92,7 +92,7 @@ describe('layout and metadata routes', () => {
 
     const entries = await sitemap();
 
-    expect(entries).toHaveLength(10);
+    expect(entries).toHaveLength(18);
     expect(entries.map((entry) => entry.url)).toEqual([
       'https://prompts34.com',
       'https://prompts34.com/cv-hazirlama',
@@ -102,15 +102,25 @@ describe('layout and metadata routes', () => {
       'https://prompts34.com/logo-olusturma',
       'https://prompts34.com/en-yeni-prompts',
       'https://prompts34.com/one-cikanlar',
+      'https://prompts34.com/konular',
+      'https://prompts34.com/konular/pazarlama-ve-icerik',
+      'https://prompts34.com/konular/sanat-ve-yaraticilik',
+      'https://prompts34.com/konular/portre-ve-fotograf',
+      'https://prompts34.com/konular/is-stratejisi',
+      'https://prompts34.com/konular/yazilim-gelistirme',
+      'https://prompts34.com/konular/midjourney-gorsel',
+      'https://prompts34.com/konular/kariyer-gelisim',
       'https://prompts34.com/prompts/prompt-updated',
       'https://prompts34.com/prompts/prompt-created',
     ]);
     expect(entries[0]?.priority).toBe(1);
     expect(entries[1]?.changeFrequency).toBe('daily');
+    expect(entries[8]?.changeFrequency).toBe('weekly');
+    expect(entries[8]?.priority).toBe(0.8);
     expect(entries[0]?.lastModified).toBeUndefined();
     expect(entries[1]?.lastModified).toBeUndefined();
-    expect(entries[8]?.lastModified).toBe('2026-03-25T10:00:00.000Z');
-    expect(entries[9]?.lastModified).toBe('2026-03-21T10:00:00.000Z');
+    expect(entries[16]?.lastModified).toBe('2026-03-25T10:00:00.000Z');
+    expect(entries[17]?.lastModified).toBe('2026-03-21T10:00:00.000Z');
   });
 
   it('returns the static sitemap entries when the public prompt fetch fails', async () => {
@@ -132,6 +142,14 @@ describe('layout and metadata routes', () => {
         'https://prompts34.com/logo-olusturma',
         'https://prompts34.com/en-yeni-prompts',
         'https://prompts34.com/one-cikanlar',
+        'https://prompts34.com/konular',
+        'https://prompts34.com/konular/pazarlama-ve-icerik',
+        'https://prompts34.com/konular/sanat-ve-yaraticilik',
+        'https://prompts34.com/konular/portre-ve-fotograf',
+        'https://prompts34.com/konular/is-stratejisi',
+        'https://prompts34.com/konular/yazilim-gelistirme',
+        'https://prompts34.com/konular/midjourney-gorsel',
+        'https://prompts34.com/konular/kariyer-gelisim',
       ]);
       expect(entries.every((entry) => entry.lastModified === undefined)).toBe(
         true,

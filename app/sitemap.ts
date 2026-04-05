@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getPublicPrompts } from '@/lib/api/prompts';
+import { TOPIC_PAGES } from './konular/topic-pages';
 
 const BASE_URL = 'https://prompts34.com';
 
@@ -48,7 +49,22 @@ const STATIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
 
 export const dynamic = 'force-dynamic';
 
+const TOPIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
+  {
+    url: `${BASE_URL}/konular`,
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  },
+  ...TOPIC_PAGES.map((topic) => ({
+    url: `${BASE_URL}${topic.canonicalPath}`,
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  })),
+];
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const staticEntries = [...STATIC_SITEMAP_ENTRIES, ...TOPIC_SITEMAP_ENTRIES];
+
   try {
     const prompts = await getPublicPrompts();
     const promptEntries: MetadataRoute.Sitemap = prompts.map((prompt) => ({
@@ -56,9 +72,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: prompt.updated_at || prompt.created_at,
     }));
 
-    return [...STATIC_SITEMAP_ENTRIES, ...promptEntries];
+    return [...staticEntries, ...promptEntries];
   } catch (error) {
     console.error('Failed to fetch sitemap prompts.', error);
-    return STATIC_SITEMAP_ENTRIES;
+    return staticEntries;
   }
 }

@@ -36,6 +36,16 @@ const STATIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
     priority: 0.9,
   },
   {
+    url: `${BASE_URL}/chatgpt-promptlari`,
+    changeFrequency: 'daily',
+    priority: 0.9,
+  },
+  {
+    url: `${BASE_URL}/gemini-promptlari`,
+    changeFrequency: 'daily',
+    priority: 0.9,
+  },
+  {
     url: `${BASE_URL}/en-yeni-prompts`,
     changeFrequency: 'daily',
     priority: 0.9,

@@ -1,10 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import ChatGPTPromptlariPage, {
+  dynamic as chatgptDynamic,
+  metadata as chatgptMetadata,
+} from '@/app/chatgpt-promptlari/page';
 import CVHazirlamaPage, {
   dynamic as cvDynamic,
   metadata as cvMetadata,
 } from '@/app/cv-hazirlama/page';
+import GeminiPromptlariPage, {
+  dynamic as geminiDynamic,
+  metadata as geminiMetadata,
+} from '@/app/gemini-promptlari/page';
 import LatestPromptsPage, {
   metadata as latestMetadata,
 } from '@/app/en-yeni-prompts/page';
@@ -278,6 +286,114 @@ describe('collection and listing pages', () => {
     render(await FeaturedPromptsPage());
 
     expect(screen.getByText('Henüz prompt bulunmuyor.')).toBeInTheDocument();
+  });
+
+  const toolHubPages = [
+    {
+      name: 'ChatGPT Promptlari',
+      component: ChatGPTPromptlariPage,
+      metadata: chatgptMetadata,
+      dynamic: chatgptDynamic,
+      heading: 'ChatGPT Promptları',
+      emptyMessage: 'Henüz ChatGPT ile ilgili prompt bulunmuyor.',
+      canonical: 'https://prompts34.com/chatgpt-promptlari',
+      matchingPrompt: buildPrompt({
+        id: 'chatgpt-match',
+        title: 'ChatGPT ile Blog Yazısı',
+        tags: ['icerik'],
+        suggested_model: 'GPT-4o',
+      }),
+      nonMatchingPrompt: buildPrompt({
+        id: 'claude-non-match',
+        title: 'Claude ile Analiz',
+        tags: ['analiz'],
+        suggested_model: 'Claude 3.5 Sonnet',
+      }),
+    },
+    {
+      name: 'Gemini Promptlari',
+      component: GeminiPromptlariPage,
+      metadata: geminiMetadata,
+      dynamic: geminiDynamic,
+      heading: 'Gemini Promptları',
+      emptyMessage: 'Henüz Gemini ile ilgili prompt bulunmuyor.',
+      canonical: 'https://prompts34.com/gemini-promptlari',
+      matchingPrompt: buildPrompt({
+        id: 'gemini-match',
+        title: 'Gemini ile Özetleme',
+        tags: ['ozet'],
+        suggested_model: 'Gemini Pro',
+      }),
+      nonMatchingPrompt: buildPrompt({
+        id: 'chatgpt-non-match',
+        title: 'ChatGPT ile Blog Yazısı',
+        tags: ['icerik'],
+        suggested_model: 'GPT-4',
+      }),
+    },
+  ] as const;
+
+  describe.each(toolHubPages)('$name page', (pageConfig) => {
+    it('renders only prompts matching the tool hub', async () => {
+      getPublicPromptsMock.mockResolvedValueOnce([
+        pageConfig.matchingPrompt,
+        pageConfig.nonMatchingPrompt,
+      ]);
+
+      render(await pageConfig.component());
+
+      expect(
+        screen.getByRole('heading', { name: pageConfig.heading }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(pageConfig.matchingPrompt.title),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByText(pageConfig.nonMatchingPrompt.title),
+      ).not.toBeInTheDocument();
+    });
+
+    it('renders the empty state when nothing matches', async () => {
+      getPublicPromptsMock.mockResolvedValueOnce([
+        pageConfig.nonMatchingPrompt,
+      ]);
+
+      render(await pageConfig.component());
+
+      expect(screen.getByText(pageConfig.emptyMessage)).toBeInTheDocument();
+    });
+
+    it('renders the error state when fetching prompts fails', async () => {
+      const consoleError = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => undefined);
+      getPublicPromptsMock.mockRejectedValueOnce(new Error('boom'));
+
+      render(await pageConfig.component());
+
+      expect(
+        screen.getByText('Promptlar yüklenirken bir hata oluştu'),
+      ).toBeInTheDocument();
+
+      consoleError.mockRestore();
+    });
+
+    it('exports the expected route metadata', () => {
+      expect(pageConfig.dynamic).toBe('force-dynamic');
+      expect(pageConfig.metadata.title).toBe(pageConfig.heading);
+      expect(pageConfig.metadata.alternates?.canonical).toBe(
+        pageConfig.canonical,
+      );
+      expect(pageConfig.metadata.openGraph?.images).toEqual([
+        {
+          url: SOCIAL_IMAGE_PATH,
+          width: 1200,
+          height: 630,
+          alt: 'Prompts34 - Yapay Zeka Promptları',
+        },
+      ]);
+      expect(pageConfig.metadata.twitter?.images).toEqual([SOCIAL_IMAGE_PATH]);
+    });
   });
 
   it('exports the expected featured prompts metadata', () => {

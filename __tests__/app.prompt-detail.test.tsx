@@ -145,6 +145,27 @@ describe('generateMetadata', () => {
     expect(metadata.description).toBe('Bu bir aciklama.');
   });
 
+  it('decodes entities and uses the same description for social metadata', async () => {
+    getPromptMock.mockResolvedValueOnce(
+      buildPrompt({
+        id: 'p-entity',
+        explanation:
+          'Bu prompt &quot;iPhone ile çekilmiş&quot; hissi veren doğal ışık üretir.',
+        content: 'Fallback content',
+      }),
+    );
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ id: 'p-entity' }),
+    });
+
+    const expected =
+      'Bu prompt "iPhone ile çekilmiş" hissi veren doğal ışık üretir.';
+    expect(metadata.description).toBe(expected);
+    expect(metadata.openGraph?.description).toBe(expected);
+    expect(metadata.twitter?.description).toBe(expected);
+  });
+
   it('keeps the shared social preview image metadata', async () => {
     getPromptMock.mockResolvedValueOnce(
       buildPrompt({ id: 'p-social', title: 'Sosyal Preview Testi' }),
@@ -169,7 +190,8 @@ describe('generateMetadata', () => {
   });
 
   it('falls back to truncated content when explanation is absent', async () => {
-    const longContent = 'A'.repeat(200);
+    const longContent =
+      'Bu çok uzun prompt açıklaması sosyal medya ön izlemelerinde düzgün görünmeli ve kesinlikle kelimelerin ortasından kesilmemeli çünkü arama sonuçlarında kötü görünür.';
     getPromptMock.mockResolvedValueOnce(
       buildPrompt({ id: 'p3', explanation: null, content: longContent }),
     );
@@ -178,8 +200,11 @@ describe('generateMetadata', () => {
       params: Promise.resolve({ id: 'p3' }),
     });
 
-    expect(metadata.description).toHaveLength(155);
-    expect(metadata.description).toBe('A'.repeat(155));
+    expect(metadata.description).toBe(
+      'Bu çok uzun prompt açıklaması sosyal medya ön izlemelerinde düzgün görünmeli ve kesinlikle kelimelerin ortasından kesilmemeli çünkü arama sonuçlarında…',
+    );
+    expect(metadata.openGraph?.description).toBe(metadata.description);
+    expect(metadata.twitter?.description).toBe(metadata.description);
   });
 
   it('surfaces notFound when the prompt is missing', async () => {

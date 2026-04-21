@@ -134,7 +134,7 @@ export default function CommentSection({
         </div>
       ) : (
         <p className="mb-4 text-sm text-zinc-500">
-          Henuz yorum yapilmamis. Ilk yorumu sen yap!
+          Henüz yorum yapılmamış. İlk yorumu sen yap!
         </p>
       )}
 
@@ -154,18 +154,18 @@ export default function CommentSection({
               disabled={submitting || !newComment.trim()}
               className="rounded-lg bg-zinc-900 px-5 py-2 text-sm font-semibold text-white hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
             >
-              {submitting ? 'Gonderiliyor...' : 'Yorum Gonder'}
+              {submitting ? 'Gönderiliyor...' : 'Yorum Gönder'}
             </button>
           </div>
         </>
       ) : (
         <p className="text-sm text-zinc-500">
-          Yorum yapmak icin{' '}
+          Yorum yapmak için{' '}
           <a
             href="/giris"
             className="font-semibold text-zinc-900 underline dark:text-zinc-100"
           >
-            giris yapin
+            giriş yapın
           </a>
           .
         </p>

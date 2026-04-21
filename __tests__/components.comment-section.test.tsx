@@ -73,9 +73,9 @@ describe('CommentSection', () => {
         expect(screen.queryByRole('textbox')).not.toBeInTheDocument(),
       );
 
-      expect(screen.getByText(/giris yapin/i)).toBeInTheDocument();
+      expect(screen.getByText(/giriş yapın/i)).toBeInTheDocument();
       expect(
-        screen.getByRole('link', { name: /giris yapin/i }),
+        screen.getByRole('link', { name: /giriş yapın/i }),
       ).toHaveAttribute('href', '/giris');
     });
   });
@@ -94,7 +94,7 @@ describe('CommentSection', () => {
       );
 
       expect(
-        screen.getByRole('button', { name: 'Yorum Gonder' }),
+        screen.getByRole('button', { name: 'Yorum Gönder' }),
       ).toBeInTheDocument();
     });
 
@@ -103,7 +103,7 @@ describe('CommentSection', () => {
 
       await waitFor(() =>
         expect(
-          screen.getByRole('button', { name: 'Yorum Gonder' }),
+          screen.getByRole('button', { name: 'Yorum Gönder' }),
         ).toBeDisabled(),
       );
     });
@@ -120,7 +120,7 @@ describe('CommentSection', () => {
       });
 
       expect(
-        screen.getByRole('button', { name: 'Yorum Gonder' }),
+        screen.getByRole('button', { name: 'Yorum Gönder' }),
       ).not.toBeDisabled();
     });
 
@@ -142,7 +142,7 @@ describe('CommentSection', () => {
       });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: 'Yorum Gonder' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Yorum Gönder' }));
       });
 
       await waitFor(() =>
@@ -172,7 +172,7 @@ describe('CommentSection', () => {
       });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: 'Yorum Gonder' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Yorum Gönder' }));
       });
 
       expect(createCommentMock).toHaveBeenCalledWith(
@@ -196,7 +196,7 @@ describe('CommentSection', () => {
       });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: 'Yorum Gonder' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Yorum Gönder' }));
       });
 
       await waitFor(() =>
@@ -218,7 +218,7 @@ describe('CommentSection', () => {
       });
 
       await act(async () => {
-        fireEvent.click(screen.getByRole('button', { name: 'Yorum Gonder' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Yorum Gönder' }));
       });
 
       await waitFor(() =>
@@ -235,7 +235,7 @@ describe('CommentSection', () => {
 
       await waitFor(() =>
         expect(
-          screen.getByText('Henuz yorum yapilmamis. Ilk yorumu sen yap!'),
+          screen.getByText('Henüz yorum yapılmamış. İlk yorumu sen yap!'),
         ).toBeInTheDocument(),
       );
     });
@@ -453,7 +453,7 @@ describe('CommentSection', () => {
 
       await waitFor(() =>
         expect(
-          screen.getByText('Henuz yorum yapilmamis. Ilk yorumu sen yap!'),
+          screen.getByText('Henüz yorum yapılmamış. İlk yorumu sen yap!'),
         ).toBeInTheDocument(),
       );
 

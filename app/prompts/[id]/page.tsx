@@ -8,22 +8,8 @@ import {
   sharedTwitterImage,
 } from '@/app/shared-metadata';
 import { getPrompt } from '@/lib/api/prompts';
+import { buildDescription } from '@/lib/metadata';
 import { notFound } from 'next/navigation';
-
-const DESCRIPTION_MAX_LENGTH = 155;
-
-function buildDescription(explanation: string | null, content: string): string {
-  const primary = explanation?.trim();
-  if (primary) {
-    return primary.length <= DESCRIPTION_MAX_LENGTH
-      ? primary
-      : primary.slice(0, DESCRIPTION_MAX_LENGTH).trimEnd();
-  }
-  const normalized = content.replace(/\s+/g, ' ').trim();
-  return normalized.length <= DESCRIPTION_MAX_LENGTH
-    ? normalized
-    : normalized.slice(0, DESCRIPTION_MAX_LENGTH).trimEnd();
-}
 
 export async function generateMetadata({
   params,
@@ -37,7 +23,7 @@ export async function generateMetadata({
     return notFound();
   }
 
-  const description = buildDescription(prompt.explanation, prompt.content);
+  const description = buildDescription(prompt.explanation || prompt.content);
   const title = prompt.title;
   const fullTitle = `${title} | Prompts34`;
   const url = `/prompts/${prompt.id}`;

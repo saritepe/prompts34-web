@@ -12,7 +12,11 @@ import {
   BreadcrumbStructuredData,
   CollectionPageStructuredData,
 } from '../../components/StructuredData';
-import { getTopicBySlug, matchPromptsForTopic } from '../topic-pages';
+import {
+  getTopicBySlug,
+  getTopicPath,
+  matchPromptsForTopic,
+} from '@/lib/topics';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,10 +34,10 @@ export async function generateMetadata({
     return {};
   }
 
-  const url = `https://prompts34.com${topic.canonicalPath}`;
+  const url = `https://prompts34.com${getTopicPath(topic)}`;
 
   return {
-    title: topic.title,
+    title: `${topic.title} | Prompts34`,
     description: topic.description,
     openGraph: {
       title: `${topic.title} | Prompts34`,
@@ -52,6 +56,10 @@ export async function generateMetadata({
     },
     alternates: {
       canonical: url,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -75,7 +83,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
     console.error(err);
   }
 
-  const canonicalUrl = `https://prompts34.com${topic.canonicalPath}`;
+  const canonicalUrl = `https://prompts34.com${getTopicPath(topic)}`;
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
@@ -83,7 +91,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
         items={[
           { name: 'Ana Sayfa', url: 'https://prompts34.com' },
           { name: 'Konular', url: 'https://prompts34.com/konular' },
-          { name: topic.introHeading, url: canonicalUrl },
+          { name: topic.title, url: canonicalUrl },
         ]}
       />
       <CollectionPageStructuredData
@@ -96,11 +104,23 @@ export default async function TopicPage({ params }: TopicPageProps) {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-12">
           <h1 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 mb-4">
-            {topic.introHeading}
+            {topic.title}
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400 mb-6">
-            {topic.introBody}
+            {topic.description}
           </p>
+          <section className="border-t border-zinc-200 pt-6 dark:border-zinc-800">
+            <h2 className="mb-3 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
+              Bu konudaki promptları nasıl kullanabilirsiniz?
+            </h2>
+            <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+              Önce hedefinizi ve kullanacağınız yapay zeka aracını belirleyin,
+              ardından listelenen promptlardan size en yakın olanı açıp kendi
+              bağlamınıza göre düzenleyin. Prompt içindeki değişkenleri gerçek
+              bilgilerinizle doldurmanız ve çıktıyı yayınlamadan önce kontrol
+              etmeniz daha tutarlı sonuçlar almanızı sağlar.
+            </p>
+          </section>
         </div>
 
         {error ? (

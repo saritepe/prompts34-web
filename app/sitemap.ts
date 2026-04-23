@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getPublicPrompts } from '@/lib/api/prompts';
-import { TOPIC_PAGES } from './konular/topic-pages';
+import { TOPICS, getTopicPath } from '@/lib/topics';
 
 const BASE_URL = 'https://prompts34.com';
 
@@ -9,31 +9,6 @@ const STATIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
     url: BASE_URL,
     changeFrequency: 'daily',
     priority: 1,
-  },
-  {
-    url: `${BASE_URL}/cv-hazirlama`,
-    changeFrequency: 'daily',
-    priority: 0.9,
-  },
-  {
-    url: `${BASE_URL}/motivasyon-mektubu`,
-    changeFrequency: 'daily',
-    priority: 0.9,
-  },
-  {
-    url: `${BASE_URL}/mulakat-hazirligi`,
-    changeFrequency: 'daily',
-    priority: 0.9,
-  },
-  {
-    url: `${BASE_URL}/gorsel-olusturma`,
-    changeFrequency: 'daily',
-    priority: 0.9,
-  },
-  {
-    url: `${BASE_URL}/logo-olusturma`,
-    changeFrequency: 'daily',
-    priority: 0.9,
   },
   {
     url: `${BASE_URL}/chatgpt-promptlari`,
@@ -55,6 +30,11 @@ const STATIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
     changeFrequency: 'daily',
     priority: 0.9,
   },
+  {
+    url: `${BASE_URL}/prompts`,
+    changeFrequency: 'daily',
+    priority: 0.8,
+  },
 ];
 
 export const dynamic = 'force-dynamic';
@@ -65,8 +45,8 @@ const TOPIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
     changeFrequency: 'weekly',
     priority: 0.8,
   },
-  ...TOPIC_PAGES.map((topic) => ({
-    url: `${BASE_URL}${topic.canonicalPath}`,
+  ...TOPICS.map((topic) => ({
+    url: `${BASE_URL}${getTopicPath(topic)}`,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   })),

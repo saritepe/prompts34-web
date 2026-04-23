@@ -5,6 +5,14 @@ type CategoryPromptCardProps = {
   prompt: PromptResponse;
 };
 
+function getPromptExcerpt(prompt: PromptResponse): string {
+  const source = prompt.explanation || prompt.content;
+  const normalized = source.replace(/\s+/g, ' ').trim();
+  return normalized.length <= 220
+    ? normalized
+    : `${normalized.slice(0, 220).trimEnd()}…`;
+}
+
 export default function CategoryPromptCard({
   prompt,
 }: CategoryPromptCardProps) {
@@ -25,11 +33,9 @@ export default function CategoryPromptCard({
           </span>
         )}
       </div>
-      {prompt.explanation && (
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-          {prompt.explanation}
-        </p>
-      )}
+      <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+        {getPromptExcerpt(prompt)}
+      </p>
       <div className="flex flex-wrap gap-2 mb-4">
         {prompt.tags.map((tag) => (
           <span
@@ -45,11 +51,6 @@ export default function CategoryPromptCard({
           Önerilen model: {prompt.suggested_model}
         </p>
       )}
-      <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4">
-        <pre className="text-sm text-zinc-800 dark:text-zinc-200 whitespace-pre-wrap font-mono bg-zinc-50 dark:bg-zinc-900 p-3 rounded">
-          {prompt.content}
-        </pre>
-      </div>
       <div className="mt-4 text-xs text-zinc-500 dark:text-zinc-500">
         {new Date(prompt.created_at).toLocaleDateString('tr-TR')}
       </div>

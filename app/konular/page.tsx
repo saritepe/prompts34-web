@@ -6,7 +6,7 @@ import {
 } from '@/app/shared-metadata';
 import Navigation from '@/components/Navigation';
 import { BreadcrumbStructuredData } from '../components/StructuredData';
-import { TOPIC_PAGES } from './topic-pages';
+import { TOPICS, getTopicPath } from '@/lib/topics';
 
 export const dynamic = 'force-dynamic';
 
@@ -59,14 +59,14 @@ export default function TopicHubPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {TOPIC_PAGES.map((topic) => (
+          {TOPICS.map((topic) => (
             <Link
               key={topic.slug}
-              href={`/konular/${topic.slug}`}
+              href={getTopicPath(topic)}
               className="block rounded-lg border border-zinc-200 bg-white p-6 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700"
             >
               <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50 mb-2">
-                {topic.introHeading}
+                {topic.title}
               </h2>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
                 {topic.description}

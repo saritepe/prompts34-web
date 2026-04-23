@@ -10,6 +10,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import HomePageClient from '@/components/HomePageClient';
 import { getPublicPrompts, votePrompt } from '@/lib/api/prompts';
 import { buildPrompt, buildVoteResponse } from './test-utils/fixtures';
+import {
+  resetNextNavigationMock,
+  routerMock,
+} from './test-utils/next-navigation';
 import { alertMock } from '../vitest.setup';
 
 const authState = vi.hoisted(() => ({
@@ -41,6 +45,7 @@ describe('HomePageClient', () => {
     authState.loading = false;
     getPublicPromptsMock.mockReset();
     votePromptMock.mockReset();
+    resetNextNavigationMock();
   });
 
   it('seeds the search query from the server and supports quick filters', () => {
@@ -378,5 +383,65 @@ describe('HomePageClient', () => {
     expect(screen.getByDisplayValue('minimal')).toBeInTheDocument();
     expect(screen.getAllByText('Minimal Prompt')).toHaveLength(2);
     expect(screen.queryByText('Detaylı Prompt')).not.toBeInTheDocument();
+  });
+
+  it('routes exact topic keyword searches to canonical topic pages', () => {
+    render(
+      <HomePageClient
+        initialPrompts={[]}
+        initialSearch=""
+        initialLoadError={null}
+      />,
+    );
+
+    fireEvent.change(
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      {
+        target: { value: 'cv' },
+      },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Promptları Keşfet' }));
+
+    expect(routerMock.push).toHaveBeenCalledWith('/konular/cv-hazirlama');
+  });
+
+  it('routes Turkish-normalized topic searches to canonical topic pages', () => {
+    render(
+      <HomePageClient
+        initialPrompts={[]}
+        initialSearch=""
+        initialLoadError={null}
+      />,
+    );
+
+    fireEvent.change(
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      {
+        target: { value: 'özgeçmiş' },
+      },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Promptları Keşfet' }));
+
+    expect(routerMock.push).toHaveBeenCalledWith('/konular/cv-hazirlama');
+  });
+
+  it('routes unknown searches to the prompt listing query page', () => {
+    render(
+      <HomePageClient
+        initialPrompts={[]}
+        initialSearch=""
+        initialLoadError={null}
+      />,
+    );
+
+    fireEvent.change(
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      {
+        target: { value: 'unknown' },
+      },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Promptları Keşfet' }));
+
+    expect(routerMock.push).toHaveBeenCalledWith('/prompts?q=unknown');
   });
 });

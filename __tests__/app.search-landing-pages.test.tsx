@@ -13,9 +13,12 @@ import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPublicPrompts } from '@/lib/api/prompts';
 import {
   TOPIC_PAGES,
+  findTopicByKeyword,
+  getTopicPath,
   getTopicBySlug,
   matchPromptsForTopic,
-} from '@/app/konular/topic-pages';
+  normalizeQuery,
+} from '@/lib/topics';
 import { buildPrompt } from './test-utils/fixtures';
 
 vi.mock('@/components/Navigation', () => ({
@@ -52,10 +55,17 @@ describe('search landing pages', () => {
       const slugs = TOPIC_PAGES.map((t) => t.slug);
       expect(new Set(slugs).size).toBe(slugs.length);
     });
+
+    it('normalizes Turkish search queries and matches exact topic keywords', () => {
+      expect(normalizeQuery('  Özgeçmiş  ')).toBe('ozgecmis');
+      expect(findTopicByKeyword('cv')?.slug).toBe('cv-hazirlama');
+      expect(findTopicByKeyword('özgeçmiş')?.slug).toBe('cv-hazirlama');
+      expect(findTopicByKeyword('unknown')).toBeUndefined();
+    });
   });
 
   describe('matchPromptsForTopic', () => {
-    const topic = TOPIC_PAGES[0]; // pazarlama-ve-icerik
+    const topic = getTopicBySlug('pazarlama-ve-icerik')!;
 
     it('matches prompts with overlapping tags (case-insensitive)', () => {
       const prompts = [
@@ -127,9 +137,9 @@ describe('search landing pages', () => {
       ).toBeInTheDocument();
 
       for (const topic of TOPIC_PAGES) {
-        expect(screen.getByText(topic.introHeading)).toBeInTheDocument();
-        const link = screen.getByText(topic.introHeading).closest('a');
-        expect(link).toHaveAttribute('href', `/konular/${topic.slug}`);
+        expect(screen.getByText(topic.title)).toBeInTheDocument();
+        const link = screen.getByText(topic.title).closest('a');
+        expect(link).toHaveAttribute('href', getTopicPath(topic));
       }
     });
 
@@ -152,7 +162,7 @@ describe('search landing pages', () => {
   });
 
   describe('topic page (/konular/[slug])', () => {
-    const topic = TOPIC_PAGES[0]; // pazarlama-ve-icerik
+    const topic = getTopicBySlug('pazarlama-ve-icerik')!;
 
     it('renders matching prompts for a valid topic', async () => {
       const prompts = [
@@ -182,9 +192,14 @@ describe('search landing pages', () => {
 
       expect(screen.getByTestId('navigation')).toBeInTheDocument();
       expect(
-        screen.getByRole('heading', { name: topic.introHeading }),
+        screen.getByRole('heading', { name: topic.title }),
       ).toBeInTheDocument();
-      expect(screen.getByText(topic.introBody)).toBeInTheDocument();
+      expect(screen.getByText(topic.description)).toBeInTheDocument();
+      expect(
+        screen.getByRole('heading', {
+          name: 'Bu konudaki promptları nasıl kullanabilirsiniz?',
+        }),
+      ).toBeInTheDocument();
       expect(screen.getByText('SEO Blog Yazısı')).toBeInTheDocument();
       expect(screen.getByText('Sosyal Medya Postu')).toBeInTheDocument();
       expect(screen.queryByText('Unrelated Prompt')).not.toBeInTheDocument();
@@ -241,10 +256,10 @@ describe('search landing pages', () => {
         params: Promise.resolve({ slug: topic.slug }),
       });
 
-      expect(meta.title).toBe(topic.title);
+      expect(meta.title).toBe(`${topic.title} | Prompts34`);
       expect(meta.description).toBe(topic.description);
       expect(meta.alternates?.canonical).toBe(
-        `https://prompts34.com${topic.canonicalPath}`,
+        `https://prompts34.com${getTopicPath(topic)}`,
       );
       expect(meta.openGraph?.images).toEqual([
         {

@@ -6,6 +6,7 @@ import robots from '@/app/robots';
 import sitemap from '@/app/sitemap';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPublicPrompts } from '@/lib/api/prompts';
+import { TOPICS, getTopicPath } from '@/lib/topics';
 import { buildPrompt } from './test-utils/fixtures';
 
 vi.mock('@/lib/api/prompts', () => ({
@@ -92,37 +93,34 @@ describe('layout and metadata routes', () => {
 
     const entries = await sitemap();
 
-    expect(entries).toHaveLength(20);
-    expect(entries.map((entry) => entry.url)).toEqual([
+    const expectedStaticUrls = [
       'https://prompts34.com',
-      'https://prompts34.com/cv-hazirlama',
-      'https://prompts34.com/motivasyon-mektubu',
-      'https://prompts34.com/mulakat-hazirligi',
-      'https://prompts34.com/gorsel-olusturma',
-      'https://prompts34.com/logo-olusturma',
       'https://prompts34.com/chatgpt-promptlari',
       'https://prompts34.com/gemini-promptlari',
       'https://prompts34.com/en-yeni-prompts',
       'https://prompts34.com/one-cikanlar',
+      'https://prompts34.com/prompts',
       'https://prompts34.com/konular',
-      'https://prompts34.com/konular/pazarlama-ve-icerik',
-      'https://prompts34.com/konular/sanat-ve-yaraticilik',
-      'https://prompts34.com/konular/portre-ve-fotograf',
-      'https://prompts34.com/konular/is-stratejisi',
-      'https://prompts34.com/konular/yazilim-gelistirme',
-      'https://prompts34.com/konular/midjourney-gorsel',
-      'https://prompts34.com/konular/kariyer-gelisim',
+      ...TOPICS.map((topic) => `https://prompts34.com${getTopicPath(topic)}`),
+    ];
+
+    expect(entries).toHaveLength(expectedStaticUrls.length + 2);
+    expect(entries.map((entry) => entry.url)).toEqual([
+      ...expectedStaticUrls,
       'https://prompts34.com/prompts/prompt-updated',
       'https://prompts34.com/prompts/prompt-created',
     ]);
     expect(entries[0]?.priority).toBe(1);
     expect(entries[1]?.changeFrequency).toBe('daily');
-    expect(entries[10]?.changeFrequency).toBe('weekly');
-    expect(entries[10]?.priority).toBe(0.8);
+    expect(entries[6]?.changeFrequency).toBe('weekly');
+    expect(entries[6]?.priority).toBe(0.8);
     expect(entries[0]?.lastModified).toBeUndefined();
     expect(entries[1]?.lastModified).toBeUndefined();
-    expect(entries[18]?.lastModified).toBe('2026-03-25T10:00:00.000Z');
-    expect(entries[19]?.lastModified).toBe('2026-03-21T10:00:00.000Z');
+    expect(entries.at(-2)?.lastModified).toBe('2026-03-25T10:00:00.000Z');
+    expect(entries.at(-1)?.lastModified).toBe('2026-03-21T10:00:00.000Z');
+    expect(entries.map((entry) => entry.url)).not.toContain(
+      'https://prompts34.com/cv-hazirlama',
+    );
   });
 
   it('returns the static sitemap entries when the public prompt fetch fails', async () => {
@@ -134,27 +132,21 @@ describe('layout and metadata routes', () => {
 
     try {
       const entries = await sitemap();
-
-      expect(entries.map((entry) => entry.url)).toEqual([
+      const expectedStaticUrls = [
         'https://prompts34.com',
-        'https://prompts34.com/cv-hazirlama',
-        'https://prompts34.com/motivasyon-mektubu',
-        'https://prompts34.com/mulakat-hazirligi',
-        'https://prompts34.com/gorsel-olusturma',
-        'https://prompts34.com/logo-olusturma',
         'https://prompts34.com/chatgpt-promptlari',
         'https://prompts34.com/gemini-promptlari',
         'https://prompts34.com/en-yeni-prompts',
         'https://prompts34.com/one-cikanlar',
+        'https://prompts34.com/prompts',
         'https://prompts34.com/konular',
-        'https://prompts34.com/konular/pazarlama-ve-icerik',
-        'https://prompts34.com/konular/sanat-ve-yaraticilik',
-        'https://prompts34.com/konular/portre-ve-fotograf',
-        'https://prompts34.com/konular/is-stratejisi',
-        'https://prompts34.com/konular/yazilim-gelistirme',
-        'https://prompts34.com/konular/midjourney-gorsel',
-        'https://prompts34.com/konular/kariyer-gelisim',
-      ]);
+        ...TOPICS.map((topic) => `https://prompts34.com${getTopicPath(topic)}`),
+      ];
+
+      expect(entries.map((entry) => entry.url)).toEqual(expectedStaticUrls);
+      expect(entries.map((entry) => entry.url)).not.toContain(
+        'https://prompts34.com/cv-hazirlama',
+      );
       expect(entries.every((entry) => entry.lastModified === undefined)).toBe(
         true,
       );

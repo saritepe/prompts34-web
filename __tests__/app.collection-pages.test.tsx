@@ -5,10 +5,6 @@ import ChatGPTPromptlariPage, {
   dynamic as chatgptDynamic,
   metadata as chatgptMetadata,
 } from '@/app/chatgpt-promptlari/page';
-import CVHazirlamaPage, {
-  dynamic as cvDynamic,
-  metadata as cvMetadata,
-} from '@/app/cv-hazirlama/page';
 import GeminiPromptlariPage, {
   dynamic as geminiDynamic,
   metadata as geminiMetadata,
@@ -16,27 +12,11 @@ import GeminiPromptlariPage, {
 import LatestPromptsPage, {
   metadata as latestMetadata,
 } from '@/app/en-yeni-prompts/page';
-import GorselOlusturmaPage, {
-  dynamic as gorselDynamic,
-  metadata as gorselMetadata,
-} from '@/app/gorsel-olusturma/page';
-import LogoOlusturmaPage, {
-  dynamic as logoDynamic,
-  metadata as logoMetadata,
-} from '@/app/logo-olusturma/page';
-import MotivasyonMektubuPage, {
-  dynamic as motivasyonDynamic,
-  metadata as motivasyonMetadata,
-} from '@/app/motivasyon-mektubu/page';
-import MulakatHazirligiPage, {
-  dynamic as mulakatDynamic,
-  metadata as mulakatMetadata,
-} from '@/app/mulakat-hazirligi/page';
 import FeaturedPromptsPage, {
   metadata as featuredMetadata,
 } from '@/app/one-cikanlar/page';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
-import { getPromptsByTags, getPublicPrompts } from '@/lib/api/prompts';
+import { getPublicPrompts } from '@/lib/api/prompts';
 import { buildPrompt } from './test-utils/fixtures';
 
 vi.mock('@/components/Navigation', () => ({
@@ -44,155 +24,11 @@ vi.mock('@/components/Navigation', () => ({
 }));
 
 vi.mock('@/lib/api/prompts', () => ({
-  getPromptsByTags: vi.fn(),
   getPublicPrompts: vi.fn(),
 }));
 
 describe('collection and listing pages', () => {
-  const getPromptsByTagsMock = vi.mocked(getPromptsByTags);
   const getPublicPromptsMock = vi.mocked(getPublicPrompts);
-
-  const collectionPages = [
-    {
-      name: 'CV Hazirlama',
-      component: CVHazirlamaPage,
-      metadata: cvMetadata,
-      dynamic: cvDynamic,
-      tag: 'cv',
-      heading: 'CV Hazırlama Promptları',
-      emptyMessage: 'Henüz CV hazırlama ile ilgili prompt bulunmuyor.',
-      canonical: 'https://prompts34.com/cv-hazirlama',
-    },
-    {
-      name: 'Gorsel Olusturma',
-      component: GorselOlusturmaPage,
-      metadata: gorselMetadata,
-      dynamic: gorselDynamic,
-      tag: 'image-generation',
-      heading: 'Görsel Oluşturma Promptları',
-      emptyMessage: 'Henüz görsel oluşturma ile ilgili prompt bulunmuyor.',
-      canonical: 'https://prompts34.com/gorsel-olusturma',
-    },
-    {
-      name: 'Logo Olusturma',
-      component: LogoOlusturmaPage,
-      metadata: logoMetadata,
-      dynamic: logoDynamic,
-      tag: 'logo oluşturma',
-      heading: 'Logo Oluşturma Promptları',
-      emptyMessage: 'Henüz logo oluşturma ile ilgili prompt bulunmuyor.',
-      canonical: 'https://prompts34.com/logo-olusturma',
-    },
-    {
-      name: 'Motivasyon Mektubu',
-      component: MotivasyonMektubuPage,
-      metadata: motivasyonMetadata,
-      dynamic: motivasyonDynamic,
-      tag: 'motivasyon-mektubu',
-      heading: 'Motivasyon Mektubu Promptları',
-      emptyMessage: 'Henüz motivasyon mektubu ile ilgili prompt bulunmuyor.',
-      canonical: 'https://prompts34.com/motivasyon-mektubu',
-    },
-    {
-      name: 'Mulakat Hazirligi',
-      component: MulakatHazirligiPage,
-      metadata: mulakatMetadata,
-      dynamic: mulakatDynamic,
-      tag: 'mulakat',
-      heading: 'Mülakat Hazırlığı Promptları',
-      emptyMessage: 'Henüz mülakat hazırlığı ile ilgili prompt bulunmuyor.',
-      canonical: 'https://prompts34.com/mulakat-hazirligi',
-    },
-  ] as const;
-
-  describe.each(collectionPages)('$name page', (pageConfig) => {
-    it('renders prompts for the collection', async () => {
-      const prompts = [
-        buildPrompt({
-          id: 'prompt-1',
-          title: `${pageConfig.heading} Başlık`,
-          tags: [pageConfig.tag],
-          username: 'ali',
-          suggested_model: 'GPT-4',
-        }),
-        buildPrompt({
-          id: 'prompt-2',
-          title: `${pageConfig.heading} Minimal`,
-          tags: [pageConfig.tag],
-          username: undefined,
-          explanation: null,
-          suggested_model: null,
-        }),
-      ];
-      getPromptsByTagsMock.mockResolvedValueOnce(prompts);
-
-      render(await pageConfig.component());
-
-      expect(screen.getByTestId('navigation')).toBeInTheDocument();
-      expect(
-        screen.getByRole('heading', { name: pageConfig.heading }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(`${pageConfig.heading} Başlık`),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(`${pageConfig.heading} Minimal`),
-      ).toBeInTheDocument();
-      expect(screen.getByText('@ali')).toBeInTheDocument();
-      expect(screen.getByText('Önerilen model: GPT-4')).toBeInTheDocument();
-      prompts.forEach((prompt) => {
-        expect(
-          screen.getByRole('link', { name: prompt.title }),
-        ).toHaveAttribute('href', `/prompts/${prompt.id}`);
-      });
-      expect(
-        screen
-          .getAllByRole('link')
-          .filter((link) => link.getAttribute('href')?.startsWith('/prompts/')),
-      ).toHaveLength(prompts.length);
-      expect(getPromptsByTagsMock).toHaveBeenCalledWith([pageConfig.tag]);
-    });
-
-    it('renders the empty state when no prompts are returned', async () => {
-      getPromptsByTagsMock.mockResolvedValueOnce([]);
-
-      render(await pageConfig.component());
-
-      expect(screen.getByText(pageConfig.emptyMessage)).toBeInTheDocument();
-    });
-
-    it('renders the error state when fetching prompts fails', async () => {
-      const consoleError = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => undefined);
-      getPromptsByTagsMock.mockRejectedValueOnce(new Error('boom'));
-
-      render(await pageConfig.component());
-
-      expect(
-        screen.getByText('Promptlar yüklenirken bir hata oluştu'),
-      ).toBeInTheDocument();
-
-      consoleError.mockRestore();
-    });
-
-    it('exports the expected route metadata', () => {
-      expect(pageConfig.dynamic).toBe('force-dynamic');
-      expect(pageConfig.metadata.title).toContain(pageConfig.heading);
-      expect(pageConfig.metadata.alternates?.canonical).toBe(
-        pageConfig.canonical,
-      );
-      expect(pageConfig.metadata.openGraph?.images).toEqual([
-        {
-          url: SOCIAL_IMAGE_PATH,
-          width: 1200,
-          height: 630,
-          alt: 'Prompts34 - Yapay Zeka Promptları',
-        },
-      ]);
-      expect(pageConfig.metadata.twitter?.images).toEqual([SOCIAL_IMAGE_PATH]);
-    });
-  });
 
   it('renders latest prompts sorted by date descending', async () => {
     getPublicPromptsMock.mockResolvedValueOnce([

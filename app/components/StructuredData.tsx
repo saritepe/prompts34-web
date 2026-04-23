@@ -10,7 +10,7 @@ export function WebSiteStructuredData() {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: 'https://prompts34.com/?q={search_term_string}',
+        urlTemplate: 'https://prompts34.com/prompts?q={search_term_string}',
       },
       'query-input': 'required name=search_term_string',
     },

@@ -2,10 +2,12 @@
 
 import type { MouseEvent } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import Navigation from '@/components/Navigation';
 import { getPublicPrompts, votePrompt } from '@/lib/api/prompts';
 import { useAuth } from '@/lib/auth';
+import { findTopicByKeyword, getTopicPath, normalizeQuery } from '@/lib/topics';
 import type { PromptResponse } from '@/types/prompt';
 
 const QUICK_FILTERS = [
@@ -212,6 +214,7 @@ export default function HomePageClient({
   initialSearch,
   initialLoadError,
 }: HomePageClientProps) {
+  const router = useRouter();
   const { token, user, loading } = useAuth();
   const authToken = token;
   const [prompts, setPrompts] = useState<PromptResponse[]>(initialPrompts);
@@ -273,6 +276,22 @@ export default function HomePageClient({
         error instanceof Error ? error.message : 'Oylama sırasında hata oluştu';
       alert(message);
     }
+  }
+
+  function handleSearchSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const normalizedSearch = normalizeQuery(search);
+    if (!normalizedSearch) {
+      return;
+    }
+
+    const matchingTopic = findTopicByKeyword(normalizedSearch);
+    if (matchingTopic) {
+      router.push(getTopicPath(matchingTopic));
+      return;
+    }
+
+    router.push(`/prompts?q=${encodeURIComponent(normalizedSearch)}`);
   }
 
   const filteredPrompts = useMemo(() => {
@@ -359,7 +378,10 @@ export default function HomePageClient({
             </div>
 
             <div className="lg:pt-8">
-              <div className="rounded-xl border border-zinc-300 bg-white/85 p-4 dark:border-zinc-700 dark:bg-zinc-950/70">
+              <form
+                onSubmit={handleSearchSubmit}
+                className="rounded-xl border border-zinc-300 bg-white/85 p-4 dark:border-zinc-700 dark:bg-zinc-950/70"
+              >
                 <div className="mb-3" />
                 <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center">
                   <input
@@ -369,14 +391,15 @@ export default function HomePageClient({
                     placeholder="Başlık, etiket, model veya içerikte ara"
                     className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none ring-amber-300 transition focus:ring-2 sm:max-w-md dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
                   />
-                  <Link
-                    href="#one-cikanlar"
+                  <button
+                    type="submit"
                     className="whitespace-nowrap rounded-lg bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
                   >
                     Promptları Keşfet
-                  </Link>
+                  </button>
                   {search && (
                     <button
+                      type="button"
                       onClick={() => setSearch('')}
                       className="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 dark:border-zinc-700 dark:text-zinc-300"
                     >
@@ -384,7 +407,7 @@ export default function HomePageClient({
                     </button>
                   )}
                 </div>
-              </div>
+              </form>
               <div className="mt-4 rounded-2xl border border-zinc-200 bg-white/85 p-4 dark:border-zinc-700 dark:bg-zinc-950/70">
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
                   {QUICK_FILTERS.map((filter) => (

@@ -1,38 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# prompts34-web
 
-Deployment trigger check: 2026-04-21.
+`prompts34-web` is the Next.js frontend for Prompts34. It renders the public prompt pages, authentication flow, topic pages, and prompt interaction UI, and talks to the separate API backend via `NEXT_PUBLIC_API_URL`.
 
-## Getting Started
+## Requirements
 
-First, run the development server:
+- Node.js 20+
+- npm
+- A running Prompts34 API instance
+
+## Local Development
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Create `.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL=http://0.0.0.0:8000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+3. Start the dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Only public client-side variables are used in this repo:
 
-## Learn More
+- `NEXT_PUBLIC_API_URL`: Base URL for the Prompts34 API
+- `NEXT_PUBLIC_APP_URL`: Public frontend URL used for callback flows
 
-To learn more about Next.js, take a look at the following resources:
+Do not commit local `.env` files. Keep real environment values in Vercel project settings.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Production values typically look like this:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_API_URL=https://api.prompts34.com
+NEXT_PUBLIC_APP_URL=https://prompts34.com
+```
 
-## Deploy on Vercel
+## Auth Callback Setup
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This frontend expects email verification and auth callback redirects to return to:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `http://localhost:3000/auth/callback` for local development
+- `https://yourdomain.com/auth/callback` for production
+
+If your backend uses Supabase for signup or email verification, configure the backend redirect target with your frontend URL and add the callback URLs in Supabase Authentication URL settings.
+
+The callback page verifies the returned token with `/auth/me`, stores the session in local storage, and redirects the user back into the app.
+
+## Deployment
+
+This project is deployed with Vercel Git integration.
+
+- Vercel watches the connected repository and deploys automatically from the configured default branch
+- Preview deployments are created for non-default branches and pull requests
+- There is no GitHub Actions deployment workflow in this repo
+
+For Vercel:
+
+- Import the repository and select the `prompts34-web` project directory if needed
+- Let Vercel detect Next.js
+- Set `NEXT_PUBLIC_API_URL` and `NEXT_PUBLIC_APP_URL` in Vercel Environment Variables
+- Add your production domain in Vercel Domains
+
+Backend note:
+
+- The API must allow requests from your frontend domain and preview domains
+- The backend frontend URL setting should point to your public app URL so auth redirects return to `/auth/callback`

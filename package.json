@@ -15,7 +15,8 @@
     "test:run": "vitest run",
     "coverage": "vitest run --coverage",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run coverage && npm run build",
-    "precommit": "lint-staged && npm run typecheck && npm run coverage && npm run build"
+    "precommit": "lint-staged && npm run typecheck && npm run coverage && npm run build",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",

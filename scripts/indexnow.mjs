@@ -9,6 +9,19 @@ const urls = [
   `${BASE_URL}/one-cikanlar`,
   `${BASE_URL}/prompts`,
   `${BASE_URL}/konular`,
+  `${BASE_URL}/konular/cv-hazirlama`,
+  `${BASE_URL}/konular/motivasyon-mektubu`,
+  `${BASE_URL}/konular/mulakat-hazirligi`,
+  `${BASE_URL}/konular/gorsel-olusturma`,
+  `${BASE_URL}/konular/logo-olusturma`,
+  `${BASE_URL}/konular/oyun`,
+  `${BASE_URL}/konular/pazarlama-ve-icerik`,
+  `${BASE_URL}/konular/sanat-ve-yaraticilik`,
+  `${BASE_URL}/konular/portre-ve-fotograf`,
+  `${BASE_URL}/konular/is-stratejisi`,
+  `${BASE_URL}/konular/yazilim-gelistirme`,
+  `${BASE_URL}/konular/midjourney-gorsel`,
+  `${BASE_URL}/konular/kariyer-gelisim`,
 ];
 
 const res = await fetch('https://api.indexnow.org/indexnow', {
@@ -23,3 +36,4 @@ const res = await fetch('https://api.indexnow.org/indexnow', {
 });
 
 console.log(`IndexNow: ${res.status} ${res.statusText}`);
+console.log(`Submitted ${urls.length} URLs`);

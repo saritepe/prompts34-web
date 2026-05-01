@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import PromptsPage, { metadata } from '@/app/prompts/page';
+import PromptsPage, { generateMetadata } from '@/app/prompts/page';
 import { getPublicPrompts } from '@/lib/api/prompts';
 import { buildPrompt } from './test-utils/fixtures';
 
@@ -40,9 +40,15 @@ describe('prompts listing page', () => {
     );
   });
 
-  it('exports canonical metadata for the listing page', () => {
-    expect(metadata.alternates?.canonical).toBe(
-      'https://prompts34.com/prompts',
-    );
+  it('exports canonical metadata for the listing page', async () => {
+    const meta = await generateMetadata({});
+    expect(meta.alternates?.canonical).toBe('https://prompts34.com/prompts');
+  });
+
+  it('noindexes search result pages when a query is active', async () => {
+    const meta = await generateMetadata({
+      searchParams: Promise.resolve({ q: 'cv' }),
+    });
+    expect(meta.robots).toEqual({ index: false, follow: false });
   });
 });

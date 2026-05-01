@@ -2,11 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import TopicPage, {
-  dynamic as topicDynamic,
+  revalidate as topicRevalidate,
   generateMetadata,
 } from '@/app/konular/[slug]/page';
 import TopicHubPage, {
-  dynamic as hubDynamic,
+  revalidate as hubRevalidate,
   metadata as hubMetadata,
 } from '@/app/konular/page';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
@@ -144,7 +144,7 @@ describe('search landing pages', () => {
     });
 
     it('exports the expected hub metadata', () => {
-      expect(hubDynamic).toBe('force-dynamic');
+      expect(hubRevalidate).toBe(300);
       expect(hubMetadata.title).toBe('AI Prompt Konuları');
       expect(hubMetadata.alternates?.canonical).toBe(
         'https://prompts34.com/konular',
@@ -247,8 +247,8 @@ describe('search landing pages', () => {
       expect(notFoundMock).toHaveBeenCalled();
     });
 
-    it('exports force-dynamic', () => {
-      expect(topicDynamic).toBe('force-dynamic');
+    it('exports revalidate = 300 for ISR', () => {
+      expect(topicRevalidate).toBe(300);
     });
 
     it('generates metadata from the topic definition', async () => {

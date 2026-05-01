@@ -6,7 +6,13 @@ import type { PromptResponse } from '@/types/prompt';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
+type PromptsPageSearchParams = Record<string, string | string[] | undefined>;
+
+type PromptsPageProps = {
+  searchParams?: Promise<PromptsPageSearchParams> | PromptsPageSearchParams;
+};
+
+const BASE_METADATA = {
   title: 'Prompt Arama Sonuçları',
   description:
     'Prompts34 üzerindeki yapay zeka promptlarını başlık, içerik, model ve etiketlere göre arayın.',
@@ -20,18 +26,23 @@ export const metadata: Metadata = {
     url: 'https://prompts34.com/prompts',
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary_large_image' as const,
     title: 'Prompt Arama Sonuçları | Prompts34',
     description:
       'Prompts34 üzerindeki yapay zeka promptlarını başlık, içerik, model ve etiketlere göre arayın.',
   },
 };
 
-type PromptsPageSearchParams = Record<string, string | string[] | undefined>;
-
-type PromptsPageProps = {
-  searchParams?: Promise<PromptsPageSearchParams> | PromptsPageSearchParams;
-};
+export async function generateMetadata({
+  searchParams,
+}: PromptsPageProps): Promise<Metadata> {
+  const resolved = await Promise.resolve(searchParams ?? {});
+  const q = getQuery(resolved);
+  if (q) {
+    return { ...BASE_METADATA, robots: { index: false, follow: false } };
+  }
+  return BASE_METADATA;
+}
 
 function getQuery(searchParams: PromptsPageSearchParams): string {
   const query = searchParams.q;

@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation';
 import { BreadcrumbStructuredData } from '../components/StructuredData';
 import { TOPICS, getTopicPath } from '@/lib/topics';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'AI Prompt Konuları',

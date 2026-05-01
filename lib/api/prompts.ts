@@ -17,7 +17,7 @@ export async function getPublicPrompts(
 
   const response = await fetch(`${API_URL}/prompts/public`, {
     headers,
-    cache: 'no-store',
+    ...(token ? { cache: 'no-store' } : { next: { revalidate: 300 } }),
   });
 
   if (!response.ok) {

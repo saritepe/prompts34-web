@@ -3,6 +3,7 @@ import Navigation from '@/components/Navigation';
 import CopyContentButton from '@/components/CopyContentButton';
 import PromptVoteButton from '@/components/PromptVoteButton';
 import CommentSection from '@/components/CommentSection';
+import { PromptStructuredData } from '@/app/components/StructuredData';
 import {
   sharedOpenGraphImage,
   sharedTwitterImage,
@@ -61,8 +62,16 @@ export default async function PromptDetailPage({
     return notFound();
   }
 
+  const description = buildDescription(prompt.explanation || prompt.content);
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+      <PromptStructuredData
+        title={prompt.title}
+        description={description}
+        url={`https://prompts34.com/prompts/${prompt.id}`}
+        datePublished={prompt.created_at}
+      />
       <Navigation />
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <section className="rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-950">

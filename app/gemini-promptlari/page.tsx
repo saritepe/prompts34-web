@@ -13,7 +13,7 @@ import {
 } from '../components/StructuredData';
 import { GEMINI_HUB, matchPromptsForToolHub } from '@/lib/tool-hubs';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
 
 const CANONICAL_URL = `https://prompts34.com${GEMINI_HUB.canonicalPath}`;
 

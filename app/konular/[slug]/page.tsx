@@ -13,12 +13,17 @@ import {
   CollectionPageStructuredData,
 } from '../../components/StructuredData';
 import {
+  getAllTopicSlugs,
   getTopicBySlug,
   getTopicPath,
   matchPromptsForTopic,
 } from '@/lib/topics';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  return getAllTopicSlugs().map((slug) => ({ slug }));
+}
 
 interface TopicPageProps {
   params: Promise<{ slug: string }>;
@@ -54,6 +59,7 @@ export async function generateMetadata({
       description: topic.description,
       ...sharedTwitterImage,
     },
+    keywords: topic.keywords,
     alternates: {
       canonical: url,
     },

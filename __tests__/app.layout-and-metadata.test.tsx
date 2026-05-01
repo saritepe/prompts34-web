@@ -114,8 +114,8 @@ describe('layout and metadata routes', () => {
     expect(entries[1]?.changeFrequency).toBe('daily');
     expect(entries[6]?.changeFrequency).toBe('weekly');
     expect(entries[6]?.priority).toBe(0.8);
-    expect(entries[0]?.lastModified).toBeUndefined();
-    expect(entries[1]?.lastModified).toBeUndefined();
+    expect(entries[0]?.lastModified).toBeInstanceOf(Date);
+    expect(entries[1]?.lastModified).toBeInstanceOf(Date);
     expect(entries.at(-2)?.lastModified).toBe('2026-03-25T10:00:00.000Z');
     expect(entries.at(-1)?.lastModified).toBe('2026-03-21T10:00:00.000Z');
     expect(entries.map((entry) => entry.url)).not.toContain(
@@ -147,7 +147,7 @@ describe('layout and metadata routes', () => {
       expect(entries.map((entry) => entry.url)).not.toContain(
         'https://prompts34.com/cv-hazirlama',
       );
-      expect(entries.every((entry) => entry.lastModified === undefined)).toBe(
+      expect(entries.every((entry) => entry.lastModified instanceof Date)).toBe(
         true,
       );
     } finally {

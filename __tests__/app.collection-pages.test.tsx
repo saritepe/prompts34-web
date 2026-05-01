@@ -2,11 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import ChatGPTPromptlariPage, {
-  dynamic as chatgptDynamic,
+  revalidate as chatgptRevalidate,
   metadata as chatgptMetadata,
 } from '@/app/chatgpt-promptlari/page';
 import GeminiPromptlariPage, {
-  dynamic as geminiDynamic,
+  revalidate as geminiRevalidate,
   metadata as geminiMetadata,
 } from '@/app/gemini-promptlari/page';
 import LatestPromptsPage, {
@@ -129,7 +129,7 @@ describe('collection and listing pages', () => {
       name: 'ChatGPT Promptlari',
       component: ChatGPTPromptlariPage,
       metadata: chatgptMetadata,
-      dynamic: chatgptDynamic,
+      revalidate: chatgptRevalidate,
       heading: 'ChatGPT Promptları',
       emptyMessage: 'Henüz ChatGPT ile ilgili prompt bulunmuyor.',
       canonical: 'https://prompts34.com/chatgpt-promptlari',
@@ -150,7 +150,7 @@ describe('collection and listing pages', () => {
       name: 'Gemini Promptlari',
       component: GeminiPromptlariPage,
       metadata: geminiMetadata,
-      dynamic: geminiDynamic,
+      revalidate: geminiRevalidate,
       heading: 'Gemini Promptları',
       emptyMessage: 'Henüz Gemini ile ilgili prompt bulunmuyor.',
       canonical: 'https://prompts34.com/gemini-promptlari',
@@ -215,7 +215,7 @@ describe('collection and listing pages', () => {
     });
 
     it('exports the expected route metadata', () => {
-      expect(pageConfig.dynamic).toBe('force-dynamic');
+      expect(pageConfig.revalidate).toBe(300);
       expect(pageConfig.metadata.title).toBe(pageConfig.heading);
       expect(pageConfig.metadata.alternates?.canonical).toBe(
         pageConfig.canonical,

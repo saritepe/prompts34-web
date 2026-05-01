@@ -7,6 +7,8 @@ import {
 import Navigation from '@/components/Navigation';
 import { getPublicPrompts } from '@/lib/api/prompts';
 
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: 'Öne Çıkan Promptlar',
   description:

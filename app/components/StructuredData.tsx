@@ -48,6 +48,40 @@ export function BreadcrumbStructuredData({
   );
 }
 
+export function PromptStructuredData({
+  title,
+  description,
+  url,
+  datePublished,
+}: {
+  title: string;
+  description: string;
+  url: string;
+  datePublished: string;
+}) {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: title,
+    description,
+    url,
+    inLanguage: 'tr-TR',
+    datePublished,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Prompts34',
+      url: 'https://prompts34.com',
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
+  );
+}
+
 export function CollectionPageStructuredData({
   name,
   description,

@@ -50,7 +50,7 @@ export default function PromptForm({
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { token } = useAuth();
+  const { token, user } = useAuth();
 
   async function handleImageFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -69,7 +69,7 @@ export default function PromptForm({
       );
       return;
     }
-    if (!token) {
+    if (!token || !user?.id) {
       setUploadError('Yükleme için giriş yapmış olmanız gerekiyor.');
       return;
     }
@@ -82,7 +82,7 @@ export default function PromptForm({
           'Görsel sıkıştırıldıktan sonra hâlâ çok büyük. Daha küçük bir görsel deneyin.',
         );
       }
-      const url = await uploadPromptImage(compressed, token);
+      const url = await uploadPromptImage(compressed, token, user.id);
       setFormData((prev) => ({ ...prev, output_value: url }));
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : 'Görsel yüklenemedi');

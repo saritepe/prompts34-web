@@ -125,29 +125,29 @@ export async function updatePrompt(
 export async function uploadPromptImage(
   file: File,
   token: string,
+  userId: string,
 ): Promise<string> {
-  const fd = new FormData();
-  fd.append('file', file);
-  const response = await fetch(`${API_URL}/prompts/upload-image`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
-    body: fd,
-  });
+  const { getBrowserSupabase } = await import('@/lib/supabase-browser');
+  const supabase = getBrowserSupabase(token);
+  const path = `${userId}/${crypto.randomUUID()}.webp`;
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(
-      typeof errorData.detail === 'string'
-        ? errorData.detail
-        : 'Görsel yüklenemedi',
-    );
+  const { error } = await supabase.storage
+    .from('prompt-outputs')
+    .upload(path, file, {
+      contentType: 'image/webp',
+      cacheControl: '31536000',
+      upsert: false,
+    });
+
+  if (error) {
+    throw new Error(error.message || 'Görsel yüklenemedi');
   }
 
-  const json = (await response.json()) as { url?: string };
-  if (!json.url) {
-    throw new Error('Görsel yüklenemedi');
+  const { data } = supabase.storage.from('prompt-outputs').getPublicUrl(path);
+  if (!data?.publicUrl) {
+    throw new Error('Görsel URL alınamadı');
   }
-  return json.url;
+  return data.publicUrl;
 }
 
 export async function deletePrompt(

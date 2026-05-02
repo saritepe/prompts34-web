@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import Navigation from '@/components/Navigation';
+import PromptOutputImage from '@/components/PromptOutputImage';
 import { getPublicPrompts, votePrompt } from '@/lib/api/prompts';
 import { useAuth } from '@/lib/auth';
 import { findTopicByKeyword, getTopicPath, normalizeQuery } from '@/lib/topics';
@@ -97,6 +98,18 @@ function PromptCard({
 
   return (
     <article className="group flex h-full flex-col rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-950">
+      {prompt.output?.type === 'image' && (
+        <Link
+          href={promptHref}
+          className="-mx-5 -mt-5 mb-4 block overflow-hidden rounded-t-2xl border-b border-zinc-200 dark:border-zinc-800"
+        >
+          <PromptOutputImage
+            src={prompt.output.value}
+            alt={prompt.title}
+            className="h-44 w-full object-cover"
+          />
+        </Link>
+      )}
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           <span className="mb-2 inline-flex rounded-full border border-zinc-300 px-2.5 py-1 text-xs font-semibold text-zinc-700 dark:border-zinc-700 dark:text-zinc-300">

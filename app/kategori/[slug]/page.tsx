@@ -12,12 +12,32 @@ import {
   BreadcrumbStructuredData,
   CollectionPageStructuredData,
 } from '@/app/components/StructuredData';
+import Link from 'next/link';
 import {
   getAllTopicSlugs,
   getTopicBySlug,
   getTopicPath,
   matchPromptsForTopic,
 } from '@/lib/topics';
+import { PROFESSIONS, getProfessionPath } from '@/lib/professions';
+import { USE_CASES, getUseCasePath } from '@/lib/use-cases';
+
+function findRelatedByTagOverlap<T extends { tags: string[] }>(
+  items: T[],
+  topicTags: string[],
+  limit: number,
+): T[] {
+  const topicSet = new Set(topicTags.map((t) => t.toLowerCase()));
+  return items
+    .map((item) => ({
+      item,
+      overlap: item.tags.filter((t) => topicSet.has(t.toLowerCase())).length,
+    }))
+    .filter((entry) => entry.overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap)
+    .slice(0, limit)
+    .map((entry) => entry.item);
+}
 
 export const revalidate = 300;
 
@@ -90,6 +110,12 @@ export default async function KategoriPage({ params }: KategoriPageProps) {
   }
 
   const canonicalUrl = `https://prompts34.com${getTopicPath(topic)}`;
+  const relatedProfessions = findRelatedByTagOverlap(
+    PROFESSIONS,
+    topic.tags,
+    4,
+  );
+  const relatedUseCases = findRelatedByTagOverlap(USE_CASES, topic.tags, 4);
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
@@ -145,6 +171,49 @@ export default async function KategoriPage({ params }: KategoriPageProps) {
               <CategoryPromptCard key={prompt.id} prompt={prompt} />
             ))}
           </div>
+        )}
+
+        {(relatedProfessions.length > 0 || relatedUseCases.length > 0) && (
+          <section className="mt-14 grid grid-cols-1 gap-8 border-t border-zinc-200 pt-10 dark:border-zinc-800 md:grid-cols-2">
+            {relatedProfessions.length > 0 && (
+              <div>
+                <h2 className="mb-4 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+                  İlgili meslekler
+                </h2>
+                <ul className="space-y-2">
+                  {relatedProfessions.map((profession) => (
+                    <li key={profession.slug}>
+                      <Link
+                        href={getProfessionPath(profession)}
+                        className="text-zinc-700 hover:underline dark:text-zinc-300"
+                      >
+                        {profession.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {relatedUseCases.length > 0 && (
+              <div>
+                <h2 className="mb-4 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+                  İlgili kullanım alanları
+                </h2>
+                <ul className="space-y-2">
+                  {relatedUseCases.map((useCase) => (
+                    <li key={useCase.slug}>
+                      <Link
+                        href={getUseCasePath(useCase)}
+                        className="text-zinc-700 hover:underline dark:text-zinc-300"
+                      >
+                        {useCase.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
         )}
       </main>
     </div>

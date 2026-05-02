@@ -8,6 +8,10 @@ import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPublicPrompts } from '@/lib/api/prompts';
 import { TOPICS, getTopicPath } from '@/lib/topics';
 import { TOOL_HUBS } from '@/lib/tool-hubs';
+import { GLOSSARY, getGlossaryPath } from '@/lib/glossary';
+import { GUIDES, getGuidePath } from '@/lib/guides';
+import { PROFESSIONS, getProfessionPath } from '@/lib/professions';
+import { USE_CASES, getUseCasePath } from '@/lib/use-cases';
 import { getPromptPath } from '@/lib/utils/slug';
 import { buildPrompt } from './test-utils/fixtures';
 
@@ -42,7 +46,7 @@ describe('layout and metadata routes', () => {
     expect(metadata.metadataBase?.toString()).toBe('https://prompts34.com/');
     expect(metadata.title).toEqual({
       default:
-        'Prompts34 | Yapay Zeka Promptları - ChatGPT, Claude, AI Prompt Kütüphanesi',
+        'Prompts34 | Hazır Promptlar - Türkçe Yapay Zeka Prompt Kütüphanesi',
       template: '%s | Prompts34',
     });
     expect(metadata.alternates?.canonical).toBe('https://prompts34.com');
@@ -104,6 +108,20 @@ describe('layout and metadata routes', () => {
       'https://prompts34.com/prompts',
       'https://prompts34.com/kategori',
       ...TOPICS.map((topic) => `https://prompts34.com${getTopicPath(topic)}`),
+      'https://prompts34.com/meslek',
+      ...PROFESSIONS.map(
+        (profession) => `https://prompts34.com${getProfessionPath(profession)}`,
+      ),
+      'https://prompts34.com/kullanim',
+      ...USE_CASES.map(
+        (useCase) => `https://prompts34.com${getUseCasePath(useCase)}`,
+      ),
+      'https://prompts34.com/sozluk',
+      ...GLOSSARY.map(
+        (entry) => `https://prompts34.com${getGlossaryPath(entry)}`,
+      ),
+      'https://prompts34.com/rehber',
+      ...GUIDES.map((guide) => `https://prompts34.com${getGuidePath(guide)}`),
     ];
 
     expect(entries).toHaveLength(expectedStaticUrls.length + 2);
@@ -140,6 +158,21 @@ describe('layout and metadata routes', () => {
         'https://prompts34.com/prompts',
         'https://prompts34.com/kategori',
         ...TOPICS.map((topic) => `https://prompts34.com${getTopicPath(topic)}`),
+        'https://prompts34.com/meslek',
+        ...PROFESSIONS.map(
+          (profession) =>
+            `https://prompts34.com${getProfessionPath(profession)}`,
+        ),
+        'https://prompts34.com/kullanim',
+        ...USE_CASES.map(
+          (useCase) => `https://prompts34.com${getUseCasePath(useCase)}`,
+        ),
+        'https://prompts34.com/sozluk',
+        ...GLOSSARY.map(
+          (entry) => `https://prompts34.com${getGlossaryPath(entry)}`,
+        ),
+        'https://prompts34.com/rehber',
+        ...GUIDES.map((guide) => `https://prompts34.com${getGuidePath(guide)}`),
       ];
 
       expect(entries.map((entry) => entry.url)).toEqual(expectedStaticUrls);

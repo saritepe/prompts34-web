@@ -347,15 +347,15 @@ export default function HomePageClient({
           <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
             <div>
               <p className="mb-4 inline-flex rounded-full bg-zinc-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white dark:bg-zinc-100 dark:text-zinc-900">
-                Türkçe Yapay Zeka Prompt Platformu
+                Türkçe Hazır Prompt Kütüphanesi
               </p>
               <h1 className="mb-4 max-w-3xl text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 md:text-5xl">
-                Türkçe yapay zeka promptlarını keşfet, paylaş, geliştir.
+                Hazır Promptlar — Türkçe yapay zeka prompt kütüphanesi.
               </h1>
               <p className="mb-7 max-w-2xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
                 ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için
-                topluluk tarafından üretilen prompt kütüphanesi. Hızlıca ara,
-                kopyala ve kendi prompt koleksiyonunu oluştur.
+                topluluk tarafından üretilen ücretsiz hazır promptlar. Hızlıca
+                ara, kopyala ve kendi prompt koleksiyonunu oluştur.
               </p>
               <div className="flex flex-wrap gap-3">
                 {!token && !user && (

@@ -82,6 +82,96 @@ export function PromptStructuredData({
   );
 }
 
+export function DefinedTermStructuredData({
+  term,
+  description,
+  url,
+}: {
+  term: string;
+  description: string;
+  url: string;
+}) {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTerm',
+    name: term,
+    description,
+    url,
+    inDefinedTermSet: {
+      '@type': 'DefinedTermSet',
+      name: 'Prompts34 Yapay Zeka Sözlüğü',
+      url: 'https://prompts34.com/sozluk',
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
+  );
+}
+
+export function HowToStructuredData({
+  name,
+  description,
+  url,
+  steps,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  steps: Array<{ name: string; text: string }>;
+}) {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    description,
+    url,
+    inLanguage: 'tr-TR',
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.name,
+      text: step.text,
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
+  );
+}
+
+export function FAQPageStructuredData({
+  questions,
+}: {
+  questions: Array<{ question: string; answer: string }>;
+}) {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: questions.map((q) => ({
+      '@type': 'Question',
+      name: q.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: q.answer,
+      },
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
+  );
+}
+
 export function CollectionPageStructuredData({
   name,
   description,

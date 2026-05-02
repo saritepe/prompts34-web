@@ -22,21 +22,28 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://prompts34.com'),
   title: {
     default:
-      'Prompts34 | Yapay Zeka Promptları - ChatGPT, Claude, AI Prompt Kütüphanesi',
+      'Prompts34 | Hazır Promptlar - Türkçe Yapay Zeka Prompt Kütüphanesi',
     template: '%s | Prompts34',
   },
   description:
-    "Türkiye'nin en kapsamlı yapay zeka prompt kütüphanesi. ChatGPT, Claude ve diğer AI araçları için hazır promptlar. CV hazırlama, motivasyon mektubu, mülakat hazırlığı ve daha fazlası.",
+    "Türkiye'nin en kapsamlı hazır prompt kütüphanesi. ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için Türkçe promptlar. CV hazırlama, motivasyon mektubu, mülakat hazırlığı, görsel oluşturma ve daha fazlası.",
   keywords: [
-    'prompts34',
+    'hazır promptlar',
+    'prompt kütüphanesi',
+    'türkçe promptlar',
     'yapay zeka promptları',
     'chatgpt promptları',
+    'chatgpt türkçe',
+    'gemini promptları',
+    'claude promptları',
     'ai prompts',
-    'claude prompts',
     'cv hazırlama',
     'motivasyon mektubu',
     'mülakat hazırlığı',
-    'yapay zeka',
+    'yapay zeka soru sor',
+    'ücretsiz prompt',
+    'prompt ne demek',
+    'prompt mühendisliği',
     'turkish ai prompts',
   ],
   authors: [{ name: 'Prompts34' }],
@@ -52,17 +59,16 @@ export const metadata: Metadata = {
     locale: 'tr_TR',
     url: 'https://prompts34.com',
     siteName: 'Prompts34',
-    title:
-      'Prompts34 | Yapay Zeka Promptları - ChatGPT, Claude, AI Prompt Kütüphanesi',
+    title: 'Prompts34 | Hazır Promptlar - Türkçe Yapay Zeka Prompt Kütüphanesi',
     description:
-      "Türkiye'nin en kapsamlı yapay zeka prompt kütüphanesi. ChatGPT, Claude ve diğer AI araçları için hazır promptlar.",
+      "Türkiye'nin en kapsamlı hazır prompt kütüphanesi. ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için Türkçe promptlar.",
     ...sharedOpenGraphImage,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Prompts34 | Yapay Zeka Promptları',
+    title: 'Prompts34 | Hazır Promptlar - Türkçe Prompt Kütüphanesi',
     description:
-      "Türkiye'nin en kapsamlı yapay zeka prompt kütüphanesi. ChatGPT, Claude ve diğer AI araçları için hazır promptlar.",
+      "Türkiye'nin en kapsamlı hazır prompt kütüphanesi. ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için Türkçe promptlar.",
     ...sharedTwitterImage,
   },
   robots: {
@@ -78,6 +84,12 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://prompts34.com',
+  },
+  verification: {
+    yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
+    other: {
+      'msvalidate.01': process.env.NEXT_PUBLIC_BING_VERIFICATION ?? '',
+    },
   },
 };
 

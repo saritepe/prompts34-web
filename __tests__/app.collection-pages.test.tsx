@@ -130,7 +130,7 @@ describe('collection and listing pages', () => {
       component: ChatGPTPromptlariPage,
       metadata: chatgptMetadata,
       revalidate: chatgptRevalidate,
-      heading: 'ChatGPT Promptları',
+      heading: 'ChatGPT Türkçe Hazır Promptlar',
       emptyMessage: 'Henüz ChatGPT ile ilgili prompt bulunmuyor.',
       canonical: 'https://prompts34.com/araclar/chatgpt-promptlari',
       matchingPrompt: buildPrompt({
@@ -151,7 +151,7 @@ describe('collection and listing pages', () => {
       component: GeminiPromptlariPage,
       metadata: geminiMetadata,
       revalidate: geminiRevalidate,
-      heading: 'Gemini Promptları',
+      heading: 'Gemini Yapay Zeka Türkçe Hazır Promptlar',
       emptyMessage: 'Henüz Gemini ile ilgili prompt bulunmuyor.',
       canonical: 'https://prompts34.com/araclar/gemini-promptlari',
       matchingPrompt: buildPrompt({

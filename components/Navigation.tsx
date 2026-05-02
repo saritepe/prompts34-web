@@ -4,12 +4,80 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth';
 import { useState, useRef, useEffect } from 'react';
 
-const mainLinks = [
+const exploreLinks = [
   { href: '/kategori', label: 'Kategoriler' },
   { href: '/araclar', label: 'Araçlar' },
+  { href: '/meslek', label: 'Meslekler' },
+  { href: '/kullanim', label: 'Kullanım Alanları' },
   { href: '/en-yeni-prompts', label: 'En Yeni' },
   { href: '/one-cikanlar', label: 'Öne Çıkanlar' },
 ];
+
+const learnLinks = [
+  { href: '/sozluk', label: 'Sözlük' },
+  { href: '/rehber', label: 'Rehber' },
+  { href: '/ucretsiz-promptlar', label: 'Ücretsiz Promptlar' },
+];
+
+function NavGroup({
+  label,
+  links,
+}: {
+  label: string;
+  links: { href: string; label: string }[];
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1 rounded-md px-2 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-900"
+      >
+        {label}
+        <svg
+          className={`h-3 w-3 transition-transform ${open ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      {open && (
+        <div className="absolute left-0 z-50 mt-2 w-56 rounded-md border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-950">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Navigation() {
   const { user, signOut } = useAuth();
@@ -42,15 +110,8 @@ export default function Navigation() {
               Prompts34
             </Link>
             <div className="hidden items-center gap-3 text-sm font-semibold text-zinc-600 dark:text-zinc-300 md:flex">
-              {mainLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="rounded-md px-2 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-900"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              <NavGroup label="Keşfet" links={exploreLinks} />
+              <NavGroup label="Öğren" links={learnLinks} />
             </div>
           </div>
 
@@ -58,6 +119,8 @@ export default function Navigation() {
             {user ? (
               <div className="relative" ref={dropdownRef}>
                 <button
+                  type="button"
+                  aria-label="Kullanıcı menüsü"
                   onClick={() => setShowDropdown(!showDropdown)}
                   className="flex items-center gap-2 rounded-md px-3 py-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
                 >

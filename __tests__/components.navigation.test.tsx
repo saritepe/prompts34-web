@@ -25,10 +25,29 @@ describe('Navigation', () => {
       'href',
       '/',
     );
+    fireEvent.click(screen.getByRole('button', { name: 'Keşfet' }));
     expect(screen.getByRole('link', { name: 'Kategoriler' })).toHaveAttribute(
       'href',
       '/kategori',
     );
+    expect(screen.getByRole('link', { name: 'Meslekler' })).toHaveAttribute(
+      'href',
+      '/meslek',
+    );
+    expect(
+      screen.getByRole('link', { name: 'Kullanım Alanları' }),
+    ).toHaveAttribute('href', '/kullanim');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Öğren' }));
+    expect(screen.getByRole('link', { name: 'Sözlük' })).toHaveAttribute(
+      'href',
+      '/sozluk',
+    );
+    expect(screen.getByRole('link', { name: 'Rehber' })).toHaveAttribute(
+      'href',
+      '/rehber',
+    );
+
     expect(screen.getByRole('link', { name: 'Giriş Yap' })).toHaveAttribute(
       'href',
       '/giris',
@@ -47,7 +66,9 @@ describe('Navigation', () => {
 
     render(<Navigation />);
 
-    expect(screen.getByRole('button')).toHaveTextContent('A');
+    expect(
+      screen.getByRole('button', { name: 'Kullanıcı menüsü' }),
+    ).toHaveTextContent('A');
   });
 
   it('falls back to the email initial and then U when user details are empty', () => {
@@ -57,7 +78,9 @@ describe('Navigation', () => {
     };
 
     const { rerender } = render(<Navigation />);
-    expect(screen.getByRole('button')).toHaveTextContent('M');
+    expect(
+      screen.getByRole('button', { name: 'Kullanıcı menüsü' }),
+    ).toHaveTextContent('M');
 
     authState.user = {
       email: '',
@@ -65,7 +88,9 @@ describe('Navigation', () => {
     };
 
     rerender(<Navigation />);
-    expect(screen.getByRole('button')).toHaveTextContent('U');
+    expect(
+      screen.getByRole('button', { name: 'Kullanıcı menüsü' }),
+    ).toHaveTextContent('U');
   });
 
   it('opens and closes the user dropdown, supports outside clicks, and signs out', () => {
@@ -76,18 +101,21 @@ describe('Navigation', () => {
 
     render(<Navigation />);
 
-    fireEvent.click(screen.getByRole('button'));
+    const userButton = () =>
+      screen.getByRole('button', { name: 'Kullanıcı menüsü' });
+
+    fireEvent.click(userButton());
     expect(screen.getByText('alpha')).toBeInTheDocument();
     expect(screen.getByText('user@example.com')).toBeInTheDocument();
 
     fireEvent.mouseDown(document.body);
     expect(screen.queryByText('Promptlarım')).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(userButton());
     fireEvent.click(screen.getByRole('link', { name: 'Promptlarım' }));
     expect(screen.queryByText('Promptlarım')).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(userButton());
     fireEvent.click(screen.getByRole('button', { name: 'Çıkış Yap' }));
     expect(authState.signOut).toHaveBeenCalledTimes(1);
   });
@@ -100,7 +128,7 @@ describe('Navigation', () => {
 
     render(<Navigation />);
 
-    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(screen.getByRole('button', { name: 'Kullanıcı menüsü' }));
     const email = screen.getByText('mail@example.com');
     fireEvent.mouseDown(email);
 

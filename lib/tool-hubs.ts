@@ -23,11 +23,11 @@ export interface ToolHubDefinition {
 
 export const CHATGPT_HUB: ToolHubDefinition = {
   slug: 'chatgpt-promptlari',
-  title: 'ChatGPT Promptları',
+  title: 'ChatGPT Türkçe Hazır Promptlar',
   description:
-    'ChatGPT için hazırlanmış Türkçe yapay zeka promptları. GPT-4, GPT-4o ve diğer ChatGPT modelleriyle metin, kod, analiz ve içerik üretin.',
+    'ChatGPT için Türkçe hazır promptlar. GPT-4, GPT-4o ve diğer ChatGPT modelleriyle metin, kod, analiz ve içerik üretin. Ücretsiz prompt kütüphanesi.',
   canonicalPath: '/araclar/chatgpt-promptlari',
-  introHeading: 'ChatGPT Promptları',
+  introHeading: 'ChatGPT Türkçe Hazır Promptlar',
   introBody:
     "ChatGPT ve OpenAI modelleri için özenle seçilmiş Türkçe promptlar. İçerik üretimi, analiz, kodlama ve günlük iş akışlarınızda ChatGPT'den maksimum verim almak için hazırlanmış komut örneklerini keşfedin.",
   tipsHeading: 'ChatGPT İpuçları',
@@ -40,12 +40,15 @@ export const CHATGPT_HUB: ToolHubDefinition = {
   emptyMessage: 'Henüz ChatGPT ile ilgili prompt bulunmuyor.',
   breadcrumbName: 'ChatGPT Promptları',
   keywords: [
-    'chatgpt',
+    'chatgpt türkçe',
+    'chatgpt hazır promptlar',
     'chatgpt promptları',
+    'chatgpt türkçe promptlar',
     'gpt-4 promptları',
     'gpt-4o',
     'openai promptları',
     'türkçe chatgpt',
+    'hazır promptlar',
     'yapay zeka promptları',
   ],
   modelKeywords: [
@@ -66,11 +69,11 @@ export const CHATGPT_HUB: ToolHubDefinition = {
 
 export const GEMINI_HUB: ToolHubDefinition = {
   slug: 'gemini-promptlari',
-  title: 'Gemini Promptları',
+  title: 'Gemini Yapay Zeka Türkçe Hazır Promptlar',
   description:
-    'Google Gemini için hazırlanmış Türkçe yapay zeka promptları. Gemini Pro ve Flash modelleriyle metin, görsel ve çok modlu görevlerde verim alın.',
+    'Google Gemini için Türkçe hazır promptlar. Gemini Pro ve Flash modelleriyle metin, görsel ve çok modlu görevlerde verim alın. Ücretsiz prompt kütüphanesi.',
   canonicalPath: '/araclar/gemini-promptlari',
-  introHeading: 'Gemini Promptları',
+  introHeading: 'Gemini Yapay Zeka Türkçe Hazır Promptlar',
   introBody:
     "Google Gemini modelleri için seçilmiş Türkçe promptlar. Araştırma, özetleme, kodlama ve çok modlu görevlerde Gemini'nin güçlü yönlerini kullanmanızı sağlayacak komut örneklerini keşfedin.",
   tipsHeading: 'Gemini İpuçları',
@@ -83,12 +86,15 @@ export const GEMINI_HUB: ToolHubDefinition = {
   emptyMessage: 'Henüz Gemini ile ilgili prompt bulunmuyor.',
   breadcrumbName: 'Gemini Promptları',
   keywords: [
-    'gemini',
+    'gemini yapay zeka',
     'gemini promptları',
+    'gemini türkçe',
     'google gemini',
     'gemini pro',
     'gemini flash',
+    'gemini hazır promptlar',
     'türkçe gemini',
+    'hazır promptlar',
     'yapay zeka promptları',
   ],
   modelKeywords: ['gemini', 'bard', 'google gemini'],
@@ -98,11 +104,11 @@ export const GEMINI_HUB: ToolHubDefinition = {
 
 export const CLAUDE_HUB: ToolHubDefinition = {
   slug: 'claude-promptlari',
-  title: 'Claude Promptları',
+  title: 'Claude Yapay Zeka Türkçe Hazır Promptlar',
   description:
-    'Anthropic Claude için hazırlanmış Türkçe yapay zeka promptları. Claude 3, Claude 4 ve Sonnet modelleriyle analiz, yazma ve kodlama görevlerinde verim alın.',
+    'Anthropic Claude için Türkçe hazır promptlar. Claude 3, Claude 4 ve Sonnet modelleriyle analiz, yazma ve kodlama görevlerinde verim alın. Ücretsiz prompt kütüphanesi.',
   canonicalPath: '/araclar/claude-promptlari',
-  introHeading: 'Claude Promptları',
+  introHeading: 'Claude Yapay Zeka Türkçe Hazır Promptlar',
   introBody:
     "Anthropic Claude modelleri için özenle seçilmiş Türkçe promptlar. Uzun metin analizi, detaylı yazma ve kodlama görevlerinde Claude'un güçlü yönlerini kullanmak için hazırlanmış komut örneklerini keşfedin.",
   tipsHeading: 'Claude İpuçları',
@@ -115,10 +121,14 @@ export const CLAUDE_HUB: ToolHubDefinition = {
   emptyMessage: 'Henüz Claude ile ilgili prompt bulunmuyor.',
   breadcrumbName: 'Claude Promptları',
   keywords: [
+    'claude yapay zeka promptlar',
     'claude promptları',
+    'claude türkçe',
     'anthropic claude türkçe',
     'claude ai prompt',
     'claude yapay zeka',
+    'claude hazır promptlar',
+    'hazır promptlar',
     'yapay zeka promptları',
   ],
   modelKeywords: [

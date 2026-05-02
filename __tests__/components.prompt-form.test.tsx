@@ -1,6 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/auth', () => ({
+  useAuth: () => ({ token: 'test-token', user: { id: 'user-1' } }),
+}));
+
 import PromptForm from '@/components/PromptForm';
 import {
   buildPrompt,

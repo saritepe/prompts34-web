@@ -1,6 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useAuth } from '@/lib/auth';
+import { uploadPromptImage } from '@/lib/api/prompts';
+import PromptOutputImage from '@/components/PromptOutputImage';
 import {
   PromptCreate,
   PromptOutput,
@@ -9,6 +12,9 @@ import {
 } from '@/types/prompt';
 
 type OutputKind = '' | 'text' | 'image';
+
+const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 type PromptFormData = Partial<PromptResponse>;
 
@@ -39,6 +45,43 @@ export default function PromptForm({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { token } = useAuth();
+
+  async function handleImageFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    setUploadError(null);
+
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+      setUploadError('Sadece PNG, JPEG veya WebP yükleyebilirsiniz.');
+      return;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setUploadError(
+        `Görsel en fazla ${MAX_IMAGE_BYTES / (1024 * 1024)} MB olabilir.`,
+      );
+      return;
+    }
+    if (!token) {
+      setUploadError('Yükleme için giriş yapmış olmanız gerekiyor.');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const url = await uploadPromptImage(file, token);
+      setFormData((prev) => ({ ...prev, output_value: url }));
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : 'Görsel yüklenemedi');
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -252,25 +295,57 @@ export default function PromptForm({
           />
         )}
         {formData.output_type === 'image' && (
-          <>
+          <div className="space-y-3">
             <input
-              type="url"
-              value={formData.output_value}
-              onChange={(e) =>
-                setFormData({ ...formData, output_value: e.target.value })
-              }
-              className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50 focus:border-transparent"
-              placeholder="https://..."
+              ref={fileInputRef}
+              type="file"
+              accept={ACCEPTED_IMAGE_TYPES.join(',')}
+              onChange={handleImageFileChange}
+              disabled={uploading}
+              className="block w-full text-sm text-zinc-700 dark:text-zinc-300 file:mr-4 file:rounded-md file:border-0 file:bg-zinc-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white dark:file:bg-zinc-50 dark:file:text-zinc-900 disabled:opacity-50"
             />
-            {formData.output_value && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={formData.output_value}
-                alt="Çıktı önizleme"
-                className="mt-3 max-h-64 rounded-md border border-zinc-200 dark:border-zinc-800"
-              />
+            <p className="text-xs text-zinc-500 dark:text-zinc-500">
+              PNG, JPEG veya WebP. En fazla {MAX_IMAGE_BYTES / (1024 * 1024)}{' '}
+              MB. Yüklenen görsel sıkıştırılır ve WebP olarak depolanır.
+            </p>
+            {uploading && (
+              <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                Yükleniyor...
+              </p>
             )}
-          </>
+            {uploadError && (
+              <p className="text-sm text-red-600 dark:text-red-400">
+                {uploadError}
+              </p>
+            )}
+            {formData.output_value && !uploading && (
+              <div className="space-y-2">
+                <PromptOutputImage
+                  src={formData.output_value}
+                  alt="Çıktı önizleme"
+                  className="max-h-64 rounded-md border border-zinc-200 dark:border-zinc-800"
+                />
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-xs text-zinc-600 underline underline-offset-2 dark:text-zinc-400"
+                  >
+                    Değiştir
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, output_value: '' }))
+                    }
+                    className="text-xs text-red-600 underline underline-offset-2 dark:text-red-400"
+                  >
+                    Kaldır
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
 

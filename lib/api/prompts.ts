@@ -122,6 +122,34 @@ export async function updatePrompt(
   return response.json();
 }
 
+export async function uploadPromptImage(
+  file: File,
+  token: string,
+): Promise<string> {
+  const fd = new FormData();
+  fd.append('file', file);
+  const response = await fetch(`${API_URL}/prompts/upload-image`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body: fd,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(
+      typeof errorData.detail === 'string'
+        ? errorData.detail
+        : 'Görsel yüklenemedi',
+    );
+  }
+
+  const json = (await response.json()) as { url?: string };
+  if (!json.url) {
+    throw new Error('Görsel yüklenemedi');
+  }
+  return json.url;
+}
+
 export async function deletePrompt(
   promptId: string,
   token: string,

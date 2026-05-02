@@ -4,6 +4,7 @@ import Navigation from '@/components/Navigation';
 import CopyContentButton from '@/components/CopyContentButton';
 import PromptVoteButton from '@/components/PromptVoteButton';
 import CommentSection from '@/components/CommentSection';
+import PromptOutputImage from '@/components/PromptOutputImage';
 import { PromptStructuredData } from '@/app/components/StructuredData';
 import {
   sharedOpenGraphImage,
@@ -148,8 +149,7 @@ export default async function PromptDetailPage({
                   {prompt.output.value}
                 </pre>
               ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <PromptOutputImage
                   src={prompt.output.value}
                   alt={prompt.title}
                   className="max-h-[600px] rounded-md border border-zinc-200 dark:border-zinc-800"

@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import { WebSiteStructuredData } from './components/StructuredData';
 import { sharedOpenGraphImage, sharedTwitterImage } from './shared-metadata';
 import { Analytics } from '@vercel/analytics/react';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -98,6 +99,11 @@ export default function RootLayout({
           <Footer />
         </AuthProvider>
         <Analytics />
+        <Script
+          src="https://cloud.umami.is/script.js"
+          data-website-id={process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID}
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

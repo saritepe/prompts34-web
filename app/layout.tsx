@@ -85,12 +85,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://prompts34.com',
   },
-  verification: {
-    yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
-    other: {
-      'msvalidate.01': process.env.NEXT_PUBLIC_BING_VERIFICATION ?? '',
-    },
-  },
 };
 
 export default function RootLayout({

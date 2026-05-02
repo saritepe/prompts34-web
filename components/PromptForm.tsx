@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { useAuth } from '@/lib/auth';
 import { uploadPromptImage } from '@/lib/api/prompts';
+import { compressImage } from '@/lib/utils/compress-image';
 import PromptOutputImage from '@/components/PromptOutputImage';
 import {
   PromptCreate,
@@ -14,7 +15,8 @@ import {
 type OutputKind = '' | 'text' | 'image';
 
 const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const MAX_INPUT_BYTES = 25 * 1024 * 1024;
+const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 
 type PromptFormData = Partial<PromptResponse>;
 
@@ -61,9 +63,9 @@ export default function PromptForm({
       setUploadError('Sadece PNG, JPEG veya WebP yükleyebilirsiniz.');
       return;
     }
-    if (file.size > MAX_IMAGE_BYTES) {
+    if (file.size > MAX_INPUT_BYTES) {
       setUploadError(
-        `Görsel en fazla ${MAX_IMAGE_BYTES / (1024 * 1024)} MB olabilir.`,
+        `Görsel en fazla ${MAX_INPUT_BYTES / (1024 * 1024)} MB olabilir.`,
       );
       return;
     }
@@ -74,7 +76,13 @@ export default function PromptForm({
 
     setUploading(true);
     try {
-      const url = await uploadPromptImage(file, token);
+      const compressed = await compressImage(file);
+      if (compressed.size > MAX_UPLOAD_BYTES) {
+        throw new Error(
+          'Görsel sıkıştırıldıktan sonra hâlâ çok büyük. Daha küçük bir görsel deneyin.',
+        );
+      }
+      const url = await uploadPromptImage(compressed, token);
       setFormData((prev) => ({ ...prev, output_value: url }));
     } catch (err) {
       setUploadError(err instanceof Error ? err.message : 'Görsel yüklenemedi');
@@ -305,18 +313,22 @@ export default function PromptForm({
               className="block w-full text-sm text-zinc-700 dark:text-zinc-300 file:mr-4 file:rounded-md file:border-0 file:bg-zinc-900 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white dark:file:bg-zinc-50 dark:file:text-zinc-900 disabled:opacity-50"
             />
             <p className="text-xs text-zinc-500 dark:text-zinc-500">
-              PNG, JPEG veya WebP. En fazla {MAX_IMAGE_BYTES / (1024 * 1024)}{' '}
-              MB. Yüklenen görsel sıkıştırılır ve WebP olarak depolanır.
+              PNG, JPEG veya WebP. En fazla {MAX_INPUT_BYTES / (1024 * 1024)}{' '}
+              MB. Görsel tarayıcıda otomatik sıkıştırılır ve WebP olarak
+              depolanır.
             </p>
             {uploading && (
               <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Yükleniyor...
+                Sıkıştırılıyor ve yükleniyor...
               </p>
             )}
             {uploadError && (
-              <p className="text-sm text-red-600 dark:text-red-400">
+              <div
+                role="alert"
+                className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300"
+              >
                 {uploadError}
-              </p>
+              </div>
             )}
             {formData.output_value && !uploading && (
               <div className="space-y-2">

@@ -52,6 +52,15 @@ describe('SEO hub pages', () => {
     expect(
       screen.getByRole('heading', { level: 1, name: 'Prompt Nedir?' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: /Örnek prompt/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: /Sıkça sorulan sorular/ }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: /İlgili rehberler/ }),
+    ).toBeInTheDocument();
 
     const meta = await sozlukMetadata({
       params: Promise.resolve({ slug: 'prompt-nedir' }),
@@ -76,9 +85,16 @@ describe('SEO hub pages', () => {
     ).toHaveAttribute('href', '/rehber/iyi-prompt-nasil-yazilir');
 
     const params = Promise.resolve({ slug: 'iyi-prompt-nasil-yazilir' });
-    render(await RehberDetailPage({ params }));
+    const { container } = render(await RehberDetailPage({ params }));
     expect(
       screen.getByRole('heading', { level: 1, name: /İyi Bir Prompt/ }),
+    ).toBeInTheDocument();
+    expect(container.querySelector('#adim-1')).not.toBeNull();
+    expect(
+      container.querySelector('nav[aria-label="Rehber içindekiler"]'),
+    ).not.toBeNull();
+    expect(
+      screen.getByRole('heading', { level: 2, name: /Sıkça sorulan sorular/ }),
     ).toBeInTheDocument();
 
     const meta = await rehberMetadata({

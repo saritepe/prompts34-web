@@ -4,6 +4,7 @@ import {
   getAllGlossarySlugs,
   getGlossaryBySlug,
   getGlossaryPath,
+  getRelatedGlossaryEntries,
 } from '@/lib/glossary';
 import {
   GUIDES,
@@ -37,6 +38,21 @@ describe('glossary helpers', () => {
     expect(getGlossaryBySlug('does-not-exist')).toBeUndefined();
     expect(getGlossaryPath(first)).toBe(`/sozluk/${first.slug}`);
   });
+
+  it('every entry carries SEO-rich metadata', () => {
+    for (const entry of GLOSSARY) {
+      expect(entry.datePublished).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(entry.dateModified).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect((entry.faqs ?? []).length).toBeGreaterThan(0);
+    }
+  });
+
+  it('related glossary helper falls back to filler entries', () => {
+    const promptNedir = getGlossaryBySlug('prompt-nedir')!;
+    const related = getRelatedGlossaryEntries(promptNedir, 6);
+    expect(related.length).toBe(6);
+    expect(related.map((g) => g.slug)).not.toContain(promptNedir.slug);
+  });
 });
 
 describe('guides helpers', () => {
@@ -49,6 +65,14 @@ describe('guides helpers', () => {
     expect(getGuideBySlug('does-not-exist')).toBeUndefined();
     expect(getGuidePath(first)).toBe(`/rehber/${first.slug}`);
     expect(first.steps.length).toBeGreaterThan(0);
+  });
+
+  it('every guide carries dates and FAQs', () => {
+    for (const guide of GUIDES) {
+      expect(guide.datePublished).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(guide.dateModified).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect((guide.faqs ?? []).length).toBeGreaterThan(0);
+    }
   });
 });
 

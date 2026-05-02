@@ -3,6 +3,11 @@ export interface GuideStep {
   body: string;
 }
 
+export interface GuideFAQ {
+  question: string;
+  answer: string;
+}
+
 export interface GuideDefinition {
   slug: string;
   title: string;
@@ -11,10 +16,16 @@ export interface GuideDefinition {
   keywords: string[];
   steps: GuideStep[];
   conclusion: string;
+  faqs?: GuideFAQ[];
+  datePublished?: string;
+  dateModified?: string;
   relatedTopicSlugs?: string[];
   relatedToolHubSlugs?: string[];
   relatedGlossarySlugs?: string[];
 }
+
+const GUIDE_PUBLISHED = '2026-05-02';
+const GUIDE_MODIFIED = '2026-05-02';
 
 export const GUIDES: GuideDefinition[] = [
   {
@@ -65,6 +76,26 @@ export const GUIDES: GuideDefinition[] = [
       'few-shot-prompting',
       'rol-promptu',
     ],
+    faqs: [
+      {
+        question: 'İyi bir prompt kaç kelime olmalı?',
+        answer:
+          'Sabit bir uzunluk yoktur; net olduğu sürece 50 kelime de 500 kelime de iyi olabilir. Önemli olan rol, görev, format ve kısıtların tam olarak belirtilmiş olmasıdır.',
+      },
+      {
+        question:
+          'Türkçe prompt yazarken İngilizce kelimeler kullanmalı mıyım?',
+        answer:
+          'Marka adları ve teknik terimler dışında Türkçe yazın ve modele "tüm teknik terimleri Türkçeye çevir" gibi açık kural verin. Aksi halde model çıktıyı karışık dilde verebilir.',
+      },
+      {
+        question: 'Prompt aynı sonucu her seferinde verir mi?',
+        answer:
+          "Hayır; temperature ve top-p gibi parametreler nedeniyle çıktı her seferinde biraz farklı olabilir. Tutarlılık için temperature'ı 0'a yakın tutmak ve aynı seed kullanmak gerekir.",
+      },
+    ],
+    datePublished: GUIDE_PUBLISHED,
+    dateModified: GUIDE_MODIFIED,
   },
   {
     slug: 'chatgpt-prompt-rehberi',
@@ -106,6 +137,25 @@ export const GUIDES: GuideDefinition[] = [
       "Bu rehberdeki 5 alışkanlığı edinirseniz ChatGPT'den aldığınız çıktının kalitesi belirgin biçimde artar. Hazır ChatGPT promptlarını /araclar/chatgpt-promptlari sayfamızdan inceleyebilirsiniz.",
     relatedToolHubSlugs: ['chatgpt-promptlari'],
     relatedGlossarySlugs: ['sistem-promptu', 'halusinasyon', 'token'],
+    faqs: [
+      {
+        question: 'ChatGPT Türkçe yanıt vermiyor, ne yapmalıyım?',
+        answer:
+          '"Yanıt dili: Türkçe" gibi açık bir satır ekleyin ve "akıcı, gündelik Türkçe kullan, çeviri kokmasın" cümlesini prompt başına koyun. Custom Instructions kullanıyorsanız aynı kuralı oraya da ekleyin.',
+      },
+      {
+        question: 'Custom GPT ile sistem promptu arasında fark var mı?',
+        answer:
+          'Custom GPT, sistem promptunu kalıcı hâle getiren bir paketleme yöntemidir. API\'de doğrudan `role: "system"` ile gönderilen mesajla aynı işlevi görür.',
+      },
+      {
+        question: 'ChatGPT için en iyi temperature kaç?',
+        answer:
+          'Yapılandırılmış çıktı (JSON, kod) için 0-0.2; metin üretimi için 0.6-0.8 önerilir. ChatGPT arayüzü doğrudan ayarlamaya izin vermez; API kullanıyorsanız buradan ayarlayabilirsiniz.',
+      },
+    ],
+    datePublished: GUIDE_PUBLISHED,
+    dateModified: GUIDE_MODIFIED,
   },
   {
     slug: 'gemini-prompt-rehberi',
@@ -147,6 +197,20 @@ export const GUIDES: GuideDefinition[] = [
       'Hazır Gemini promptlarını /araclar/gemini-promptlari sayfamızdan inceleyebilir, kendi prompt koleksiyonunuzu oluşturabilirsiniz.',
     relatedToolHubSlugs: ['gemini-promptlari'],
     relatedGlossarySlugs: ['token', 'rag'],
+    faqs: [
+      {
+        question: 'Gemini Pro ile Flash arasındaki fark nedir?',
+        answer:
+          "Pro yüksek kaliteli muhakeme ve uzun bağlam için, Flash ise hız ve düşük maliyet öncelikli görevler içindir. Aynı prompt Pro'da daha derin yanıt verir; Flash daha hızlı sonuç döner.",
+      },
+      {
+        question: 'Gemini Türkçeyi diğer modellere göre nasıl?',
+        answer:
+          'Gemini Türkçede güçlüdür ancak teknik terimlerde bazen İngilizceye kayar. Açık dil kuralı eklemek bu sorunu büyük oranda çözer.',
+      },
+    ],
+    datePublished: GUIDE_PUBLISHED,
+    dateModified: GUIDE_MODIFIED,
   },
   {
     slug: 'midjourney-prompt-rehberi',
@@ -187,6 +251,20 @@ export const GUIDES: GuideDefinition[] = [
     conclusion:
       'Görsel oluşturma kategorimizdeki hazır promptları /kategori/gorsel-olusturma sayfasında inceleyebilirsiniz.',
     relatedTopicSlugs: ['gorsel-olusturma', 'logo-olusturma'],
+    faqs: [
+      {
+        question: 'Midjourney Türkçe prompt anlıyor mu?',
+        answer:
+          'Anlıyor ama İngilizce prompt belirgin biçimde daha tutarlı ve kaliteli sonuç verir. Konuyu Türkçe düşünüp İngilizce yazmak çoğu durumda en iyi sonucu verir.',
+      },
+      {
+        question: '--ar 16:9 gibi parametreler ne işe yarar?',
+        answer:
+          '--ar görüntü oranını (aspect ratio) belirler. --v model versiyonunu, --style stil profilini, --s stilizasyon seviyesini ayarlar. Bu parametreler promptun sonuna eklenir.',
+      },
+    ],
+    datePublished: GUIDE_PUBLISHED,
+    dateModified: GUIDE_MODIFIED,
   },
   {
     slug: 'prompt-muhendisligi',
@@ -231,6 +309,20 @@ export const GUIDES: GuideDefinition[] = [
       'few-shot-prompting',
       'sistem-promptu',
     ],
+    faqs: [
+      {
+        question: 'Prompt mühendisi olmak için hangi becerilere ihtiyaç var?',
+        answer:
+          'Açık ve net yazma, sistemli düşünme, deneme-değerlendirme alışkanlığı temel becerilerdir. Üretim sistemleri için ek olarak Python/TypeScript, API kullanımı ve değerlendirme metrikleri tasarlama gerekir.',
+      },
+      {
+        question: 'Prompt mühendisliği geçici bir trend mi?',
+        answer:
+          'Modeller iyileştikçe bazı teknikler (örneğin chain-of-thought) prompta eklenmeden çalışır hâle geliyor. Ancak modele giden tüm girdiyi tasarlama disiplini kalıcıdır; isim değişebilir, iş kalır.',
+      },
+    ],
+    datePublished: GUIDE_PUBLISHED,
+    dateModified: GUIDE_MODIFIED,
   },
 ];
 

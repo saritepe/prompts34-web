@@ -86,10 +86,12 @@ export function DefinedTermStructuredData({
   term,
   description,
   url,
+  alternateName,
 }: {
   term: string;
   description: string;
   url: string;
+  alternateName?: string[];
 }) {
   const structuredData = {
     '@context': 'https://schema.org',
@@ -97,6 +99,7 @@ export function DefinedTermStructuredData({
     name: term,
     description,
     url,
+    ...(alternateName && alternateName.length > 0 ? { alternateName } : {}),
     inDefinedTermSet: {
       '@type': 'DefinedTermSet',
       name: 'Prompts34 Yapay Zeka Sözlüğü',
@@ -117,11 +120,15 @@ export function HowToStructuredData({
   description,
   url,
   steps,
+  datePublished,
+  dateModified,
 }: {
   name: string;
   description: string;
   url: string;
   steps: Array<{ name: string; text: string }>;
+  datePublished?: string;
+  dateModified?: string;
 }) {
   const structuredData = {
     '@context': 'https://schema.org',
@@ -130,11 +137,14 @@ export function HowToStructuredData({
     description,
     url,
     inLanguage: 'tr-TR',
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
     step: steps.map((step, index) => ({
       '@type': 'HowToStep',
       position: index + 1,
       name: step.name,
       text: step.text,
+      url: `${url}#adim-${index + 1}`,
     })),
   };
 
@@ -162,6 +172,47 @@ export function FAQPageStructuredData({
         text: q.answer,
       },
     })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
+  );
+}
+
+export function ArticleStructuredData({
+  headline,
+  description,
+  url,
+  datePublished,
+  dateModified,
+}: {
+  headline: string;
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+}) {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline,
+    description,
+    url,
+    inLanguage: 'tr-TR',
+    datePublished,
+    dateModified: dateModified ?? datePublished,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'Prompts34',
+      url: 'https://prompts34.com',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+    },
   };
 
   return (

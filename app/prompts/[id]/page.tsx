@@ -138,6 +138,26 @@ export default async function PromptDetailPage({
             </pre>
           </div>
 
+          {prompt.output && (
+            <div className="mb-8 rounded-xl border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900">
+              <h2 className="mb-4 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+                Sonuç
+              </h2>
+              {prompt.output.type === 'text' ? (
+                <pre className="whitespace-pre-wrap text-[8pt] leading-6 text-zinc-800 dark:text-zinc-200">
+                  {prompt.output.value}
+                </pre>
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={prompt.output.value}
+                  alt={prompt.title}
+                  className="max-h-[600px] rounded-md border border-zinc-200 dark:border-zinc-800"
+                />
+              )}
+            </div>
+          )}
+
           <CommentSection
             promptId={prompt.id}
             promptOwnerId={prompt.user_id}

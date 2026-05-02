@@ -1,7 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { PromptCreate, PromptUpdate, PromptResponse } from '@/types/prompt';
+import {
+  PromptCreate,
+  PromptOutput,
+  PromptUpdate,
+  PromptResponse,
+} from '@/types/prompt';
+
+type OutputKind = '' | 'text' | 'image';
 
 type PromptFormData = Partial<PromptResponse>;
 
@@ -27,6 +34,8 @@ export default function PromptForm({
     explanation: initialData?.explanation || '',
     suggested_model: initialData?.suggested_model || '',
     is_public: initialData?.is_public ?? false,
+    output_type: (initialData?.output?.type ?? '') as OutputKind,
+    output_value: initialData?.output?.value ?? '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,6 +51,14 @@ export default function PromptForm({
         .map((tag) => tag.trim())
         .filter((tag) => tag.length > 0);
 
+      const trimmedOutput = formData.output_value.trim();
+      const output: PromptOutput | null =
+        formData.output_type && trimmedOutput
+          ? formData.output_type === 'image'
+            ? { type: 'image', value: trimmedOutput }
+            : { type: 'text', value: formData.output_value }
+          : null;
+
       // If we have initialData, we're updating, otherwise creating
       if (initialData) {
         const updateData: PromptUpdate = {
@@ -51,6 +68,7 @@ export default function PromptForm({
           explanation: formData.explanation || null,
           suggested_model: formData.suggested_model || null,
           is_public: formData.is_public,
+          output,
         };
         await (onSubmit as (data: PromptUpdate) => Promise<void>)(updateData);
       } else {
@@ -61,6 +79,7 @@ export default function PromptForm({
           explanation: formData.explanation || null,
           suggested_model: formData.suggested_model || null,
           is_public: formData.is_public,
+          output,
         };
         await (onSubmit as (data: PromptCreate) => Promise<void>)(createData);
       }
@@ -74,6 +93,8 @@ export default function PromptForm({
           explanation: '',
           suggested_model: '',
           is_public: false,
+          output_type: '',
+          output_value: '',
         });
       }
     } catch (err) {
@@ -185,6 +206,72 @@ export default function PromptForm({
           className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50 focus:border-transparent"
           placeholder="örn: GPT-4, Claude, Gemini"
         />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-zinc-900 dark:text-zinc-50 mb-2">
+          Çıktı (opsiyonel)
+        </label>
+        <div className="flex gap-2 mb-3">
+          {(
+            [
+              { value: '', label: 'Yok' },
+              { value: 'text', label: 'Metin' },
+              { value: 'image', label: 'Görsel' },
+            ] as { value: OutputKind; label: string }[]
+          ).map((opt) => (
+            <button
+              key={opt.value || 'none'}
+              type="button"
+              onClick={() =>
+                setFormData({
+                  ...formData,
+                  output_type: opt.value,
+                  output_value: opt.value === '' ? '' : formData.output_value,
+                })
+              }
+              className={`px-3 py-1.5 text-sm rounded-md border ${
+                formData.output_type === opt.value
+                  ? 'bg-zinc-900 text-white border-zinc-900 dark:bg-zinc-50 dark:text-zinc-900 dark:border-zinc-50'
+                  : 'border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900'
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+        {formData.output_type === 'text' && (
+          <textarea
+            rows={6}
+            value={formData.output_value}
+            onChange={(e) =>
+              setFormData({ ...formData, output_value: e.target.value })
+            }
+            className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50 focus:border-transparent font-mono text-sm"
+            placeholder="Promptu çalıştırınca dönen metin sonucunu yapıştırın"
+          />
+        )}
+        {formData.output_type === 'image' && (
+          <>
+            <input
+              type="url"
+              value={formData.output_value}
+              onChange={(e) =>
+                setFormData({ ...formData, output_value: e.target.value })
+              }
+              className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-50 focus:border-transparent"
+              placeholder="https://..."
+            />
+            {formData.output_value && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={formData.output_value}
+                alt="Çıktı önizleme"
+                className="mt-3 max-h-64 rounded-md border border-zinc-200 dark:border-zinc-800"
+              />
+            )}
+          </>
+        )}
       </div>
 
       <div className="flex items-center">

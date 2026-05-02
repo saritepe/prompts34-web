@@ -18,6 +18,7 @@ export function buildPrompt(
     explanation: 'Aciklama metni',
     suggested_model: 'GPT-4',
     is_public: true,
+    output: null,
     like_count: 3,
     liked_by_me: false,
     comment_count: 0,
@@ -37,6 +38,7 @@ export function buildPromptCreate(
     explanation: 'Aciklama',
     suggested_model: 'Claude',
     is_public: true,
+    output: null,
     ...overrides,
   };
 }
@@ -51,6 +53,7 @@ export function buildPromptUpdate(
     explanation: 'Guncel aciklama',
     suggested_model: 'Gemini',
     is_public: false,
+    output: null,
     ...overrides,
   };
 }

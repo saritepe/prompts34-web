@@ -1,3 +1,7 @@
+export type PromptOutput =
+  | { type: 'text'; value: string }
+  | { type: 'image'; value: string };
+
 export interface PromptResponse {
   id: string;
   user_id: string;
@@ -8,6 +12,7 @@ export interface PromptResponse {
   explanation: string | null;
   suggested_model: string | null;
   is_public: boolean;
+  output: PromptOutput | null;
   like_count: number;
   liked_by_me: boolean;
   comment_count: number;
@@ -28,6 +33,7 @@ export interface PromptCreate {
   explanation?: string | null;
   suggested_model?: string | null;
   is_public?: boolean;
+  output?: PromptOutput | null;
 }
 
 export interface PromptUpdate {
@@ -37,6 +43,7 @@ export interface PromptUpdate {
   explanation?: string | null;
   suggested_model?: string | null;
   is_public?: boolean | null;
+  output?: PromptOutput | null;
 }
 
 export interface CommentResponse {

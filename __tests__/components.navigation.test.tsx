@@ -25,9 +25,9 @@ describe('Navigation', () => {
       'href',
       '/',
     );
-    expect(screen.getByRole('link', { name: 'Konular' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Kategoriler' })).toHaveAttribute(
       'href',
-      '/konular',
+      '/kategori',
     );
     expect(screen.getByRole('link', { name: 'Giriş Yap' })).toHaveAttribute(
       'href',

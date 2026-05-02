@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import PromptsPage, { generateMetadata } from '@/app/prompts/page';
 import { getPublicPrompts } from '@/lib/api/prompts';
+import { getPromptPath } from '@/lib/utils/slug';
 import { buildPrompt } from './test-utils/fixtures';
 
 vi.mock('@/components/Navigation', () => ({
@@ -34,9 +35,14 @@ describe('prompts listing page', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('CV Promptu')).toBeInTheDocument();
     expect(screen.queryByText('Logo Promptu')).not.toBeInTheDocument();
+    const cvPrompt = buildPrompt({
+      id: 'cv-1',
+      title: 'CV Promptu',
+      tags: ['cv'],
+    });
     expect(screen.getByRole('link', { name: 'CV Promptu' })).toHaveAttribute(
       'href',
-      '/prompts/cv-1',
+      getPromptPath(cvPrompt),
     );
   });
 

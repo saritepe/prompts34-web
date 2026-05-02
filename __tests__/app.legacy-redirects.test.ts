@@ -9,27 +9,27 @@ const redirects = [
   {
     name: '/cv-hazirlama',
     handler: redirectCv,
-    location: 'https://prompts34.com/konular/cv-hazirlama',
+    location: 'https://prompts34.com/kategori/cv-hazirlama',
   },
   {
     name: '/motivasyon-mektubu',
     handler: redirectMotivasyon,
-    location: 'https://prompts34.com/konular/motivasyon-mektubu',
+    location: 'https://prompts34.com/kategori/motivasyon-mektubu',
   },
   {
     name: '/mulakat-hazirligi',
     handler: redirectMulakat,
-    location: 'https://prompts34.com/konular/mulakat-hazirligi',
+    location: 'https://prompts34.com/kategori/mulakat-hazirligi',
   },
   {
     name: '/gorsel-olusturma',
     handler: redirectGorsel,
-    location: 'https://prompts34.com/konular/gorsel-olusturma',
+    location: 'https://prompts34.com/kategori/gorsel-olusturma',
   },
   {
     name: '/logo-olusturma',
     handler: redirectLogo,
-    location: 'https://prompts34.com/konular/logo-olusturma',
+    location: 'https://prompts34.com/kategori/logo-olusturma',
   },
 ];
 

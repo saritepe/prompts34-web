@@ -199,6 +199,110 @@ export const TOPICS: TopicDefinition[] = [
       'ön yazı',
     ],
   },
+  {
+    slug: 'egitim',
+    title: 'Eğitim & Öğretim',
+    description:
+      'Eğitim promptları, ders planı hazırlama, sınav sorusu oluşturma, konu özeti çıkarma ve öğrenci değerlendirme süreçlerini hızlandırır. Öğretmenler, eğitmenler ve öğrenciler için yapay zeka destekli eğitim içerikleri üretmek isteyen herkese uygun promptlar.',
+    keywords: [
+      'eğitim',
+      'egitim',
+      'ders planı',
+      'ders plani',
+      'sınav sorusu',
+      'sinav sorusu',
+      'eğitim yapay zeka',
+    ],
+    tags: ['eğitim', 'öğretim', 'ders planı', 'sınav', 'öğrenci', 'öğretmen'],
+  },
+  {
+    slug: 'sosyal-medya',
+    title: 'Sosyal Medya İçeriği',
+    description:
+      'Sosyal medya içerik promptları, Instagram, TikTok, LinkedIn ve Twitter için ilgi çekici paylaşımlar, başlıklar ve biyografiler hazırlamanıza yardımcı olur. Etkileşim artırmak, marka bilinirliği oluşturmak ve tutarlı içerik takvimi oluşturmak için kullanabilirsiniz.',
+    keywords: [
+      'sosyal medya',
+      'instagram',
+      'tiktok',
+      'linkedin içerik',
+      'twitter içerik',
+      'sosyal medya içerik üretimi',
+    ],
+    tags: [
+      'sosyal medya',
+      'instagram',
+      'tiktok',
+      'twitter',
+      'içerik üretimi',
+      'biyografi',
+      'caption',
+    ],
+  },
+  {
+    slug: 'e-ticaret',
+    title: 'E-Ticaret',
+    description:
+      'E-ticaret promptları, ürün açıklaması yazma, kategori sayfası içeriği, müşteri yorumu yanıtlama ve satış odaklı metin üretimi için hazırlanmıştır. Shopify, Trendyol, Hepsiburada gibi platformlar için Türkçe ürün içerikleri üretmek isteyen satıcılar için uygundur.',
+    keywords: [
+      'e-ticaret',
+      'eticaret',
+      'ürün açıklaması',
+      'urun aciklamasi',
+      'e-ticaret yapay zeka',
+      'shopify',
+    ],
+    tags: [
+      'e-ticaret',
+      'ürün açıklaması',
+      'shopify',
+      'trendyol',
+      'pazaryeri',
+      'satış',
+    ],
+  },
+  {
+    slug: 'uretkenlik',
+    title: 'Üretkenlik & Verimlilik',
+    description:
+      'Üretkenlik promptları, toplantı notu özetleme, görev listesi oluşturma, önceliklendirme ve zaman yönetimi için yapılandırılmış çıktılar üretir. Günlük iş akışınızı yapay zeka ile hızlandırmak ve tekrarlayan görevleri otomatikleştirmek isteyen profesyoneller için hazırlanmıştır.',
+    keywords: [
+      'üretkenlik',
+      'uretkenlik',
+      'verimlilik',
+      'zaman yönetimi',
+      'yapay zeka ile verimlilik',
+    ],
+    tags: [
+      'üretkenlik',
+      'verimlilik',
+      'zaman yönetimi',
+      'özet',
+      'görev',
+      'planlama',
+    ],
+  },
+  {
+    slug: 'e-posta',
+    title: 'E-posta Yazma',
+    description:
+      'E-posta yazma promptları, iş yazışması, müşteri iletişimi, şikayet yanıtlama ve takip e-postası gibi profesyonel e-posta şablonları oluşturmanıza yardımcı olur. Tonu ve içeriği net tarif etmeniz için hazırlanmış bu promptlarla zaman kazanın.',
+    keywords: [
+      'e-posta',
+      'eposta',
+      'email',
+      'e-posta yazma',
+      'iş e-postası',
+      'is e-postasi',
+    ],
+    tags: [
+      'e-posta',
+      'email',
+      'iş yazışması',
+      'müşteri iletişimi',
+      'şikayet',
+      'takip',
+    ],
+  },
 ];
 
 export const TOPIC_PAGES = TOPICS;
@@ -224,7 +328,7 @@ export function normalizeQuery(query: string): string {
 }
 
 export function getTopicPath(topic: TopicDefinition): string {
-  return `/konular/${topic.slug}`;
+  return `/kategori/${topic.slug}`;
 }
 
 export function getTopicBySlug(slug: string): TopicDefinition | undefined {

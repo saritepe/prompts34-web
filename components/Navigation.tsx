@@ -5,10 +5,10 @@ import { useAuth } from '@/lib/auth';
 import { useState, useRef, useEffect } from 'react';
 
 const mainLinks = [
-  { href: '/#one-cikanlar', label: 'Promptlar' },
-  { href: '/konular', label: 'Konular' },
-  { href: '/#beceriler', label: 'Beceriler' },
-  { href: '/#is-akislari', label: 'İş Akışları' },
+  { href: '/kategori', label: 'Kategoriler' },
+  { href: '/araclar', label: 'Araçlar' },
+  { href: '/en-yeni-prompts', label: 'En Yeni' },
+  { href: '/one-cikanlar', label: 'Öne Çıkanlar' },
 ];
 
 export default function Navigation() {

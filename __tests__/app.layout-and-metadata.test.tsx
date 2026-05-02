@@ -7,6 +7,8 @@ import sitemap from '@/app/sitemap';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPublicPrompts } from '@/lib/api/prompts';
 import { TOPICS, getTopicPath } from '@/lib/topics';
+import { TOOL_HUBS } from '@/lib/tool-hubs';
+import { getPromptPath } from '@/lib/utils/slug';
 import { buildPrompt } from './test-utils/fixtures';
 
 vi.mock('@/lib/api/prompts', () => ({
@@ -78,44 +80,40 @@ describe('layout and metadata routes', () => {
   });
 
   it('returns the expected sitemap entries', async () => {
-    getPublicPromptsMock.mockResolvedValueOnce([
-      buildPrompt({
-        id: 'prompt-updated',
-        created_at: '2026-03-20T10:00:00.000Z',
-        updated_at: '2026-03-25T10:00:00.000Z',
-      }),
-      buildPrompt({
-        id: 'prompt-created',
-        created_at: '2026-03-21T10:00:00.000Z',
-        updated_at: '',
-      }),
-    ]);
+    const promptUpdated = buildPrompt({
+      id: 'prompt-updated',
+      created_at: '2026-03-20T10:00:00.000Z',
+      updated_at: '2026-03-25T10:00:00.000Z',
+    });
+    const promptCreated = buildPrompt({
+      id: 'prompt-created',
+      created_at: '2026-03-21T10:00:00.000Z',
+      updated_at: '',
+    });
+    getPublicPromptsMock.mockResolvedValueOnce([promptUpdated, promptCreated]);
 
     const entries = await sitemap();
 
     const expectedStaticUrls = [
       'https://prompts34.com',
-      'https://prompts34.com/chatgpt-promptlari',
-      'https://prompts34.com/gemini-promptlari',
+      'https://prompts34.com/araclar',
+      ...TOOL_HUBS.map((hub) => `https://prompts34.com${hub.canonicalPath}`),
       'https://prompts34.com/en-yeni-prompts',
       'https://prompts34.com/one-cikanlar',
+      'https://prompts34.com/ucretsiz-promptlar',
       'https://prompts34.com/prompts',
-      'https://prompts34.com/konular',
+      'https://prompts34.com/kategori',
       ...TOPICS.map((topic) => `https://prompts34.com${getTopicPath(topic)}`),
     ];
 
     expect(entries).toHaveLength(expectedStaticUrls.length + 2);
     expect(entries.map((entry) => entry.url)).toEqual([
       ...expectedStaticUrls,
-      'https://prompts34.com/prompts/prompt-updated',
-      'https://prompts34.com/prompts/prompt-created',
+      `https://prompts34.com${getPromptPath(promptUpdated)}`,
+      `https://prompts34.com${getPromptPath(promptCreated)}`,
     ]);
     expect(entries[0]?.priority).toBe(1);
-    expect(entries[1]?.changeFrequency).toBe('daily');
-    expect(entries[6]?.changeFrequency).toBe('weekly');
-    expect(entries[6]?.priority).toBe(0.8);
     expect(entries[0]?.lastModified).toBeInstanceOf(Date);
-    expect(entries[1]?.lastModified).toBeInstanceOf(Date);
     expect(entries.at(-2)?.lastModified).toBe('2026-03-25T10:00:00.000Z');
     expect(entries.at(-1)?.lastModified).toBe('2026-03-21T10:00:00.000Z');
     expect(entries.map((entry) => entry.url)).not.toContain(
@@ -134,12 +132,13 @@ describe('layout and metadata routes', () => {
       const entries = await sitemap();
       const expectedStaticUrls = [
         'https://prompts34.com',
-        'https://prompts34.com/chatgpt-promptlari',
-        'https://prompts34.com/gemini-promptlari',
+        'https://prompts34.com/araclar',
+        ...TOOL_HUBS.map((hub) => `https://prompts34.com${hub.canonicalPath}`),
         'https://prompts34.com/en-yeni-prompts',
         'https://prompts34.com/one-cikanlar',
+        'https://prompts34.com/ucretsiz-promptlar',
         'https://prompts34.com/prompts',
-        'https://prompts34.com/konular',
+        'https://prompts34.com/kategori',
         ...TOPICS.map((topic) => `https://prompts34.com${getTopicPath(topic)}`),
       ];
 

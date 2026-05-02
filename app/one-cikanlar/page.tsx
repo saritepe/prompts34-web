@@ -5,9 +5,16 @@ import {
   sharedTwitterImage,
 } from '@/app/shared-metadata';
 import Navigation from '@/components/Navigation';
+import {
+  BreadcrumbStructuredData,
+  CollectionPageStructuredData,
+} from '@/app/components/StructuredData';
 import { getPublicPrompts } from '@/lib/api/prompts';
+import { getPromptPath } from '@/lib/utils/slug';
 
 export const revalidate = 300;
+
+const CANONICAL_URL = 'https://prompts34.com/one-cikanlar';
 
 export const metadata: Metadata = {
   title: 'Öne Çıkan Promptlar',
@@ -18,7 +25,7 @@ export const metadata: Metadata = {
     description:
       'Prompts34 üzerindeki en çok beğenilen yapay zeka promptlarını keşfedin.',
     type: 'website',
-    url: 'https://prompts34.com/one-cikanlar',
+    url: CANONICAL_URL,
     siteName: 'Prompts34',
     locale: 'tr_TR',
     ...sharedOpenGraphImage,
@@ -31,7 +38,7 @@ export const metadata: Metadata = {
     ...sharedTwitterImage,
   },
   alternates: {
-    canonical: 'https://prompts34.com/one-cikanlar',
+    canonical: CANONICAL_URL,
   },
 };
 
@@ -45,6 +52,17 @@ export default async function FeaturedPromptsPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
+      <BreadcrumbStructuredData
+        items={[
+          { name: 'Ana Sayfa', url: 'https://prompts34.com' },
+          { name: 'Öne Çıkan Promptlar', url: CANONICAL_URL },
+        ]}
+      />
+      <CollectionPageStructuredData
+        name="Öne Çıkan Promptlar"
+        description="Prompts34 üzerindeki en çok beğenilen yapay zeka promptları."
+        url={CANONICAL_URL}
+      />
       <Navigation />
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <section className="mb-8 flex items-end justify-between gap-4">
@@ -73,7 +91,7 @@ export default async function FeaturedPromptsPage() {
             {sortedPrompts.map((prompt) => (
               <Link
                 key={prompt.id}
-                href={`/prompts/${prompt.id}`}
+                href={getPromptPath(prompt)}
                 className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-950"
               >
                 <div className="mb-3 flex items-center justify-between gap-3">

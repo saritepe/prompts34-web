@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { permanentRedirect, notFound } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import CopyContentButton from '@/components/CopyContentButton';
 import PromptVoteButton from '@/components/PromptVoteButton';
@@ -10,7 +11,14 @@ import {
 } from '@/app/shared-metadata';
 import { getPrompt } from '@/lib/api/prompts';
 import { buildDescription } from '@/lib/metadata';
-import { notFound } from 'next/navigation';
+import { getPromptPath } from '@/lib/utils/slug';
+
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
+function extractUuid(id: string): string {
+  return UUID_REGEX.exec(id)?.[0] ?? id;
+}
 
 export async function generateMetadata({
   params,
@@ -18,27 +26,34 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const prompt = await getPrompt(id).catch(() => null);
+  const uuid = extractUuid(id);
+  const prompt = await getPrompt(uuid).catch(() => null);
 
   if (!prompt) {
     return notFound();
   }
 
+  // Bare UUID — page will 308 redirect; suppress indexing to avoid duplicate
+  if (id === uuid && UUID_REGEX.test(id)) {
+    return { robots: { index: false, follow: false } };
+  }
+
+  const canonicalUrl = `https://prompts34.com${getPromptPath(prompt)}`;
   const description = buildDescription(prompt.explanation || prompt.content);
   const title = prompt.title;
   const fullTitle = `${title} | Prompts34`;
-  const url = `/prompts/${prompt.id}`;
 
   return {
     title,
     description,
+    keywords: prompt.tags?.length ? prompt.tags : undefined,
     alternates: {
-      canonical: url,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title: fullTitle,
       description,
-      url,
+      url: canonicalUrl,
       ...sharedOpenGraphImage,
     },
     twitter: {
@@ -56,10 +71,16 @@ export default async function PromptDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const prompt = await getPrompt(id).catch(() => null);
+  const uuid = extractUuid(id);
+  const prompt = await getPrompt(uuid).catch(() => null);
 
   if (!prompt) {
     return notFound();
+  }
+
+  // Redirect bare UUID to canonical slug URL
+  if (id === uuid && UUID_REGEX.test(id)) {
+    permanentRedirect(getPromptPath(prompt));
   }
 
   const description = buildDescription(prompt.explanation || prompt.content);
@@ -69,7 +90,7 @@ export default async function PromptDetailPage({
       <PromptStructuredData
         title={prompt.title}
         description={description}
-        url={`https://prompts34.com/prompts/${prompt.id}`}
+        url={`https://prompts34.com${getPromptPath(prompt)}`}
         datePublished={prompt.created_at}
       />
       <Navigation />

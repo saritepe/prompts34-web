@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { PromptResponse } from '@/types/prompt';
+import { getPromptPath } from '@/lib/utils/slug';
 
 type CategoryPromptCardProps = {
   prompt: PromptResponse;
@@ -21,7 +22,7 @@ export default function CategoryPromptCard({
       <div className="flex justify-between items-start mb-2 gap-3">
         <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
           <Link
-            href={`/prompts/${prompt.id}`}
+            href={getPromptPath(prompt)}
             className="underline-offset-4 transition hover:underline focus-visible:underline"
           >
             {prompt.title}

@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import { getPublicPrompts } from '@/lib/api/prompts';
 import { TOPICS, getTopicPath } from '@/lib/topics';
+import { TOOL_HUBS } from '@/lib/tool-hubs';
+import { getPromptPath } from '@/lib/utils/slug';
 
 const BASE_URL = 'https://prompts34.com';
 
@@ -14,17 +16,17 @@ const STATIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
     priority: 1,
   },
   {
-    url: `${BASE_URL}/chatgpt-promptlari`,
+    url: `${BASE_URL}/araclar`,
     lastModified: NOW,
-    changeFrequency: 'daily',
+    changeFrequency: 'weekly',
     priority: 0.9,
   },
-  {
-    url: `${BASE_URL}/gemini-promptlari`,
+  ...TOOL_HUBS.map((hub) => ({
+    url: `${BASE_URL}${hub.canonicalPath}`,
     lastModified: NOW,
-    changeFrequency: 'daily',
+    changeFrequency: 'daily' as const,
     priority: 0.9,
-  },
+  })),
   {
     url: `${BASE_URL}/en-yeni-prompts`,
     lastModified: NOW,
@@ -33,6 +35,12 @@ const STATIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
   },
   {
     url: `${BASE_URL}/one-cikanlar`,
+    lastModified: NOW,
+    changeFrequency: 'daily',
+    priority: 0.9,
+  },
+  {
+    url: `${BASE_URL}/ucretsiz-promptlar`,
     lastModified: NOW,
     changeFrequency: 'daily',
     priority: 0.9,
@@ -49,7 +57,7 @@ export const dynamic = 'force-dynamic';
 
 const TOPIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
   {
-    url: `${BASE_URL}/konular`,
+    url: `${BASE_URL}/kategori`,
     lastModified: NOW,
     changeFrequency: 'weekly',
     priority: 0.8,
@@ -68,7 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const prompts = await getPublicPrompts();
     const promptEntries: MetadataRoute.Sitemap = prompts.map((prompt) => ({
-      url: `${BASE_URL}/prompts/${prompt.id}`,
+      url: `${BASE_URL}${getPromptPath(prompt)}`,
       lastModified: prompt.updated_at || prompt.created_at,
     }));
 

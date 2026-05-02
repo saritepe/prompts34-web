@@ -402,7 +402,7 @@ describe('HomePageClient', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Promptları Keşfet' }));
 
-    expect(routerMock.push).toHaveBeenCalledWith('/konular/cv-hazirlama');
+    expect(routerMock.push).toHaveBeenCalledWith('/kategori/cv-hazirlama');
   });
 
   it('routes Turkish-normalized topic searches to canonical topic pages', () => {
@@ -422,7 +422,7 @@ describe('HomePageClient', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Promptları Keşfet' }));
 
-    expect(routerMock.push).toHaveBeenCalledWith('/konular/cv-hazirlama');
+    expect(routerMock.push).toHaveBeenCalledWith('/kategori/cv-hazirlama');
   });
 
   it('routes unknown searches to the prompt listing query page', () => {

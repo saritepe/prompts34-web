@@ -4,11 +4,11 @@ import { describe, expect, it, vi } from 'vitest';
 import TopicPage, {
   revalidate as topicRevalidate,
   generateMetadata,
-} from '@/app/konular/[slug]/page';
-import TopicHubPage, {
+} from '@/app/kategori/[slug]/page';
+import KategoriHubPage, {
   revalidate as hubRevalidate,
   metadata as hubMetadata,
-} from '@/app/konular/page';
+} from '@/app/kategori/page';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPublicPrompts } from '@/lib/api/prompts';
 import {
@@ -19,6 +19,7 @@ import {
   matchPromptsForTopic,
   normalizeQuery,
 } from '@/lib/topics';
+import { getPromptPath } from '@/lib/utils/slug';
 import { buildPrompt } from './test-utils/fixtures';
 
 vi.mock('@/components/Navigation', () => ({
@@ -127,13 +128,13 @@ describe('search landing pages', () => {
     });
   });
 
-  describe('topic hub page (/konular)', () => {
+  describe('categories hub page (/kategori)', () => {
     it('renders all topic links', () => {
-      render(<TopicHubPage />);
+      render(<KategoriHubPage />);
 
       expect(screen.getByTestId('navigation')).toBeInTheDocument();
       expect(
-        screen.getByRole('heading', { name: 'AI Prompt Konuları' }),
+        screen.getByRole('heading', { name: 'AI Prompt Kategorileri' }),
       ).toBeInTheDocument();
 
       for (const topic of TOPIC_PAGES) {
@@ -144,10 +145,10 @@ describe('search landing pages', () => {
     });
 
     it('exports the expected hub metadata', () => {
-      expect(hubRevalidate).toBe(300);
-      expect(hubMetadata.title).toBe('AI Prompt Konuları');
+      expect(hubRevalidate).toBe(false);
+      expect(hubMetadata.title).toBe('AI Prompt Kategorileri');
       expect(hubMetadata.alternates?.canonical).toBe(
-        'https://prompts34.com/konular',
+        'https://prompts34.com/kategori',
       );
       expect(hubMetadata.openGraph?.images).toEqual([
         {
@@ -161,18 +162,19 @@ describe('search landing pages', () => {
     });
   });
 
-  describe('topic page (/konular/[slug])', () => {
+  describe('category page (/kategori/[slug])', () => {
     const topic = getTopicBySlug('pazarlama-ve-icerik')!;
 
     it('renders matching prompts for a valid topic', async () => {
+      const p1 = buildPrompt({
+        id: 'p1',
+        title: 'SEO Blog Yazısı',
+        tags: ['seo', 'blog'],
+        username: 'yazar',
+        suggested_model: 'GPT-4',
+      });
       const prompts = [
-        buildPrompt({
-          id: 'p1',
-          title: 'SEO Blog Yazısı',
-          tags: ['seo', 'blog'],
-          username: 'yazar',
-          suggested_model: 'GPT-4',
-        }),
+        p1,
         buildPrompt({
           id: 'p2',
           title: 'Sosyal Medya Postu',
@@ -197,7 +199,7 @@ describe('search landing pages', () => {
       expect(screen.getByText(topic.description)).toBeInTheDocument();
       expect(
         screen.getByRole('heading', {
-          name: 'Bu konudaki promptları nasıl kullanabilirsiniz?',
+          name: 'Bu kategorideki promptları nasıl kullanabilirsiniz?',
         }),
       ).toBeInTheDocument();
       expect(screen.getByText('SEO Blog Yazısı')).toBeInTheDocument();
@@ -205,7 +207,7 @@ describe('search landing pages', () => {
       expect(screen.queryByText('Unrelated Prompt')).not.toBeInTheDocument();
       expect(
         screen.getByRole('link', { name: 'SEO Blog Yazısı' }),
-      ).toHaveAttribute('href', '/prompts/p1');
+      ).toHaveAttribute('href', getPromptPath(p1));
     });
 
     it('renders the empty state when no prompts match', async () => {
@@ -218,7 +220,7 @@ describe('search landing pages', () => {
       );
 
       expect(
-        screen.getByText('Bu konuda henüz prompt bulunmuyor.'),
+        screen.getByText('Bu kategoride henüz prompt bulunmuyor.'),
       ).toBeInTheDocument();
     });
 

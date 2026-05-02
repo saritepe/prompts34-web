@@ -4,11 +4,11 @@ import { describe, expect, it, vi } from 'vitest';
 import ChatGPTPromptlariPage, {
   revalidate as chatgptRevalidate,
   metadata as chatgptMetadata,
-} from '@/app/chatgpt-promptlari/page';
+} from '@/app/araclar/chatgpt-promptlari/page';
 import GeminiPromptlariPage, {
   revalidate as geminiRevalidate,
   metadata as geminiMetadata,
-} from '@/app/gemini-promptlari/page';
+} from '@/app/araclar/gemini-promptlari/page';
 import LatestPromptsPage, {
   metadata as latestMetadata,
 } from '@/app/en-yeni-prompts/page';
@@ -132,7 +132,7 @@ describe('collection and listing pages', () => {
       revalidate: chatgptRevalidate,
       heading: 'ChatGPT Promptları',
       emptyMessage: 'Henüz ChatGPT ile ilgili prompt bulunmuyor.',
-      canonical: 'https://prompts34.com/chatgpt-promptlari',
+      canonical: 'https://prompts34.com/araclar/chatgpt-promptlari',
       matchingPrompt: buildPrompt({
         id: 'chatgpt-match',
         title: 'ChatGPT ile Blog Yazısı',
@@ -153,7 +153,7 @@ describe('collection and listing pages', () => {
       revalidate: geminiRevalidate,
       heading: 'Gemini Promptları',
       emptyMessage: 'Henüz Gemini ile ilgili prompt bulunmuyor.',
-      canonical: 'https://prompts34.com/gemini-promptlari',
+      canonical: 'https://prompts34.com/araclar/gemini-promptlari',
       matchingPrompt: buildPrompt({
         id: 'gemini-match',
         title: 'Gemini ile Özetleme',

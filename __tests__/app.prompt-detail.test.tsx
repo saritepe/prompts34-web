@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import PromptDetailPage, { generateMetadata } from '@/app/prompts/[id]/page';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPrompt } from '@/lib/api/prompts';
+import { getPromptPath } from '@/lib/utils/slug';
 import { buildPrompt } from './test-utils/fixtures';
 
 vi.mock('@/components/Navigation', () => ({
@@ -117,16 +118,17 @@ describe('generateMetadata', () => {
     expect(metadata.title).toBe('Harika Prompt');
   });
 
-  it('sets the canonical to the prompt URL', async () => {
-    getPromptMock.mockResolvedValueOnce(
-      buildPrompt({ id: 'abc-123', title: 'Test' }),
-    );
+  it('sets the canonical to the absolute slug URL', async () => {
+    const prompt = buildPrompt({ id: 'abc-123', title: 'Test' });
+    getPromptMock.mockResolvedValueOnce(prompt);
 
     const metadata = await generateMetadata({
       params: Promise.resolve({ id: 'abc-123' }),
     });
 
-    expect(metadata.alternates?.canonical).toBe('/prompts/abc-123');
+    expect(metadata.alternates?.canonical).toBe(
+      `https://prompts34.com${getPromptPath(prompt)}`,
+    );
   });
 
   it('prefers explanation as the description', async () => {

@@ -154,8 +154,13 @@ export default function Navigation() {
                   <div className="absolute right-0 z-50 mt-2 w-56 rounded-md border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-800 dark:bg-zinc-950">
                     <div className="border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
                       {user.username && (
-                        <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
+                        <p className="flex items-center gap-2 truncate text-sm font-medium text-zinc-900 dark:text-zinc-50">
                           {user.username}
+                          {user.role === 'admin' && (
+                            <span className="rounded bg-orange-100 px-1.5 py-0.5 text-[10px] font-semibold text-orange-800 dark:bg-orange-900/40 dark:text-orange-200">
+                              admin
+                            </span>
+                          )}
                         </p>
                       )}
                       {user.email && (
@@ -175,6 +180,14 @@ export default function Navigation() {
                       className="block px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
                     >
                       Promptlarım
+                    </Link>
+
+                    <Link
+                      href="/settings/api-keys"
+                      onClick={() => setShowDropdown(false)}
+                      className="block px-4 py-2 text-sm text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                    >
+                      API Anahtarları
                     </Link>
 
                     <div className="mt-1 border-t border-zinc-200 pt-1 dark:border-zinc-800">

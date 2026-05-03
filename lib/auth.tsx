@@ -13,6 +13,7 @@ interface User {
   email: string;
   username: string;
   id?: string;
+  role?: 'user' | 'admin';
 }
 
 interface AuthContextType {
@@ -140,30 +141,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const userData = await meResponse.json();
       const currentUser = userData?.user ?? userData;
+      const role: 'user' | 'admin' =
+        userData?.role === 'admin' ? 'admin' : 'user';
 
-      setToken(newToken);
-      setUser({
+      const nextUser: User = {
         email: currentUser.email,
         username:
           currentUser.user_metadata?.username ||
           currentUser.username ||
           currentUser.email,
         id: currentUser.id,
-      });
+        role,
+      };
+
+      setToken(newToken);
+      setUser(nextUser);
       const expiresAt = Date.now() + SESSION_DURATION_MS;
       setSessionExpiresAt(expiresAt);
       localStorage.setItem('token', newToken);
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          email: currentUser.email,
-          username:
-            currentUser.user_metadata?.username ||
-            currentUser.username ||
-            currentUser.email,
-          id: currentUser.id,
-        }),
-      );
+      localStorage.setItem('user', JSON.stringify(nextUser));
       localStorage.setItem(SESSION_EXPIRES_KEY, String(expiresAt));
     } catch (error) {
       if (error instanceof TypeError) {

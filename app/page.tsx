@@ -2,30 +2,9 @@ import HomePageClient from '@/components/HomePageClient';
 import { getPublicPrompts } from '@/lib/api/prompts';
 import type { PromptResponse } from '@/types/prompt';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
 
-type HomePageSearchParams = Record<string, string | string[] | undefined>;
-
-type HomePageProps = {
-  searchParams?: Promise<HomePageSearchParams> | HomePageSearchParams;
-};
-
-function getInitialSearch(searchParams: HomePageSearchParams): string {
-  const queryValue = searchParams.q;
-
-  if (typeof queryValue === 'string') {
-    return queryValue;
-  }
-
-  if (Array.isArray(queryValue)) {
-    return queryValue[0] ?? '';
-  }
-
-  return '';
-}
-
-export default async function Home({ searchParams }: HomePageProps) {
-  const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
+export default async function Home() {
   let initialPrompts: PromptResponse[] = [];
   let initialLoadError: string | null = null;
 
@@ -39,7 +18,6 @@ export default async function Home({ searchParams }: HomePageProps) {
   return (
     <HomePageClient
       initialPrompts={initialPrompts}
-      initialSearch={getInitialSearch(resolvedSearchParams)}
       initialLoadError={initialLoadError}
     />
   );

@@ -71,7 +71,7 @@ export async function getPrompt(
 
   const response = await fetch(`${API_URL}/prompts/${promptId}`, {
     headers,
-    cache: 'no-store',
+    ...(token ? { cache: 'no-store' as const } : { next: { revalidate: 300 } }),
   });
 
   if (!response.ok) {

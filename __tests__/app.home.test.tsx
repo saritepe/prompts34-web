@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import Home, { dynamic as homeDynamic } from '@/app/page';
+import Home, { revalidate as homeRevalidate } from '@/app/page';
 import { getPublicPrompts } from '@/lib/api/prompts';
 import type { PromptResponse } from '@/types/prompt';
 import { buildPrompt } from './test-utils/fixtures';
@@ -13,15 +13,12 @@ vi.mock('@/lib/api/prompts', () => ({
 vi.mock('@/components/HomePageClient', () => ({
   default: ({
     initialPrompts,
-    initialSearch,
     initialLoadError,
   }: {
     initialPrompts: PromptResponse[];
-    initialSearch: string;
     initialLoadError: string | null;
   }) => (
     <div>
-      <div data-testid="initial-search">{initialSearch}</div>
       <div data-testid="initial-error">{initialLoadError ?? ''}</div>
       {initialPrompts.map((prompt) => (
         <article key={prompt.id}>
@@ -40,7 +37,7 @@ describe('home page', () => {
     getPublicPromptsMock.mockReset();
   });
 
-  it('exports dynamic rendering and passes server-fetched prompt content to the client component', async () => {
+  it('exports ISR revalidate window and passes server-fetched prompt content to the client component', async () => {
     getPublicPromptsMock.mockResolvedValueOnce([
       buildPrompt({
         id: 'video',
@@ -49,15 +46,10 @@ describe('home page', () => {
       }),
     ]);
 
-    render(
-      await Home({
-        searchParams: Promise.resolve({ q: 'video' }),
-      }),
-    );
+    render(await Home());
 
-    expect(homeDynamic).toBe('force-dynamic');
+    expect(homeRevalidate).toBe(300);
     expect(getPublicPromptsMock).toHaveBeenCalledTimes(1);
-    expect(screen.getByTestId('initial-search')).toHaveTextContent('video');
     expect(screen.getByText('Video Prompt')).toBeInTheDocument();
     expect(
       screen.getByText('Sunucudan gelen prompt içeriği'),
@@ -65,22 +57,10 @@ describe('home page', () => {
     expect(screen.getByTestId('initial-error')).toBeEmptyDOMElement();
   });
 
-  it('uses the first search query value when q is provided as an array', async () => {
-    getPublicPromptsMock.mockResolvedValueOnce([]);
-
-    render(
-      await Home({
-        searchParams: Promise.resolve({ q: ['logo', 'video'] }),
-      }),
-    );
-
-    expect(screen.getByTestId('initial-search')).toHaveTextContent('logo');
-  });
-
   it('passes an empty prompt list when no prompts are returned', async () => {
     getPublicPromptsMock.mockResolvedValueOnce([]);
 
-    render(await Home({}));
+    render(await Home());
 
     expect(screen.queryByRole('heading', { level: 2 })).not.toBeInTheDocument();
     expect(screen.getByTestId('initial-error')).toBeEmptyDOMElement();
@@ -92,7 +72,7 @@ describe('home page', () => {
       .mockImplementation(() => undefined);
     getPublicPromptsMock.mockRejectedValueOnce(new Error('boom'));
 
-    render(await Home({}));
+    render(await Home());
 
     expect(screen.getByTestId('initial-error')).toHaveTextContent(
       'Promptlar yüklenirken bir hata oluştu',

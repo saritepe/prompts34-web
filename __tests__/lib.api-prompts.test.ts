@@ -123,7 +123,7 @@ describe('lib/api/prompts', () => {
       'http://localhost:8000/prompts/prompt-1',
       {
         headers: {},
-        cache: 'no-store',
+        next: { revalidate: 300 },
       },
     );
   });

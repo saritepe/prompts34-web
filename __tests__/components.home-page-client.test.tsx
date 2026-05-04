@@ -48,7 +48,7 @@ describe('HomePageClient', () => {
     resetNextNavigationMock();
   });
 
-  it('seeds the search query from the server and supports quick filters', () => {
+  it('filters by typed search and supports quick filters', () => {
     render(
       <HomePageClient
         initialPrompts={[
@@ -77,15 +77,13 @@ describe('HomePageClient', () => {
             created_at: '2026-03-20T10:00:00.000Z',
           }),
         ]}
-        initialSearch="video"
         initialLoadError={null}
       />,
     );
 
-    expect(screen.getByDisplayValue('video')).toBeInTheDocument();
-    expect(screen.getAllByText('Video Prompt')).toHaveLength(2);
-    expect(screen.queryByText('Logo Prompt')).not.toBeInTheDocument();
-    expect(screen.getAllByText('Video')).toHaveLength(2);
+    expect(screen.getAllByText('Logo Prompt')).toHaveLength(2);
+    expect(screen.getAllByText('Görsel')).toHaveLength(2);
+    expect(screen.getAllByText('Metin')).toHaveLength(2);
     expect(
       screen.getByText('Topluluk tarafından en çok beğenilen promptlar.'),
     ).toBeInTheDocument();
@@ -93,11 +91,19 @@ describe('HomePageClient', () => {
       screen.getByText('Kütüphaneye en son eklenen promptlar.'),
     ).toBeInTheDocument();
 
+    fireEvent.change(
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      { target: { value: 'video' } },
+    );
+
+    expect(screen.getByDisplayValue('video')).toBeInTheDocument();
+    expect(screen.getAllByText('Video Prompt')).toHaveLength(2);
+    expect(screen.queryByText('Logo Prompt')).not.toBeInTheDocument();
+    expect(screen.getAllByText('Video')).toHaveLength(2);
+
     fireEvent.click(screen.getByRole('button', { name: 'Temizle' }));
 
     expect(screen.getAllByText('Logo Prompt')).toHaveLength(2);
-    expect(screen.getAllByText('Görsel')).toHaveLength(2);
-    expect(screen.getAllByText('Metin')).toHaveLength(2);
 
     fireEvent.click(screen.getByRole('button', { name: 'logo' }));
 
@@ -107,13 +113,7 @@ describe('HomePageClient', () => {
   });
 
   it('renders the empty state when there are no prompts', () => {
-    render(
-      <HomePageClient
-        initialPrompts={[]}
-        initialSearch=""
-        initialLoadError={null}
-      />,
-    );
+    render(<HomePageClient initialPrompts={[]} initialLoadError={null} />);
 
     expect(
       screen.getAllByText('Bu bölüm için henüz prompt bulunmuyor.'),
@@ -124,7 +124,6 @@ describe('HomePageClient', () => {
     render(
       <HomePageClient
         initialPrompts={[]}
-        initialSearch=""
         initialLoadError="Promptlar yüklenirken bir hata oluştu"
       />,
     );
@@ -152,7 +151,6 @@ describe('HomePageClient', () => {
     render(
       <HomePageClient
         initialPrompts={[buildPrompt({ id: 'initial', title: 'İlk Prompt' })]}
-        initialSearch=""
         initialLoadError={null}
       />,
     );
@@ -181,7 +179,6 @@ describe('HomePageClient', () => {
         initialPrompts={[
           buildPrompt({ id: 'stale', title: 'Sunucuda Gelen Prompt' }),
         ]}
-        initialSearch=""
         initialLoadError={null}
       />,
     );
@@ -227,7 +224,6 @@ describe('HomePageClient', () => {
             like_count: 1,
           }),
         ]}
-        initialSearch=""
         initialLoadError={null}
       />,
     );
@@ -246,7 +242,6 @@ describe('HomePageClient', () => {
         initialPrompts={[
           buildPrompt({ id: 'logged-out-vote', title: 'Giriş Gerekli' }),
         ]}
-        initialSearch=""
         initialLoadError={null}
       />,
     );
@@ -278,7 +273,6 @@ describe('HomePageClient', () => {
         initialPrompts={[
           buildPrompt({ id: 'vote-error', title: 'Hata Veren Prompt' }),
         ]}
-        initialSearch=""
         initialLoadError={null}
       />,
     );
@@ -304,7 +298,6 @@ describe('HomePageClient', () => {
         initialPrompts={[
           buildPrompt({ id: 'vote-error-2', title: 'Mesajlı Hata Promptu' }),
         ]}
-        initialSearch=""
         initialLoadError={null}
       />,
     );
@@ -320,7 +313,6 @@ describe('HomePageClient', () => {
         initialPrompts={[
           buildPrompt({ id: 'linked-prompt', title: 'Bağlantılı Prompt' }),
         ]}
-        initialSearch=""
         initialLoadError={null}
       />,
     );
@@ -359,7 +351,6 @@ describe('HomePageClient', () => {
             created_at: '2026-03-22T10:00:00.000Z',
           }),
         ]}
-        initialSearch=""
         initialLoadError={null}
       />,
     );
@@ -386,13 +377,7 @@ describe('HomePageClient', () => {
   });
 
   it('routes exact topic keyword searches to canonical topic pages', () => {
-    render(
-      <HomePageClient
-        initialPrompts={[]}
-        initialSearch=""
-        initialLoadError={null}
-      />,
-    );
+    render(<HomePageClient initialPrompts={[]} initialLoadError={null} />);
 
     fireEvent.change(
       screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
@@ -406,13 +391,7 @@ describe('HomePageClient', () => {
   });
 
   it('routes Turkish-normalized topic searches to canonical topic pages', () => {
-    render(
-      <HomePageClient
-        initialPrompts={[]}
-        initialSearch=""
-        initialLoadError={null}
-      />,
-    );
+    render(<HomePageClient initialPrompts={[]} initialLoadError={null} />);
 
     fireEvent.change(
       screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
@@ -426,13 +405,7 @@ describe('HomePageClient', () => {
   });
 
   it('routes unknown searches to the prompt listing query page', () => {
-    render(
-      <HomePageClient
-        initialPrompts={[]}
-        initialSearch=""
-        initialLoadError={null}
-      />,
-    );
+    render(<HomePageClient initialPrompts={[]} initialLoadError={null} />);
 
     fireEvent.change(
       screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),

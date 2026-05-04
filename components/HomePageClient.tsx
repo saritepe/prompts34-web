@@ -32,7 +32,6 @@ const QUICK_FILTERS = [
 
 type HomePageClientProps = {
   initialPrompts: PromptResponse[];
-  initialSearch: string;
   initialLoadError: string | null;
 };
 
@@ -224,14 +223,13 @@ function PromptSection({
 
 export default function HomePageClient({
   initialPrompts,
-  initialSearch,
   initialLoadError,
 }: HomePageClientProps) {
   const router = useRouter();
   const { token, user, loading } = useAuth();
   const authToken = token;
   const [prompts, setPrompts] = useState<PromptResponse[]>(initialPrompts);
-  const [search, setSearch] = useState(initialSearch);
+  const [search, setSearch] = useState('');
   const [error, setError] = useState<string | null>(initialLoadError);
 
   useEffect(() => {

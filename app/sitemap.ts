@@ -10,48 +10,48 @@ import { getPromptPath } from '@/lib/utils/slug';
 
 const BASE_URL = 'https://prompts34.com';
 
-const NOW = new Date();
+const STATIC_LASTMOD = new Date('2026-05-02');
 
 const STATIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
   {
     url: BASE_URL,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'daily',
     priority: 1,
   },
   {
     url: `${BASE_URL}/araclar`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'weekly',
     priority: 0.9,
   },
   ...TOOL_HUBS.map((hub) => ({
     url: `${BASE_URL}${hub.canonicalPath}`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'daily' as const,
     priority: 0.9,
   })),
   {
     url: `${BASE_URL}/en-yeni-prompts`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'daily',
     priority: 0.9,
   },
   {
     url: `${BASE_URL}/one-cikanlar`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'daily',
     priority: 0.9,
   },
   {
     url: `${BASE_URL}/ucretsiz-promptlar`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'daily',
     priority: 0.9,
   },
   {
     url: `${BASE_URL}/prompts`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'daily',
     priority: 0.8,
   },
@@ -62,13 +62,13 @@ export const dynamic = 'force-dynamic';
 const TOPIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
   {
     url: `${BASE_URL}/kategori`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'weekly',
     priority: 0.8,
   },
   ...TOPICS.map((topic) => ({
     url: `${BASE_URL}${getTopicPath(topic)}`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   })),
@@ -77,13 +77,15 @@ const TOPIC_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
 const SOZLUK_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
   {
     url: `${BASE_URL}/sozluk`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'monthly',
     priority: 0.7,
   },
   ...GLOSSARY.map((entry) => ({
     url: `${BASE_URL}${getGlossaryPath(entry)}`,
-    lastModified: NOW,
+    lastModified: new Date(
+      entry.dateModified ?? entry.datePublished ?? STATIC_LASTMOD,
+    ),
     changeFrequency: 'monthly' as const,
     priority: 0.6,
   })),
@@ -92,13 +94,15 @@ const SOZLUK_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
 const REHBER_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
   {
     url: `${BASE_URL}/rehber`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'monthly',
     priority: 0.7,
   },
   ...GUIDES.map((guide) => ({
     url: `${BASE_URL}${getGuidePath(guide)}`,
-    lastModified: NOW,
+    lastModified: new Date(
+      guide.dateModified ?? guide.datePublished ?? STATIC_LASTMOD,
+    ),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   })),
@@ -107,13 +111,13 @@ const REHBER_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
 const MESLEK_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
   {
     url: `${BASE_URL}/meslek`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'weekly',
     priority: 0.8,
   },
   ...PROFESSIONS.map((profession) => ({
     url: `${BASE_URL}${getProfessionPath(profession)}`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   })),
@@ -122,13 +126,13 @@ const MESLEK_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
 const KULLANIM_SITEMAP_ENTRIES: MetadataRoute.Sitemap = [
   {
     url: `${BASE_URL}/kullanim`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'weekly',
     priority: 0.8,
   },
   ...USE_CASES.map((useCase) => ({
     url: `${BASE_URL}${getUseCasePath(useCase)}`,
-    lastModified: NOW,
+    lastModified: STATIC_LASTMOD,
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   })),

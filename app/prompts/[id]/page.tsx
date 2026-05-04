@@ -14,6 +14,8 @@ import { getPrompt } from '@/lib/api/prompts';
 import { buildDescription } from '@/lib/metadata';
 import { getPromptPath } from '@/lib/utils/slug';
 
+export const revalidate = 300;
+
 const UUID_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 

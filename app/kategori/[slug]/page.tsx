@@ -62,7 +62,7 @@ export async function generateMetadata({
   const url = `https://prompts34.com${getTopicPath(topic)}`;
 
   return {
-    title: `${topic.title} | Prompts34`,
+    title: topic.title,
     description: topic.description,
     keywords: topic.keywords,
     openGraph: {

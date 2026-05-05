@@ -39,7 +39,7 @@ export async function generateMetadata({
   const url = `https://prompts34.com${getUseCasePath(useCase)}`;
 
   return {
-    title: `${useCase.title} | Prompts34`,
+    title: useCase.title,
     description: useCase.description,
     keywords: useCase.keywords,
     openGraph: {

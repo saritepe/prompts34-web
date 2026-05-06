@@ -9,7 +9,12 @@ import {
   BreadcrumbStructuredData,
   CollectionPageStructuredData,
 } from '@/app/components/StructuredData';
-import { TOPICS, getTopicPath } from '@/lib/topics';
+import { getPublicPrompts } from '@/lib/api/prompts';
+import {
+  getCategoryGroupSummaries,
+  type CategoryGroupSummary,
+} from '@/lib/category-groups';
+import { getTopicPath } from '@/lib/topics';
 
 export const revalidate = false;
 
@@ -47,7 +52,62 @@ export const metadata: Metadata = {
   },
 };
 
-export default function KategoriHubPage() {
+function CategoryGroupSection({ group }: { group: CategoryGroupSummary }) {
+  return (
+    <section
+      key={group.slug}
+      className="border-t border-zinc-200 py-10 first:border-t-0 first:pt-0 dark:border-zinc-800"
+    >
+      <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="mb-2 text-3xl leading-none">{group.icon}</p>
+          <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
+            {group.title}
+          </h2>
+          <p className="mt-2 max-w-3xl text-base text-zinc-600 dark:text-zinc-400">
+            {group.description}
+          </p>
+        </div>
+        <div className="flex gap-8 text-sm text-zinc-600 dark:text-zinc-400">
+          <div>
+            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              {group.promptCount}
+            </div>
+            <div>prompt</div>
+          </div>
+          <div>
+            <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              {group.topics.length}
+            </div>
+            <div>alt kategori</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {group.topics.map((topic) => (
+          <Link
+            key={topic.slug}
+            href={getTopicPath(topic)}
+            className="block rounded-2xl border border-zinc-200 bg-white p-6 transition-colors hover:border-zinc-300 hover:shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700"
+          >
+            <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+              {topic.title}
+            </h3>
+            <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+              {topic.description}
+            </p>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export default async function KategoriHubPage() {
+  const prompts = await getPublicPrompts().catch(() => []);
+  const groups = getCategoryGroupSummaries(prompts);
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-900">
       <BreadcrumbStructuredData
@@ -69,25 +129,14 @@ export default function KategoriHubPage() {
             AI Prompt Kategorileri
           </h1>
           <p className="text-lg text-zinc-600 dark:text-zinc-400">
-            Yapay zeka promptlarını kategorilere göre keşfedin. Her kategori
-            için özel olarak seçilmiş ve düzenlenmiş prompt koleksiyonları.
+            Yapay zeka promptlarını önce genel alanlara göre keşfedin, ardından
+            her alanın altındaki spesifik kategorilere geçin.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {TOPICS.map((topic) => (
-            <Link
-              key={topic.slug}
-              href={getTopicPath(topic)}
-              className="block rounded-lg border border-zinc-200 bg-white p-6 transition-colors hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:border-zinc-700"
-            >
-              <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50 mb-2">
-                {topic.title}
-              </h2>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">
-                {topic.description}
-              </p>
-            </Link>
+        <div>
+          {groups.map((group) => (
+            <CategoryGroupSection key={group.slug} group={group} />
           ))}
         </div>
       </main>

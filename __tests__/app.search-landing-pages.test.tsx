@@ -11,6 +11,7 @@ import KategoriHubPage, {
 } from '@/app/kategori/page';
 import { SOCIAL_IMAGE_PATH } from '@/app/shared-metadata';
 import { getPublicPrompts } from '@/lib/api/prompts';
+import { CATEGORY_GROUPS } from '@/lib/category-groups';
 import {
   TOPIC_PAGES,
   findTopicByKeyword,
@@ -129,19 +130,34 @@ describe('search landing pages', () => {
   });
 
   describe('categories hub page (/kategori)', () => {
-    it('renders all topic links', () => {
-      render(<KategoriHubPage />);
+    it('renders grouped categories and topic links', async () => {
+      getPublicPromptsMock.mockResolvedValueOnce([
+        buildPrompt({ id: 'career-1', tags: ['cv'] }),
+        buildPrompt({ id: 'coding-1', tags: ['yazılım'] }),
+        buildPrompt({ id: 'visual-1', tags: ['görsel'] }),
+      ]);
+
+      render(await KategoriHubPage());
 
       expect(screen.getByTestId('navigation')).toBeInTheDocument();
       expect(
         screen.getByRole('heading', { name: 'AI Prompt Kategorileri' }),
       ).toBeInTheDocument();
 
+      for (const group of CATEGORY_GROUPS) {
+        expect(
+          screen.getByRole('heading', { name: group.title }),
+        ).toBeInTheDocument();
+      }
+
       for (const topic of TOPIC_PAGES) {
         expect(screen.getByText(topic.title)).toBeInTheDocument();
         const link = screen.getByText(topic.title).closest('a');
         expect(link).toHaveAttribute('href', getTopicPath(topic));
       }
+
+      expect(screen.getAllByText('prompt').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('alt kategori').length).toBeGreaterThan(0);
     });
 
     it('exports the expected hub metadata', () => {

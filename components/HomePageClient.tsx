@@ -336,8 +336,8 @@ export default function HomePageClient({
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <section className="mb-12 overflow-hidden rounded-3xl border border-zinc-200 bg-gradient-to-br from-amber-100 via-white to-cyan-100 p-8 dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
-            <div className="order-2 lg:order-1 lg:pt-2">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
+            <div className="order-2 self-center lg:order-1">
               <form
                 onSubmit={handleSearchSubmit}
                 className="rounded-2xl border-2 border-zinc-400 bg-white/90 p-4 shadow-sm dark:border-zinc-600 dark:bg-zinc-950/80"

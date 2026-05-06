@@ -335,7 +335,7 @@ export default function HomePageClient({
       <Navigation />
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <section className="mb-12">
+        <section className="mb-12 rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-100 via-orange-50 to-amber-50 p-6 dark:border-amber-900/40 dark:from-amber-950/30 dark:via-zinc-950 dark:to-orange-950/20 sm:p-8">
           <h1 className="mb-4 text-[clamp(2rem,3.6vw,3.25rem)] font-black leading-tight text-zinc-900 dark:text-zinc-50">
             Türkçe hazır yapay zeka prompt kütüphanesi
           </h1>
@@ -370,6 +370,11 @@ export default function HomePageClient({
               </div>
             </div>
           </form>
+          <p className="mt-4 max-w-5xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
+            ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için topluluk
+            tarafından üretilen hazır promptları ara, kopyala ve ihtiyacına
+            uygun içerikleri hızlıca bul.
+          </p>
         </section>
 
         {error ? (

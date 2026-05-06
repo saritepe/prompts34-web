@@ -7,6 +7,13 @@ import { getPrompt } from '@/lib/api/prompts';
 import { getPromptPath } from '@/lib/utils/slug';
 import { buildPrompt } from './test-utils/fixtures';
 
+vi.mock('@/lib/auth', () => ({
+  useAuth: () => ({
+    user: null,
+    token: null,
+  }),
+}));
+
 vi.mock('@/components/Navigation', () => ({
   default: () => <nav data-testid="navigation">Navigation</nav>,
 }));

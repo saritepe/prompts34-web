@@ -17,7 +17,8 @@ const authState = vi.hoisted(() => ({
   user: {
     email: 'user@example.com',
     username: 'ali',
-  } as { email: string; username: string } | null,
+    id: 'user-1',
+  } as { email: string; username: string; id?: string } | null,
   token: 'token-1' as string | null,
 }));
 
@@ -81,6 +82,8 @@ vi.mock('@/components/PromptForm', () => ({
   ),
 }));
 
+const scrollIntoViewMock = vi.fn();
+
 vi.mock('@/lib/api/prompts', () => ({
   getMyPrompts: vi.fn(),
   deletePrompt: vi.fn(),
@@ -95,9 +98,12 @@ describe('my prompts page', () => {
   const updatePromptMock = vi.mocked(updatePrompt);
 
   beforeEach(() => {
+    Element.prototype.scrollIntoView = scrollIntoViewMock;
+    scrollIntoViewMock.mockReset();
     authState.user = {
       email: 'user@example.com',
       username: 'ali',
+      id: 'user-1',
     };
     authState.token = 'token-1';
     getMyPromptsMock.mockReset();
@@ -291,6 +297,7 @@ describe('my prompts page', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Düzenle' }));
     expect(screen.getByTestId('edit-form')).toBeInTheDocument();
+    expect(scrollIntoViewMock).toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Form İptal' }));
     expect(screen.queryByTestId('edit-form')).not.toBeInTheDocument();
   });

@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/lib/auth';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   getMyPrompts,
   deletePrompt,
@@ -23,6 +23,7 @@ export default function MyPromptsPage() {
   const [editingPrompt, setEditingPrompt] = useState<PromptResponse | null>(
     null,
   );
+  const editFormRef = useRef<HTMLDivElement | null>(null);
 
   const fetchPrompts = useCallback(async () => {
     if (!token) {
@@ -50,6 +51,18 @@ export default function MyPromptsPage() {
 
     fetchPrompts();
   }, [user, router, fetchPrompts]);
+
+  useEffect(() => {
+    if (!editingPrompt || !editFormRef.current) {
+      return;
+    }
+
+    editFormRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const firstField = editFormRef.current.querySelector<
+      HTMLInputElement | HTMLTextAreaElement
+    >('input, textarea');
+    firstField?.focus();
+  }, [editingPrompt]);
 
   async function handleDelete(promptId: string) {
     if (!token) return;
@@ -127,7 +140,10 @@ export default function MyPromptsPage() {
         )}
 
         {editingPrompt && (
-          <div className="mb-8 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6">
+          <div
+            ref={editFormRef}
+            className="mb-8 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg p-6"
+          >
             <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50 mb-6">
               Prompt Düzenle
             </h2>

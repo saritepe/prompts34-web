@@ -336,8 +336,8 @@ export default function HomePageClient({
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <section className="mb-12">
-          <h1 className="mb-4 text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 md:text-5xl">
-            Türkçe ücretsiz hazır yapay zeka prompt kütüphanesi
+          <h1 className="mb-4 text-[clamp(2rem,3.6vw,3.25rem)] font-black leading-tight text-zinc-900 dark:text-zinc-50">
+            Türkçe hazır yapay zeka prompt kütüphanesi
           </h1>
           <form
             onSubmit={handleSearchSubmit}

@@ -373,7 +373,7 @@ export default function HomePageClient({
 
             <div className="order-1 lg:order-2">
               <h1 className="mb-4 max-w-3xl text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 md:text-5xl">
-                Ücretsiz Türkçe hazır yapay zeka prompt kütüphanesi
+                Türkçe ücretsiz hazır yapay zeka prompt kütüphanesi
               </h1>
               <p className="mb-7 max-w-2xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
                 ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için

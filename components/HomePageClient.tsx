@@ -11,25 +11,6 @@ import { useAuth } from '@/lib/auth';
 import { findTopicByKeyword, getTopicPath, normalizeQuery } from '@/lib/topics';
 import type { PromptResponse } from '@/types/prompt';
 
-const QUICK_FILTERS = [
-  'cv',
-  'mülakat',
-  'motivasyon',
-  'görsel',
-  'logo',
-  'kapak mektubu',
-  'özgeçmiş',
-  'linkedin',
-  'staj',
-  'iş başvurusu',
-  'kariyer',
-  'içerik üretimi',
-  'sosyal medya',
-  'sunum',
-  'e-posta',
-  'analiz',
-];
-
 type HomePageClientProps = {
   initialPrompts: PromptResponse[];
   initialLoadError: string | null;
@@ -355,13 +336,44 @@ export default function HomePageClient({
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <section className="mb-12 overflow-hidden rounded-3xl border border-zinc-200 bg-gradient-to-br from-amber-100 via-white to-cyan-100 p-8 dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
-            <div>
-              <p className="mb-4 inline-flex rounded-full bg-zinc-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white dark:bg-zinc-100 dark:text-zinc-900">
-                Türkçe Hazır Prompt Kütüphanesi
-              </p>
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
+            <div className="order-2 lg:order-1 lg:pt-2">
+              <form
+                onSubmit={handleSearchSubmit}
+                className="rounded-2xl border-2 border-zinc-400 bg-white/90 p-4 shadow-sm dark:border-zinc-600 dark:bg-zinc-950/80"
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <input
+                    type="search"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder="Başlık, etiket, model veya içerik ara"
+                    className="w-full rounded-md border border-zinc-400 bg-white px-3 py-2 text-sm text-zinc-900 outline-none ring-amber-300 transition focus:ring-2 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
+                  />
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="submit"
+                      className="whitespace-nowrap rounded-lg bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                    >
+                      Promptları Keşfet
+                    </button>
+                    {search && (
+                      <button
+                        type="button"
+                        onClick={() => setSearch('')}
+                        className="rounded-md border border-zinc-400 px-3 py-2 text-sm font-semibold text-zinc-700 dark:border-zinc-600 dark:text-zinc-300"
+                      >
+                        Temizle
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div className="order-1 lg:order-2">
               <h1 className="mb-4 max-w-3xl text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 md:text-5xl">
-                Hazır Promptlar — Türkçe yapay zeka prompt kütüphanesi.
+                Ücretsiz Türkçe hazır yapay zeka prompt kütüphanesi
               </h1>
               <p className="mb-7 max-w-2xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
                 ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için
@@ -385,52 +397,6 @@ export default function HomePageClient({
                     </Link>
                   </>
                 )}
-              </div>
-            </div>
-
-            <div className="lg:pt-8">
-              <form
-                onSubmit={handleSearchSubmit}
-                className="rounded-xl border border-zinc-300 bg-white/85 p-4 dark:border-zinc-700 dark:bg-zinc-950/70"
-              >
-                <div className="mb-3" />
-                <div className="flex flex-col items-end gap-2 sm:flex-row sm:items-center">
-                  <input
-                    type="search"
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    placeholder="Başlık, etiket, model veya içerikte ara"
-                    className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 outline-none ring-amber-300 transition focus:ring-2 sm:max-w-md dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
-                  />
-                  <button
-                    type="submit"
-                    className="whitespace-nowrap rounded-lg bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-                  >
-                    Promptları Keşfet
-                  </button>
-                  {search && (
-                    <button
-                      type="button"
-                      onClick={() => setSearch('')}
-                      className="rounded-md border border-zinc-300 px-3 py-2 text-sm font-semibold text-zinc-700 dark:border-zinc-700 dark:text-zinc-300"
-                    >
-                      Temizle
-                    </button>
-                  )}
-                </div>
-              </form>
-              <div className="mt-4 rounded-2xl border border-zinc-200 bg-white/85 p-4 dark:border-zinc-700 dark:bg-zinc-950/70">
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-                  {QUICK_FILTERS.map((filter) => (
-                    <button
-                      key={filter}
-                      onClick={() => setSearch(filter)}
-                      className="w-full rounded-full border border-zinc-300 bg-white/80 px-3 py-1 text-center text-xs font-semibold text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-300"
-                    >
-                      {filter}
-                    </button>
-                  ))}
-                </div>
               </div>
             </div>
           </div>

@@ -48,7 +48,7 @@ describe('HomePageClient', () => {
     resetNextNavigationMock();
   });
 
-  it('filters by typed search and supports quick filters', () => {
+  it('filters by typed search', () => {
     render(
       <HomePageClient
         initialPrompts={[
@@ -92,7 +92,7 @@ describe('HomePageClient', () => {
     ).toBeInTheDocument();
 
     fireEvent.change(
-      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerik ara'),
       { target: { value: 'video' } },
     );
 
@@ -104,12 +104,6 @@ describe('HomePageClient', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Temizle' }));
 
     expect(screen.getAllByText('Logo Prompt')).toHaveLength(2);
-
-    fireEvent.click(screen.getByRole('button', { name: 'logo' }));
-
-    expect(screen.getByDisplayValue('logo')).toBeInTheDocument();
-    expect(screen.getAllByText('Logo Prompt')).toHaveLength(2);
-    expect(screen.queryByText('Video Prompt')).not.toBeInTheDocument();
   });
 
   it('renders the empty state when there are no prompts', () => {
@@ -365,7 +359,7 @@ describe('HomePageClient', () => {
     expect(featuredHeadings[1]).toHaveTextContent('Minimal Prompt');
 
     fireEvent.change(
-      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerik ara'),
       {
         target: { value: 'minimal' },
       },
@@ -380,7 +374,7 @@ describe('HomePageClient', () => {
     render(<HomePageClient initialPrompts={[]} initialLoadError={null} />);
 
     fireEvent.change(
-      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerik ara'),
       {
         target: { value: 'cv' },
       },
@@ -394,7 +388,7 @@ describe('HomePageClient', () => {
     render(<HomePageClient initialPrompts={[]} initialLoadError={null} />);
 
     fireEvent.change(
-      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerik ara'),
       {
         target: { value: 'özgeçmiş' },
       },
@@ -408,7 +402,7 @@ describe('HomePageClient', () => {
     render(<HomePageClient initialPrompts={[]} initialLoadError={null} />);
 
     fireEvent.change(
-      screen.getByPlaceholderText('Başlık, etiket, model veya içerikte ara'),
+      screen.getByPlaceholderText('Başlık, etiket, model veya içerik ara'),
       {
         target: { value: 'unknown' },
       },

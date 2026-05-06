@@ -25,20 +25,18 @@ describe('Navigation', () => {
       'href',
       '/',
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Keşfet' }));
+    expect(screen.getByRole('link', { name: 'En Yeni' })).toHaveAttribute(
+      'href',
+      '/en-yeni-prompts',
+    );
+    expect(screen.getByRole('link', { name: 'Öne Çıkanlar' })).toHaveAttribute(
+      'href',
+      '/one-cikanlar',
+    );
     expect(screen.getByRole('link', { name: 'Kategoriler' })).toHaveAttribute(
       'href',
       '/kategori',
     );
-    expect(screen.getByRole('link', { name: 'Meslekler' })).toHaveAttribute(
-      'href',
-      '/meslek',
-    );
-    expect(
-      screen.getByRole('link', { name: 'Kullanım Alanları' }),
-    ).toHaveAttribute('href', '/kullanim');
-
-    fireEvent.click(screen.getByRole('button', { name: 'Öğren' }));
     expect(screen.getByRole('link', { name: 'Sözlük' })).toHaveAttribute(
       'href',
       '/sozluk',

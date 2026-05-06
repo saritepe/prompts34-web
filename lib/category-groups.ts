@@ -22,23 +22,22 @@ export const CATEGORY_GROUPS: CategoryGroupDefinition[] = [
   {
     slug: 'coding',
     icon: '💻',
-    title: 'Coding',
-    description: 'Programming and development prompts.',
+    title: 'Kodlama',
+    description: 'Programlama ve yazılım geliştirme promptları.',
     topicSlugs: ['yazilim-gelistirme'],
   },
   {
     slug: 'writing',
     icon: '✍️',
-    title: 'Writing',
-    description: 'Content writing and copywriting.',
+    title: 'Yazma',
+    description: 'İçerik yazımı ve metin üretimi promptları.',
     topicSlugs: ['pazarlama-ve-icerik', 'sosyal-medya'],
   },
   {
     slug: 'business',
     icon: '💼',
-    title: 'Business',
-    description:
-      'Business strategy, communication, recruiting, and operations prompts.',
+    title: 'İş Dünyası',
+    description: 'İş stratejisi, iletişim, işe alım ve operasyon promptları.',
     topicSlugs: [
       'cv-hazirlama',
       'motivasyon-mektubu',
@@ -49,8 +48,8 @@ export const CATEGORY_GROUPS: CategoryGroupDefinition[] = [
   {
     slug: 'creative',
     icon: '🎨',
-    title: 'Creative',
-    description: 'Art, design, visual generation, and creative work.',
+    title: 'Yaratıcı',
+    description: 'Sanat, tasarım, görsel üretim ve yaratıcı işler.',
     topicSlugs: [
       'gorsel-olusturma',
       'logo-olusturma',
@@ -63,40 +62,40 @@ export const CATEGORY_GROUPS: CategoryGroupDefinition[] = [
   {
     slug: 'education',
     icon: '📚',
-    title: 'Education',
-    description: 'Learning, teaching, tutoring, and educational prompts.',
+    title: 'Eğitim',
+    description: 'Öğrenme, öğretim, ders çalışma ve eğitim promptları.',
     topicSlugs: ['egitim'],
   },
   {
     slug: 'workflows',
     icon: '⚡',
-    title: 'Workflows',
+    title: 'İş Akışları',
     description:
-      'Structured AI workflows, automations, and multi-step pipelines.',
+      'Yapılandırılmış yapay zeka iş akışları, otomasyonlar ve çok adımlı süreçler.',
     topicSlugs: ['uretkenlik'],
   },
   {
     slug: 'productivity',
     icon: '⏲️',
-    title: 'Productivity',
+    title: 'Üretkenlik',
     description:
-      'Efficiency, communication, and research prompts for getting more done.',
+      'Daha verimli çalışmak için iletişim, araştırma ve günlük verimlilik promptları.',
     topicSlugs: ['e-posta'],
   },
   {
     slug: 'self-improvement',
     icon: '🌱',
-    title: 'Self Improvement',
+    title: 'Kişisel Gelişim',
     description:
-      'Personal growth, career development, mindset, and skill-building prompts.',
+      'Kişisel gelişim, kariyer ilerlemesi, motivasyon ve beceri geliştirme promptları.',
     topicSlugs: ['kariyer-gelisim'],
   },
   {
     slug: 'business-strategy',
     icon: '💼',
-    title: 'Business Strategy',
+    title: 'İş Stratejisi',
     description:
-      'Strategic thinking, planning, startup, and business growth prompts.',
+      'Stratejik düşünme, planlama, girişim ve iş büyütme promptları.',
     topicSlugs: ['is-stratejisi'],
   },
 ];

@@ -336,8 +336,14 @@ export default function HomePageClient({
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <section className="mb-12 overflow-hidden rounded-3xl border border-zinc-200 bg-gradient-to-br from-amber-100 via-white to-cyan-100 p-8 dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-center">
-            <div className="order-2 self-center lg:order-1">
+          <div className="mx-auto flex max-w-4xl flex-col gap-6">
+            <div>
+              <h1 className="max-w-3xl text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 md:text-5xl">
+                Türkçe ücretsiz hazır yapay zeka prompt kütüphanesi
+              </h1>
+            </div>
+
+            <div>
               <form
                 onSubmit={handleSearchSubmit}
                 className="rounded-2xl border-2 border-zinc-400 bg-white/90 p-4 shadow-sm dark:border-zinc-600 dark:bg-zinc-950/80"
@@ -371,16 +377,13 @@ export default function HomePageClient({
               </form>
             </div>
 
-            <div className="order-1 lg:order-2">
-              <h1 className="mb-4 max-w-3xl text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 md:text-5xl">
-                Türkçe ücretsiz hazır yapay zeka prompt kütüphanesi
-              </h1>
-              <p className="mb-7 max-w-2xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
+            <div>
+              <p className="max-w-2xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
                 ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için
                 topluluk tarafından üretilen ücretsiz hazır promptlar. Hızlıca
                 ara, kopyala ve kendi prompt koleksiyonunu oluştur.
               </p>
-              <div className="flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-wrap gap-3">
                 {!token && !user && (
                   <>
                     <Link

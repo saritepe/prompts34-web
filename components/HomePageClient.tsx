@@ -336,17 +336,15 @@ export default function HomePageClient({
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <section className="mb-12 overflow-hidden rounded-3xl border border-zinc-200 bg-gradient-to-br from-amber-100 via-white to-cyan-100 p-8 dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
-          <div className="mx-auto flex max-w-4xl flex-col gap-6">
-            <div>
+          <div className="mx-auto max-w-4xl rounded-3xl border border-zinc-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-950/55 sm:p-8">
+            <div className="flex flex-col gap-6">
               <h1 className="max-w-3xl text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 md:text-5xl">
                 Türkçe ücretsiz hazır yapay zeka prompt kütüphanesi
               </h1>
-            </div>
 
-            <div>
               <form
                 onSubmit={handleSearchSubmit}
-                className="rounded-2xl border-2 border-zinc-400 bg-white/90 p-4 shadow-sm dark:border-zinc-600 dark:bg-zinc-950/80"
+                className="rounded-2xl border-2 border-zinc-400 bg-white/92 p-4 dark:border-zinc-600 dark:bg-zinc-900/90"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <input
@@ -375,9 +373,7 @@ export default function HomePageClient({
                   </div>
                 </div>
               </form>
-            </div>
 
-            <div>
               <p className="max-w-2xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
                 ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için
                 topluluk tarafından üretilen ücretsiz hazır promptlar. Hızlıca

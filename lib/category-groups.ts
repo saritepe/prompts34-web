@@ -20,78 +20,84 @@ export interface CategoryGroupSummary extends CategoryGroupDefinition {
 
 export const CATEGORY_GROUPS: CategoryGroupDefinition[] = [
   {
-    slug: 'career',
+    slug: 'coding',
+    icon: '💻',
+    title: 'Coding',
+    description: 'Programming and development prompts.',
+    topicSlugs: ['yazilim-gelistirme'],
+  },
+  {
+    slug: 'writing',
+    icon: '✍️',
+    title: 'Writing',
+    description: 'Content writing and copywriting.',
+    topicSlugs: ['pazarlama-ve-icerik', 'sosyal-medya'],
+  },
+  {
+    slug: 'business',
     icon: '💼',
-    title: 'Kariyer',
+    title: 'Business',
     description:
-      'CV, mülakat, LinkedIn ve profesyonel gelişim odaklı promptlar.',
+      'Business strategy, communication, recruiting, and operations prompts.',
     topicSlugs: [
       'cv-hazirlama',
       'motivasyon-mektubu',
       'mulakat-hazirligi',
-      'kariyer-gelisim',
+      'e-ticaret',
     ],
   },
   {
-    slug: 'coding',
-    icon: '💻',
-    title: 'Yazılım',
-    description:
-      'Kodlama, hata ayıklama, refactoring ve teknik iş akışları için promptlar.',
-    topicSlugs: ['yazilim-gelistirme'],
-  },
-  {
-    slug: 'marketing-content',
-    icon: '📣',
-    title: 'Pazarlama ve İçerik',
-    description:
-      'Sosyal medya, blog, SEO ve kampanya üretimi için içerik promptları.',
-    topicSlugs: ['pazarlama-ve-icerik', 'sosyal-medya'],
-  },
-  {
-    slug: 'business-email',
-    icon: '✉️',
-    title: 'İş ve E-posta',
-    description:
-      'İş iletişimi, strateji, satış ve e-posta süreçlerini destekleyen promptlar.',
-    topicSlugs: ['is-stratejisi', 'e-posta', 'e-ticaret'],
-  },
-  {
-    slug: 'design-visuals',
+    slug: 'creative',
     icon: '🎨',
-    title: 'Tasarım ve Görsel',
-    description:
-      'Görsel üretim, logo, portre ve stil odaklı yaratıcı promptlar.',
+    title: 'Creative',
+    description: 'Art, design, visual generation, and creative work.',
     topicSlugs: [
       'gorsel-olusturma',
       'logo-olusturma',
       'portre-ve-fotograf',
       'midjourney-gorsel',
+      'oyun',
+      'sanat-ve-yaraticilik',
     ],
   },
   {
-    slug: 'education-learning',
+    slug: 'education',
     icon: '📚',
-    title: 'Eğitim ve Öğrenme',
-    description:
-      'Ders planı, özetleme, öğretim ve öğrenme süreçleri için promptlar.',
+    title: 'Education',
+    description: 'Learning, teaching, tutoring, and educational prompts.',
     topicSlugs: ['egitim'],
   },
   {
-    slug: 'productivity',
+    slug: 'workflows',
     icon: '⚡',
-    title: 'Üretkenlik',
+    title: 'Workflows',
     description:
-      'Planlama, görev yönetimi ve günlük iş akışlarını hızlandıran promptlar.',
+      'Structured AI workflows, automations, and multi-step pipelines.',
     topicSlugs: ['uretkenlik'],
   },
   {
-    slug: 'creative-fun',
-    icon: '🎮',
-    title: 'Yaratıcılık ve Eğlence',
+    slug: 'productivity',
+    icon: '⏲️',
+    title: 'Productivity',
     description:
-      'Oyun, hikâye, deneysel üretim ve yaratıcı fikir geliştirme promptları.',
-    topicSlugs: ['oyun', 'sanat-ve-yaraticilik'],
+      'Efficiency, communication, and research prompts for getting more done.',
+    topicSlugs: ['e-posta'],
+  },
+  {
+    slug: 'self-improvement',
+    icon: '🌱',
+    title: 'Self Improvement',
+    description:
+      'Personal growth, career development, mindset, and skill-building prompts.',
+    topicSlugs: ['kariyer-gelisim'],
+  },
+  {
+    slug: 'business-strategy',
+    icon: '💼',
+    title: 'Business Strategy',
+    description:
+      'Strategic thinking, planning, startup, and business growth prompts.',
+    topicSlugs: ['is-stratejisi'],
   },
 ];
 

@@ -207,7 +207,7 @@ export default function HomePageClient({
   initialLoadError,
 }: HomePageClientProps) {
   const router = useRouter();
-  const { token, user, loading } = useAuth();
+  const { token, loading } = useAuth();
   const authToken = token;
   const [prompts, setPrompts] = useState<PromptResponse[]>(initialPrompts);
   const [search, setSearch] = useState('');
@@ -335,70 +335,38 @@ export default function HomePageClient({
       <Navigation />
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <section className="mb-12 overflow-hidden rounded-3xl border border-zinc-200 bg-gradient-to-br from-amber-100 via-white to-cyan-100 p-8 dark:border-zinc-800 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900">
-          <div className="mx-auto max-w-4xl rounded-3xl border border-zinc-200/80 bg-white/70 p-6 shadow-sm backdrop-blur-sm dark:border-zinc-700/80 dark:bg-zinc-950/55 sm:p-8">
-            <div className="flex flex-col gap-6">
-              <h1 className="max-w-3xl text-4xl font-black leading-tight text-zinc-900 dark:text-zinc-50 md:text-5xl">
-                Türkçe ücretsiz hazır yapay zeka prompt kütüphanesi
-              </h1>
-
-              <form
-                onSubmit={handleSearchSubmit}
-                className="rounded-2xl border-2 border-zinc-400 bg-white/92 p-4 dark:border-zinc-600 dark:bg-zinc-900/90"
-              >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                  <input
-                    type="search"
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    placeholder="Başlık, etiket, model veya içerik ara"
-                    className="w-full rounded-md border border-zinc-400 bg-white px-3 py-2 text-sm text-zinc-900 outline-none ring-amber-300 transition focus:ring-2 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
-                  />
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="submit"
-                      className="whitespace-nowrap rounded-lg bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-                    >
-                      Promptları Keşfet
-                    </button>
-                    {search && (
-                      <button
-                        type="button"
-                        onClick={() => setSearch('')}
-                        className="rounded-md border border-zinc-400 px-3 py-2 text-sm font-semibold text-zinc-700 dark:border-zinc-600 dark:text-zinc-300"
-                      >
-                        Temizle
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </form>
-
-              <p className="max-w-2xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
-                ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için
-                topluluk tarafından üretilen ücretsiz hazır promptlar. Hızlıca
-                ara, kopyala ve kendi prompt koleksiyonunu oluştur.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                {!token && !user && (
-                  <>
-                    <Link
-                      href="/kayit"
-                      className="rounded-lg border border-zinc-300 bg-white px-5 py-3 text-sm font-semibold text-zinc-800 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
-                    >
-                      Ücretsiz Kaydol
-                    </Link>
-                    <Link
-                      href="/giris"
-                      className="rounded-lg border border-transparent px-5 py-3 text-sm font-semibold text-zinc-700 hover:underline dark:text-zinc-300"
-                    >
-                      Giriş Yap
-                    </Link>
-                  </>
+        <section className="mb-12">
+          <form
+            onSubmit={handleSearchSubmit}
+            className="w-full rounded-2xl border-2 border-zinc-400 bg-white p-4 shadow-sm dark:border-zinc-600 dark:bg-zinc-950"
+          >
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <input
+                type="search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Başlık, etiket, model veya içerik ara"
+                className="w-full rounded-md border border-zinc-400 bg-white px-3 py-2 text-sm text-zinc-900 outline-none ring-amber-300 transition focus:ring-2 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
+              />
+              <div className="flex items-center gap-2">
+                <button
+                  type="submit"
+                  className="whitespace-nowrap rounded-lg bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                >
+                  Promptları Keşfet
+                </button>
+                {search && (
+                  <button
+                    type="button"
+                    onClick={() => setSearch('')}
+                    className="rounded-md border border-zinc-400 px-3 py-2 text-sm font-semibold text-zinc-700 dark:border-zinc-600 dark:text-zinc-300"
+                  >
+                    Temizle
+                  </button>
                 )}
               </div>
             </div>
-          </div>
+          </form>
         </section>
 
         {error ? (

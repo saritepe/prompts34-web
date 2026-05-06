@@ -240,14 +240,6 @@ describe('HomePageClient', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('link', { name: 'Ücretsiz Kaydol' }),
-    ).toHaveAttribute('href', '/kayit');
-    expect(screen.getByRole('link', { name: 'Giriş Yap' })).toHaveAttribute(
-      'href',
-      '/giris',
-    );
-
     fireEvent.click(screen.getAllByRole('button', { name: /👍 3/i })[0]!);
 
     expect(alertMock).toHaveBeenCalledWith('Beğenmek için giriş yapmalısınız.');

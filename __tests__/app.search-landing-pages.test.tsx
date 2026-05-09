@@ -274,7 +274,7 @@ describe('search landing pages', () => {
         params: Promise.resolve({ slug: topic.slug }),
       });
 
-      expect(meta.title).toBe(`${topic.title} | Prompts34`);
+      expect(meta.title).toBe(topic.title);
       expect(meta.description).toBe(topic.description);
       expect(meta.alternates?.canonical).toBe(
         `https://prompts34.com${getTopicPath(topic)}`,

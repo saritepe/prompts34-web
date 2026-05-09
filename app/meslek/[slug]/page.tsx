@@ -39,7 +39,7 @@ export async function generateMetadata({
   const url = `https://prompts34.com${getProfessionPath(profession)}`;
 
   return {
-    title: `${profession.title} | Prompts34`,
+    title: profession.title,
     description: profession.description,
     keywords: profession.keywords,
     openGraph: {

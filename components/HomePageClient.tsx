@@ -336,13 +336,13 @@ export default function HomePageClient({
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <section className="mb-12 rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-100 via-orange-50 to-amber-50 px-5 py-10 shadow-sm dark:border-amber-900/40 dark:from-amber-950/30 dark:via-zinc-950 dark:to-orange-950/20 sm:px-8 sm:py-12 lg:px-12 lg:py-14">
-          <h1 className="max-w-6xl text-[clamp(2.75rem,7.2vw,6.75rem)] font-black leading-[0.95] text-zinc-900 dark:text-zinc-50">
+          <h1 className="mx-auto max-w-6xl text-center text-[clamp(2.5rem,6.8vw,6.25rem)] font-black leading-[0.95] text-zinc-900 dark:text-zinc-50">
             <span className="block">Türkçe hazır yapay zeka</span>
             <span className="block bg-gradient-to-r from-amber-700 via-orange-500 to-amber-600 bg-clip-text text-transparent dark:from-amber-200 dark:via-orange-300 dark:to-amber-400">
               prompt kütüphanesi
             </span>
           </h1>
-          <p className="mt-6 max-w-6xl text-lg font-medium leading-8 text-zinc-700 dark:text-zinc-300 sm:text-xl lg:text-2xl lg:leading-9">
+          <p className="mx-auto mt-6 max-w-6xl text-center text-lg font-medium leading-8 text-zinc-700 dark:text-zinc-300 sm:text-xl lg:text-2xl lg:leading-9">
             ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için topluluk
             tarafından üretilen hazır promptları ara, kopyala ve ihtiyacına
             uygun içerikleri hızlıca bul.

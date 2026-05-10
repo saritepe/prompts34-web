@@ -116,7 +116,11 @@ export default function PromptDetailClient({
               <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
                 İçerik
               </h2>
-              <CopyContentButton content={prompt.content} />
+              <CopyContentButton
+                content={prompt.content}
+                promptId={prompt.id}
+                firstTag={prompt.tags[0]}
+              />
             </div>
             <pre className="whitespace-pre-wrap text-[8pt] leading-6 text-zinc-800 dark:text-zinc-200">
               {prompt.content}

@@ -105,6 +105,89 @@ describe('shared frontend components', () => {
     vi.useRealTimers();
   });
 
+  it('fires the prompt_copy umami event when promptId is provided', async () => {
+    const track = vi.fn();
+    vi.stubGlobal('umami', { track });
+    writeText.mockResolvedValue(undefined);
+
+    render(
+      <CopyContentButton
+        content="izlenecek içerik"
+        promptId="prompt-42"
+        firstTag="cv"
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'İçeriği kopyala' }));
+
+    await waitFor(() =>
+      expect(track).toHaveBeenCalledWith('prompt_copy', {
+        promptId: 'prompt-42',
+        firstTag: 'cv',
+      }),
+    );
+  });
+
+  it('skips the prompt_copy umami event when promptId is missing', async () => {
+    const track = vi.fn();
+    vi.stubGlobal('umami', { track });
+    writeText.mockResolvedValue(undefined);
+
+    render(<CopyContentButton content="anonim kopya" />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'İçeriği kopyala' }));
+
+    await waitFor(() => expect(writeText).toHaveBeenCalled());
+    expect(track).not.toHaveBeenCalled();
+  });
+
+  it('fires the prompt_like umami event after a successful vote', async () => {
+    authState.token = 'token-1';
+    const track = vi.fn();
+    vi.stubGlobal('umami', { track });
+    votePromptMock.mockResolvedValue(
+      buildVoteResponse({ like_count: 3, liked: true }),
+    );
+
+    render(
+      <PromptVoteButton
+        promptId="prompt-9"
+        initialLikeCount={2}
+        initialLikedByMe={false}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Promptu beğen' }));
+
+    await waitFor(() =>
+      expect(track).toHaveBeenCalledWith('prompt_like', {
+        promptId: 'prompt-9',
+      }),
+    );
+  });
+
+  it('does not fire prompt_like when the vote toggles to unliked', async () => {
+    authState.token = 'token-1';
+    const track = vi.fn();
+    vi.stubGlobal('umami', { track });
+    votePromptMock.mockResolvedValue(
+      buildVoteResponse({ like_count: 2, liked: false }),
+    );
+
+    render(
+      <PromptVoteButton
+        promptId="prompt-9"
+        initialLikeCount={3}
+        initialLikedByMe={true}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Promptu beğen' }));
+
+    await waitFor(() => expect(votePromptMock).toHaveBeenCalled());
+    expect(track).not.toHaveBeenCalled();
+  });
+
   it('logs copy failures without crashing', async () => {
     const consoleError = vi
       .spyOn(console, 'error')

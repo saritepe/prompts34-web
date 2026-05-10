@@ -1,18 +1,28 @@
 'use client';
 
 import { useState } from 'react';
+import { trackPromptCopy } from '@/lib/analytics';
 
 interface CopyContentButtonProps {
   content: string;
+  promptId?: string;
+  firstTag?: string;
 }
 
-export default function CopyContentButton({ content }: CopyContentButtonProps) {
+export default function CopyContentButton({
+  content,
+  promptId,
+  firstTag,
+}: CopyContentButtonProps) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(content);
       setCopied(true);
+      if (promptId) {
+        trackPromptCopy({ promptId, firstTag });
+      }
       setTimeout(() => setCopied(false), 1200);
     } catch (error) {
       console.error('İçerik kopyalanamadı', error);

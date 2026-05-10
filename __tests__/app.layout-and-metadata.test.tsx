@@ -77,7 +77,7 @@ describe('layout and metadata routes', () => {
       rules: {
         userAgent: '*',
         allow: '/',
-        disallow: ['/my-prompts', '/auth/', '/giris', '/kayit'],
+        disallow: ['/my-prompts', '/settings', '/auth/', '/giris', '/kayit'],
       },
       sitemap: 'https://prompts34.com/sitemap.xml',
     });

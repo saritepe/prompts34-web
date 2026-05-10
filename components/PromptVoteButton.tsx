@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { votePrompt } from '@/lib/api/prompts';
 import { useAuth } from '@/lib/auth';
+import { trackPromptLike } from '@/lib/analytics';
 
 interface PromptVoteButtonProps {
   promptId: string;
@@ -31,6 +32,9 @@ export default function PromptVoteButton({
       const result = await votePrompt(promptId, token);
       setLikeCount(result.like_count);
       setLiked(result.liked);
+      if (result.liked) {
+        trackPromptLike({ promptId });
+      }
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Oylama sırasında hata oluştu';

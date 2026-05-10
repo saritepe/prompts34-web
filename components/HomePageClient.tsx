@@ -335,31 +335,34 @@ export default function HomePageClient({
       <Navigation />
 
       <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <section className="mb-12 rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-100 via-orange-50 to-amber-50 p-6 dark:border-amber-900/40 dark:from-amber-950/30 dark:via-zinc-950 dark:to-orange-950/20 sm:p-8">
-          <h1 className="max-w-5xl text-[clamp(2rem,3.6vw,3.25rem)] font-black leading-tight text-zinc-900 dark:text-zinc-50">
-            Türkçe hazır yapay zeka prompt kütüphanesi
+        <section className="mb-12 rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-100 via-orange-50 to-amber-50 px-5 py-10 shadow-sm dark:border-amber-900/40 dark:from-amber-950/30 dark:via-zinc-950 dark:to-orange-950/20 sm:px-8 sm:py-12 lg:px-12 lg:py-14">
+          <h1 className="max-w-6xl text-[clamp(2.75rem,7.2vw,6.75rem)] font-black leading-[0.95] text-zinc-900 dark:text-zinc-50">
+            <span className="block">Türkçe hazır yapay zeka</span>
+            <span className="block bg-gradient-to-r from-amber-700 via-orange-500 to-amber-600 bg-clip-text text-transparent dark:from-amber-200 dark:via-orange-300 dark:to-amber-400">
+              prompt kütüphanesi
+            </span>
           </h1>
-          <p className="mt-4 max-w-5xl text-base text-zinc-700 dark:text-zinc-300 md:text-lg">
+          <p className="mt-6 max-w-6xl text-lg font-medium leading-8 text-zinc-700 dark:text-zinc-300 sm:text-xl lg:text-2xl lg:leading-9">
             ChatGPT, Claude, Gemini ve diğer yapay zeka araçları için topluluk
             tarafından üretilen hazır promptları ara, kopyala ve ihtiyacına
             uygun içerikleri hızlıca bul.
           </p>
           <form
             onSubmit={handleSearchSubmit}
-            className="mt-4 max-w-5xl rounded-2xl border-2 border-zinc-400 bg-white p-4 shadow-sm dark:border-zinc-600 dark:bg-zinc-950"
+            className="mt-8 max-w-6xl rounded-[2rem] border-2 border-zinc-400 bg-white p-2 shadow-[0_18px_45px_rgba(180,83,9,0.18)] dark:border-zinc-600 dark:bg-zinc-950"
           >
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
               <input
                 type="search"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Başlık, etiket, model veya içerik ara"
-                className="w-full rounded-md border border-zinc-400 bg-white px-3 py-2 text-sm text-zinc-900 outline-none ring-amber-300 transition focus:ring-2 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-100"
+                className="min-h-14 w-full rounded-[1.5rem] border-0 bg-transparent px-5 py-4 text-base font-semibold text-zinc-900 outline-none placeholder:text-zinc-500 focus:ring-0 dark:text-zinc-100 dark:placeholder:text-zinc-500 sm:text-lg"
               />
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 md:shrink-0">
                 <button
                   type="submit"
-                  className="whitespace-nowrap rounded-lg bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+                  className="min-h-14 flex-1 whitespace-nowrap rounded-[1.5rem] bg-zinc-900 px-7 py-4 text-sm font-bold text-white transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 md:flex-none"
                 >
                   Promptları Keşfet
                 </button>
@@ -367,7 +370,7 @@ export default function HomePageClient({
                   <button
                     type="button"
                     onClick={() => setSearch('')}
-                    className="rounded-md border border-zinc-400 px-3 py-2 text-sm font-semibold text-zinc-700 dark:border-zinc-600 dark:text-zinc-300"
+                    className="min-h-14 rounded-[1.5rem] border border-zinc-400 px-4 py-4 text-sm font-semibold text-zinc-700 dark:border-zinc-600 dark:text-zinc-300"
                   >
                     Temizle
                   </button>

@@ -51,7 +51,7 @@ vi.mock('@/lib/api/prompts', () => ({
 describe('prompt detail page', () => {
   const getPromptMock = vi.mocked(getPrompt);
 
-  it('renders the prompt detail with explanation, tags, and actions', async () => {
+  it('renders the prompt detail with explanation, tags, actions, and a logged-out gate', async () => {
     getPromptMock.mockResolvedValueOnce(
       buildPrompt({
         title: 'Detaylı Prompt',
@@ -74,7 +74,8 @@ describe('prompt detail page', () => {
     expect(screen.getByText('Uzun açıklama')).toBeInTheDocument();
     expect(screen.getByText('cv')).toBeInTheDocument();
     expect(screen.getByText('analiz')).toBeInTheDocument();
-    expect(screen.getByText('Copy: Prompt içeriği')).toBeInTheDocument();
+    expect(screen.getByText('Bu Prompt Seni Bekliyor')).toBeInTheDocument();
+    expect(screen.queryByText('Copy: Prompt içeriği')).not.toBeInTheDocument();
     expect(screen.getByText('Vote: 12')).toBeInTheDocument();
     expect(screen.getByText('Yorumlar (0)')).toBeInTheDocument();
   });
@@ -198,7 +199,7 @@ describe('generateMetadata', () => {
     });
   });
 
-  it('falls back to truncated content when explanation is absent', async () => {
+  it('uses a generic gated description when explanation is absent', async () => {
     const longContent =
       'Bu çok uzun prompt açıklaması sosyal medya ön izlemelerinde düzgün görünmeli ve kesinlikle kelimelerin ortasından kesilmemeli çünkü arama sonuçlarında kötü görünür.';
     getPromptMock.mockResolvedValueOnce(
@@ -210,7 +211,7 @@ describe('generateMetadata', () => {
     });
 
     expect(metadata.description).toBe(
-      'Bu çok uzun prompt açıklaması sosyal medya ön izlemelerinde düzgün görünmeli ve kesinlikle kelimelerin ortasından kesilmemeli çünkü arama sonuçlarında…',
+      'CV Hazirlama Promptu promptunun detaylarını görmek, kopyalamak ve kullanmak için Prompts34 hesabınızla giriş yapın.',
     );
     expect(metadata.openGraph?.description).toBe(metadata.description);
     expect(metadata.twitter?.description).toBe(metadata.description);

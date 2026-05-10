@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import PromptDetailClient from '@/components/PromptDetailClient';
-import { updatePrompt } from '@/lib/api/prompts';
+import { getPrompt, updatePrompt } from '@/lib/api/prompts';
 import { buildPrompt } from './test-utils/fixtures';
 
 const authState = vi.hoisted(() => ({
@@ -76,16 +76,19 @@ vi.mock('@/components/PromptForm', () => ({
 }));
 
 vi.mock('@/lib/api/prompts', () => ({
+  getPrompt: vi.fn(),
   updatePrompt: vi.fn(),
 }));
 
 describe('PromptDetailClient', () => {
+  const getPromptMock = vi.mocked(getPrompt);
   const updatePromptMock = vi.mocked(updatePrompt);
   const scrollIntoViewMock = vi.fn();
 
   beforeEach(() => {
     Element.prototype.scrollIntoView = scrollIntoViewMock;
     scrollIntoViewMock.mockReset();
+    getPromptMock.mockReset();
     updatePromptMock.mockReset();
     authState.user = {
       email: 'user@example.com',
@@ -142,5 +145,31 @@ describe('PromptDetailClient', () => {
     expect(
       screen.queryByRole('button', { name: 'Düzenle' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('gates prompt content for logged-out visitors', () => {
+    authState.user = null;
+    authState.token = null;
+
+    render(
+      <PromptDetailClient
+        prompt={buildPrompt({
+          id: 'prompt-locked',
+          content: '',
+          title: 'Gizli Prompt',
+        })}
+      />,
+    );
+
+    expect(screen.getByText('Bu Prompt Seni Bekliyor')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Giriş Yap' })).toHaveAttribute(
+      'href',
+      '/giris',
+    );
+    expect(screen.getByRole('link', { name: 'Kayıt Ol' })).toHaveAttribute(
+      'href',
+      '/kayit',
+    );
+    expect(screen.queryByText('Copy:')).not.toBeInTheDocument();
   });
 });

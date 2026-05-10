@@ -9,6 +9,7 @@ import {
 import { getPrompt } from '@/lib/api/prompts';
 import { buildDescription } from '@/lib/metadata';
 import { getPromptPath } from '@/lib/utils/slug';
+import type { PromptResponse } from '@/types/prompt';
 
 export const revalidate = 300;
 
@@ -17,6 +18,21 @@ const UUID_REGEX =
 
 function extractUuid(id: string): string {
   return UUID_REGEX.exec(id)?.[0] ?? id;
+}
+
+function getPublicDescription(prompt: PromptResponse): string {
+  return buildDescription(
+    prompt.explanation ||
+      `${prompt.title} promptunun detaylarını görmek, kopyalamak ve kullanmak için Prompts34 hesabınızla giriş yapın.`,
+  );
+}
+
+function redactPromptDetails(prompt: PromptResponse): PromptResponse {
+  return {
+    ...prompt,
+    content: '',
+    output: null,
+  };
 }
 
 export async function generateMetadata({
@@ -37,7 +53,7 @@ export async function generateMetadata({
   }
 
   const canonicalUrl = `https://prompts34.com${getPromptPath(prompt)}`;
-  const description = buildDescription(prompt.explanation || prompt.content);
+  const description = getPublicDescription(prompt);
   const title = prompt.title;
   const fullTitle = `${title} | Prompts34`;
 
@@ -80,7 +96,7 @@ export default async function PromptDetailPage({
     permanentRedirect(getPromptPath(prompt));
   }
 
-  const description = buildDescription(prompt.explanation || prompt.content);
+  const description = getPublicDescription(prompt);
 
   return (
     <>
@@ -90,7 +106,7 @@ export default async function PromptDetailPage({
         url={`https://prompts34.com${getPromptPath(prompt)}`}
         datePublished={prompt.created_at}
       />
-      <PromptDetailClient prompt={prompt} />
+      <PromptDetailClient prompt={redactPromptDetails(prompt)} />
     </>
   );
 }

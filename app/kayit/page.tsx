@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useAuth } from '@/lib/auth';
+import { trackSignUp } from '@/lib/analytics';
 import Link from 'next/link';
 
 export default function SignUpPage() {
@@ -20,6 +21,7 @@ export default function SignUpPage() {
 
     try {
       await signUp(email, password, username);
+      trackSignUp({ method: 'email' });
       // If signup is successful, show email confirmation message
       setEmailSent(true);
     } catch (err) {

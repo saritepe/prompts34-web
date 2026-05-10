@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/auth';
 import { uploadPromptImage } from '@/lib/api/prompts';
 import { compressImage } from '@/lib/utils/compress-image';
 import PromptOutputImage from '@/components/PromptOutputImage';
+import { trackPromptSubmit } from '@/lib/analytics';
 import {
   PromptCreate,
   PromptOutput,
@@ -133,6 +134,7 @@ export default function PromptForm({
           output,
         };
         await (onSubmit as (data: PromptCreate) => Promise<void>)(createData);
+        trackPromptSubmit({ isPublic: formData.is_public });
       }
 
       // Reset form if this was a create operation

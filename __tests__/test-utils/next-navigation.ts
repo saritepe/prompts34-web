@@ -8,6 +8,7 @@ export const routerMock = {
 };
 
 let searchParams = new URLSearchParams();
+let pathname = '/';
 
 export const notFoundMock = vi.fn(() => {
   throw new Error('NEXT_NOT_FOUND');
@@ -16,6 +17,7 @@ export const notFoundMock = vi.fn(() => {
 export const nextNavigationMock = {
   useRouter: () => routerMock,
   useSearchParams: () => searchParams,
+  usePathname: () => pathname,
   notFound: notFoundMock,
 };
 
@@ -26,8 +28,13 @@ export function setSearchParams(
     params instanceof URLSearchParams ? params : new URLSearchParams(params);
 }
 
+export function setPathname(path: string) {
+  pathname = path;
+}
+
 export function resetNextNavigationMock() {
   searchParams = new URLSearchParams();
+  pathname = '/';
   routerMock.push.mockReset();
   routerMock.replace.mockReset();
   routerMock.refresh.mockReset();
